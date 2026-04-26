@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="kr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>식자재 입력</title>
+
+    <style>
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            display: flex;
+            gap: 30px;
+            border: 5px solid;
+            height: 100vh;
+        }
+
+        .sideMenu {
+            height: 100vh;
+            border: 1px solid;
+            width: 300px;
+        }
+
+        .main {
+            border: 1px solid;
+            width: 100%;
+        }
+
+        .profile {
+            display: flex;
+            justify-content: end;
+        }
+
+        .content_item {
+            border: 3px solid blue;
+            height: 100%;
+            display: flex;
+            gap: 16px;
+        }
+
+        .content_left {
+            flex: 1;
+        }
+
+        .content_right {
+            width: 400px;
+            border: 3px solid green;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content_right h3 {
+            margin-top: 0;
+        }
+
+        .content_right table {
+            border-spacing: 10px;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        .content_right .register_final_btn {
+
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+        }
+
+
+        .input_section {
+            border: 3px solid;
+            padding: 16px;
+            margin: 10px;
+        }
+
+        .input_row {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .input_row label {
+            min-width: 100px;
+        }
+
+        .category_buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .category_buttons button {
+            padding: 4px 12px;
+            cursor: pointer;
+        }
+
+        .category_buttons button.selected {
+            background-color: #ccc;
+            font-weight: bold;
+        }
+
+        .input_fields {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .input_fields label {
+            min-width: 80px;
+        }
+
+        .input_fields input,
+        .input_fields select {
+            width: 120px;
+        }
+
+        .register_btn {
+            margin-top: 12px;
+            display: flex;
+            justify-content: center;
+        }
+
+
+        .search_section {
+            border: 3px solid;
+            padding: 10px;
+            margin: 10px;
+        }
+
+        .search_row {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .list_container {
+            display: flex;
+            justify-content: center;
+            height: 100%;
+            border: 3px solid red;
+            font-size: 14px;
+            line-height: 14px;
+        }
+
+        table {
+            border-spacing: 24px;
+        }
+
+        .page {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            width: 100%;
+            font-size: 18px;
+            line-height: 18px;
+        }
+
+        .remove_btn {
+            cursor: pointer;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <section class="sideMenu">
+            <ul>
+                <li>메뉴조회</li>
+                <li>식자재입력</li>
+                <li>메뉴입력</li>
+                <li>식자재조회</li>
+                <li>메뉴상세조회</li>
+            </ul>
+            <ul>
+                <li>폐기관리</li>
+                <li>폐기품목확인</li>
+            </ul>
+            <ul>
+                <li>통계</li>
+                <li>매출통계</li>
+                <li>지출통계</li>
+                <li>폐기통계</li>
+            </ul>
+        </section>
+        <div class="main">
+            <div>
+                <ul class="profile">
+                    <td>김상혁님</td>
+                    <td>알림</td>
+                </ul>
+            </div>
+            <h1>식자재 입력</h1>
+            <div class="content_item">
+
+                <div class="content_left">
+                    <div class="input_section">
+                        <div class="input_row">
+                            <label>식자재명 입력</label>
+                            <input type="text" id="inputName" placeholder="단무지">
+                            <label>카테고리 추가</label>
+                        </div>
+
+
+                        <div class="input_row">
+                            <div class="category_buttons">
+                                <button>기타</button>
+
+                            </div>
+                        </div>
+
+                        <div class="input_row">
+                            <div class="category_buttons">
+                                <button>유제품</button>
+                                <button>재료</button>
+                                <button>밀</button>
+                                <button>과일</button>
+                                <button class="selected">가공식품</button>
+                                <button>기타(E)</button>
+                            </div>
+                        </div>
+
+
+                        <div class="input_fields">
+                            <label>전체수량</label>
+                            <input type="number" id="inputQuantity" placeholder="5">
+
+                            <label>전체수량(단위:g)</label>
+                            <input type="text" id="inputWeight" placeholder="1.5">
+                            <select id="inputUnit">
+                                <option value="g">g</option>
+                                <option value="kg">kg</option>
+                                <option value="ml">ml</option>
+                                <option value="L">L</option>
+                            </select>
+                        </div>
+
+                        <div class="input_fields">
+                            <label>가격</label>
+                            <input type="number" id="inputPrice" placeholder="10000">
+
+                            <label>유통기한</label>
+                            <input type="date" id="inputExpiry" value="2026-04-22">
+                            <span>✓</span>
+
+                            <label>매입일자</label>
+                            <input type="date" id="inputPurchase" value="2026-04-10">
+                        </div>
+
+
+                        <div class="register_btn">
+                            <button onclick="addToList()">추가</button>
+                        </div>
+                    </div>
+
+
+                    <div class="search_section">
+                        <h3>기존 식자재 발견기</h3>
+
+                        <div class="search_row">
+                            <label>검색</label>
+                            <input type="text" placeholder="단무지">
+                            <button>검색</button>
+                        </div>
+
+                        <div class="search_row">
+                            <span>검색된 식자재 입력/취소</span>
+                        </div>
+
+                        <div>
+                            <table class="list_container">
+                                <tr class="list_item">
+                                    <th>이름</th>
+                                    <th>용량</th>
+                                    <th>카테고리</th>
+                                    <th>구입처</th>
+                                    <th>추가</th>
+                                </tr>
+                                <tr>
+                                    <td>단무지</td>
+                                    <td>300g</td>
+                                    <td>가공식품</td>
+                                    <td>웰빙푸드</td>
+                                    <td><button>⊕</button></td>
+                                </tr>
+                                <tr>
+                                    <td>단무지</td>
+                                    <td>400g</td>
+                                    <td>가공식품</td>
+                                    <td>건강푸드</td>
+                                    <td><button>⊕</button></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="content_right">
+                    <h3>등록할 식자재 목록</h3>
+                    <table id="registerTable">
+                        <tr>
+                            <th>식자재명</th>
+                            <th>카테고리</th>
+                            <th>수량</th>
+                            <th>용량</th>
+                            <th>가격</th>
+                            <th>삭제</th>
+                        </tr>
+                    </table>
+                    <div class="register_final_btn">
+                        <button onclick="registerAll()">등록</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+        document.querySelectorAll('.category_buttons button').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.category_buttons button').forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        function getSelectedCategory() {
+            const selectedBtn = document.querySelector('.category_buttons button.selected');
+            return selectedBtn ? selectedBtn.textContent : '';
+        }
+
+        function addToList() {
+            const name = document.getElementById('inputName').value;
+            const category = getSelectedCategory();
+            const quantity = document.getElementById('inputQuantity').value;
+            const weight = document.getElementById('inputWeight').value;
+            const unit = document.getElementById('inputUnit').value;
+            const price = document.getElementById('inputPrice').value;
+
+            if (!name) {
+                alert('식자재명을 입력해주세요.');
+                return;
+            }
+
+
+            const table = document.getElementById('registerTable');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${name}</td>
+                <td>${category}</td>
+                <td>${quantity}</td>
+                <td>${weight}${unit}</td>
+                <td>${Number(price).toLocaleString()}원</td>
+                <td><span class="remove_btn" onclick="removeRow(this)">✕</span></td>
+            `;
+            table.appendChild(newRow);
+
+
+            document.getElementById('inputName').value = '';
+            document.getElementById('inputQuantity').value = '';
+            document.getElementById('inputWeight').value = '';
+            document.getElementById('inputUnit').selectedIndex = 0;
+            document.getElementById('inputPrice').value = '';
+            document.getElementById('inputExpiry').value = '';
+            document.getElementById('inputPurchase').value = '';
+        }
+
+        function removeRow(el) {
+            el.closest('tr').remove();
+        }
+
+        function registerAll() {
+            const table = document.getElementById('registerTable');
+            const rows = table.querySelectorAll('tr');
+
+            if (rows.length <= 1) {
+                alert('등록할 식자재가 없습니다.');
+                return;
+            }
+
+            const count = rows.length - 1;
+            alert(count + '개의 식자재가 등록되었습니다.');
+
+
+            while (table.rows.length > 1) {
+                table.deleteRow(1);
+            }
+        }
+    </script>
+</body>
+
+</html>

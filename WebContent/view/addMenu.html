@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="kr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>메뉴 입력</title>
+
+    <style>
+        ul {
+            list-style: none;
+        }
+
+        .container {
+            display: flex;
+            gap: 30px;
+            border: 5px solid;
+            height: 100vh;
+        }
+
+        .sideMenu {
+            height: 100vh;
+            border: 1px solid;
+            width: 300px;
+        }
+
+        .main {
+            border: 1px solid;
+            width: 100%;
+        }
+
+        .profile {
+            display: flex;
+            justify-content: end;
+        }
+
+        .content_item {
+            border: 3px solid blue;
+            height: 100%;
+            display: flex;
+            gap: 16px;
+        }
+
+        .content_left {
+            flex: 1;
+        }
+
+        .content_right {
+            width: 400px;
+            border: 3px solid green;
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .content_right h3 {
+            margin-top: 0;
+        }
+
+        .content_right table {
+            border-spacing: 10px;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        .content_right .register_final_btn {
+            display: flex;
+            justify-content: center;
+            padding: 10px;
+        }
+
+        .input_section {
+            border: 3px solid;
+            padding: 16px;
+            margin: 10px;
+        }
+
+        .input_row {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .input_row label {
+            min-width: 120px;
+        }
+
+        .category_buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .category_buttons button {
+            padding: 4px 12px;
+            cursor: pointer;
+        }
+
+        .category_buttons button.selected {
+            background-color: #ccc;
+            font-weight: bold;
+        }
+
+        .input_fields {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 10px;
+        }
+
+        .input_fields label {
+            min-width: 80px;
+        }
+
+        .input_fields input {
+            width: 120px;
+        }
+
+        .register_btn {
+            margin-top: 12px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .ingredient_section {
+            border: 3px solid;
+            padding: 16px;
+            margin: 10px;
+        }
+
+        .ingredient_add_row {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .ingredient_add_row label {
+            min-width: 50px;
+        }
+
+        .ingredient_add_row input {
+            width: 100px;
+        }
+
+        .ingredient_table {
+            border: 3px solid red;
+            font-size: 14px;
+            line-height: 14px;
+            width: 100%;
+        }
+
+        .ingredient_table table {
+            border-spacing: 16px;
+            width: 100%;
+        }
+
+        table {
+            border-spacing: 24px;
+        }
+
+        .remove_btn {
+            cursor: pointer;
+            color: red;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <section class="sideMenu">
+            <ul>
+                <li>메뉴조회</li>
+                <li>식자재입력</li>
+                <li>메뉴입력</li>
+                <li>식자재조회</li>
+                <li>메뉴상세조회</li>
+            </ul>
+            <ul>
+                <li>폐기관리</li>
+                <li>폐기품목확인</li>
+            </ul>
+            <ul>
+                <li>통계</li>
+                <li>매출통계</li>
+                <li>지출통계</li>
+                <li>폐기통계</li>
+            </ul>
+        </section>
+        <div class="main">
+            <div>
+                <ul class="profile">
+                    <td>김상혁님</td>
+                    <td>알림</td>
+                </ul>
+            </div>
+            <h1>메뉴 입력</h1>
+            <div class="content_item">
+
+                <div class="content_left">
+                    <div class="input_section">
+                        <div class="input_row">
+                            <label>메뉴명 입력</label>
+                            <input type="text" id="inputMenuName" placeholder="치즈김밥">
+                        </div>
+
+                        <div class="input_row">
+                            <label>메뉴 카테고리 입력</label>
+                            <input type="text" id="inputMenuCategory" placeholder="김밥">
+                            <button>추가</button>
+                        </div>
+
+                        <div class="input_row">
+                            <div class="category_buttons">
+                                <button>일식</button>
+                                <button class="selected">김밥</button>
+                                <button>기타</button>
+                            </div>
+                        </div>
+
+                        <div class="input_fields">
+                            <label>메뉴 가격</label>
+                            <input type="number" id="inputMenuPrice" placeholder="4000"> 원
+                        </div>
+                    </div>
+
+                    <div class="ingredient_section">
+                        <h3>사용 식자재 추가</h3>
+
+                        <div class="ingredient_add_row">
+                            <label>이름</label>
+                            <input type="text" id="inputIngredientName" placeholder="김">
+                            <label>수량</label>
+                            <input type="text" id="inputIngredientAmount" placeholder="50">
+                            <span>g</span>
+                            <button onclick="addIngredient()">+ 추가하기</button>
+                        </div>
+
+                        <div class="ingredient_table">
+                            <table id="ingredientTable">
+                                <tr>
+                                    <th>이름</th>
+                                    <th>수량(g)</th>
+                                    <th>삭제</th>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="register_btn">
+                        <button onclick="addMenuToList()">추가</button>
+                    </div>
+                </div>
+
+                <div class="content_right">
+                    <h3>등록할 메뉴 목록</h3>
+                    <table id="registerMenuTable">
+                        <tr>
+                            <th>메뉴명</th>
+                            <th>메뉴카테고리</th>
+                            <th>메뉴가격</th>
+                            <th>사용식자재</th>
+                            <th>삭제</th>
+                        </tr>
+                    </table>
+                    <div class="register_final_btn">
+                        <button onclick="registerAllMenus()">등록</button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.querySelectorAll('.category_buttons button').forEach(btn => {
+            btn.addEventListener('click', function () {
+                document.querySelectorAll('.category_buttons button').forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+            });
+        });
+
+        function addIngredient() {
+            const name = document.getElementById('inputIngredientName').value;
+            const amount = document.getElementById('inputIngredientAmount').value;
+
+            if (!name || !amount) {
+                alert('식자재 이름과 수량을 입력해주세요.');
+                return;
+            }
+
+            const table = document.getElementById('ingredientTable');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${name}</td>
+                <td>${amount}g</td>
+                <td><span class="remove_btn" onclick="removeRow(this)">⊖</span></td>
+            `;
+            table.appendChild(newRow);
+
+            document.getElementById('inputIngredientName').value = '';
+            document.getElementById('inputIngredientAmount').value = '';
+        }
+
+        function removeRow(el) {
+            el.closest('tr').remove();
+        }
+
+        function getIngredientList() {
+            const table = document.getElementById('ingredientTable');
+            const rows = table.querySelectorAll('tr');
+            let ingredients = [];
+
+            for (let i = 1; i < rows.length; i++) {
+                const cells = rows[i].querySelectorAll('td');
+                ingredients.push(cells[0].textContent + ' ' + cells[1].textContent);
+            }
+
+            return ingredients;
+        }
+
+        function addMenuToList() {
+            const menuName = document.getElementById('inputMenuName').value;
+            const menuCategory = document.getElementById('inputMenuCategory').value;
+            const menuPrice = document.getElementById('inputMenuPrice').value;
+            const ingredients = getIngredientList();
+
+            if (!menuName) {
+                alert('메뉴명을 입력해주세요.');
+                return;
+            }
+
+            if (ingredients.length === 0) {
+                alert('사용 식자재를 추가해주세요.');
+                return;
+            }
+
+            const registerTable = document.getElementById('registerMenuTable');
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${menuName}</td>
+                <td>${menuCategory}</td>
+                <td>${Number(menuPrice).toLocaleString()}원</td>
+                <td>${ingredients.join(', ')}</td>
+                <td><span class="remove_btn" onclick="removeRow(this)">✕</span></td>
+            `;
+            registerTable.appendChild(newRow);
+
+            document.getElementById('inputMenuName').value = '';
+            document.getElementById('inputMenuCategory').value = '';
+            document.getElementById('inputMenuPrice').value = '';
+
+            const ingredientTable = document.getElementById('ingredientTable');
+            while (ingredientTable.rows.length > 1) {
+                ingredientTable.deleteRow(1);
+            }
+        }
+
+        function registerAllMenus() {
+            const table = document.getElementById('registerMenuTable');
+            const rows = table.querySelectorAll('tr');
+
+            if (rows.length <= 1) {
+                alert('등록할 메뉴가 없습니다.');
+                return;
+            }
+
+            const count = rows.length - 1;
+            alert(count + '개의 메뉴가 등록되었습니다.');
+
+            while (table.rows.length > 1) {
+                table.deleteRow(1);
+            }
+        }
+    </script>
+</body>
+
+</html>
