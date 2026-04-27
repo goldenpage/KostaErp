@@ -429,19 +429,28 @@
 
     function sortByNumberDesc() {
         viewRows.sort(function (a, b) {
-            var aNo = Number(a.querySelectorAll("td")[0].textContent.trim());
-            var bNo = Number(b.querySelectorAll("td")[0].textContent.trim());
-
+            var aNo = parseInt(a.querySelectorAll("td")[0].textContent.trim()) || 0;
+            var bNo = parseInt(b.querySelectorAll("td")[1].textContent.trim()) || 0; 
             return bNo - aNo;
         });
+        renderTable();
     }
 
     function sortByExpireAsc() {
         viewRows.sort(function (a, b) {
             var aDate = a.querySelectorAll("td")[8].textContent.trim();
             var bDate = b.querySelectorAll("td")[8].textContent.trim();
-
             return aDate.localeCompare(bDate);
+        });
+        renderTable(); 
+    }
+
+    function renderTable() {
+        var table = document.querySelector(".list_container");
+        var parent = table.querySelector("tbody") || table;
+        
+        viewRows.forEach(function(row) {
+            parent.appendChild(row); 
         });
     }
 
