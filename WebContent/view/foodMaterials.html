@@ -431,7 +431,7 @@
         viewRows.sort(function (a, b) {
             var aNo = parseInt(a.querySelectorAll("td")[0].textContent.trim()) || 0;
             var bNo = parseInt(b.querySelectorAll("td")[1].textContent.trim()) || 0; 
-            return bNo - aNo;
+            return aNo - bNo;
         });
         renderTable();
     }
