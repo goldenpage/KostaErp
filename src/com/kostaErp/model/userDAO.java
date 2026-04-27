@@ -1,5 +1,5 @@
 package com.kostaErp.model;
 
-public interface userDAO {
+public class userDAO {
 
 }

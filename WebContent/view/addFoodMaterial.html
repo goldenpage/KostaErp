@@ -214,14 +214,15 @@
                         <div class="input_row">
                             <div class="category_buttons">
                             	<label>카테고리 추가</label>
-                            	<input type="text" id="inputName" placeholder="카테고리 입력">
-                                <button>추가하기</button>
-
+                            	<input type="text" id="inputCategoryName" placeholder="카테고리 입력">
+                                <button onclick="addCategory()">추가하기</button>
+                                
                             </div>
                         </div>
 
                         <div class="input_row">
                             <div class="category_buttons">
+                            	<div id="buttonArea"></div>
                                 <button>유제품</button>
                                 <button>재료</button>
                                 <button>밀</button>
@@ -266,7 +267,7 @@
 
 
                     <div class="search_section">
-                        <h3>기존 식자재 발견기</h3>
+                        <h3>기존 식자재 찾기</h3>
 
                         <div class="search_row">
                             <label>검색</label>
@@ -275,28 +276,25 @@
                         </div>
 
                         <div class="search_row">
-                            <span>검색된 식자재 입력/취소</span>
+                            <span>기존에 등록된 식자재 목록</span>
                         </div>
 
                         <div>
                             <table class="list_container">
                                 <tr class="list_item">
                                     <th>이름</th>
-                                    <th>용량</th>
                                     <th>카테고리</th>
                                     <th>구입처</th>
                                     <th>추가</th>
                                 </tr>
                                 <tr>
                                     <td>단무지</td>
-                                    <td>300g</td>
                                     <td>가공식품</td>
                                     <td>웰빙푸드</td>
                                     <td><button>⊕</button></td>
                                 </tr>
                                 <tr>
                                     <td>단무지</td>
-                                    <td>400g</td>
                                     <td>가공식품</td>
                                     <td>건강푸드</td>
                                     <td><button>⊕</button></td>
@@ -338,6 +336,13 @@
                 this.classList.add('selected');
             });
         });
+        
+        function addCategory(){
+        	var newCategory = document.createElement("button");
+        	newCategory.innerText = document.getElemnetById("inputCategoryName").innerHTML;
+        	var area = document.getElementById("buttonArea");
+        	area.appendChild(newCategory);
+        }
 
         function getSelectedCategory() {
             const selectedBtn = document.querySelector('.category_buttons button.selected');

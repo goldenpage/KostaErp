@@ -1,5 +1,5 @@
 package com.kostaErp.model;
 
-public interface menuDAO {
+public class menuDAO {
 
 }
