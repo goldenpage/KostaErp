@@ -208,13 +208,14 @@
                         <div class="input_row">
                             <label>식자재명 입력</label>
                             <input type="text" id="inputName" placeholder="단무지">
-                            <label>카테고리 추가</label>
                         </div>
 
 
                         <div class="input_row">
                             <div class="category_buttons">
-                                <button>기타</button>
+                            	<label>카테고리 추가</label>
+                            	<input type="text" id="inputName" placeholder="카테고리 입력">
+                                <button>추가하기</button>
 
                             </div>
                         </div>
@@ -250,11 +251,11 @@
                             <input type="number" id="inputPrice" placeholder="10000">
 
                             <label>유통기한</label>
-                            <input type="date" id="inputExpiry" value="2026-04-22">
+                            <input type="date" id="inputExpiry">
                             <span>✓</span>
 
                             <label>매입일자</label>
-                            <input type="date" id="inputPurchase" value="2026-04-10">
+                            <input type="date" id="inputPurchase">
                         </div>
 
 
@@ -327,6 +328,9 @@
     </div>
 
     <script>
+    	
+    	document.getElementById('inputExpiry').value = new Date().toISOString().substring(0, 10);
+    	document.getElementById('inputPurchase').value = new Date().toISOString().substring(0, 10);
 
         document.querySelectorAll('.category_buttons button').forEach(btn => {
             btn.addEventListener('click', function () {
@@ -352,6 +356,18 @@
                 alert('식자재명을 입력해주세요.');
                 return;
             }
+           	if (!quantity){
+           		alert('전체수량을 입력해주세요.');
+                return;
+           	}
+           	if (!weight){
+           		alert('식자재 용량을 입력해주세요.');
+                return;
+           	}
+           	if (!price){
+           		alert('매입가격을 입력해주세요.');
+                return;
+           	}
 
 
             const table = document.getElementById('registerTable');
