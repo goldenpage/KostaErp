@@ -183,27 +183,49 @@
         </div>
     </div>
 
-    <script>
-        function selectMenu(rowEl, menuName, ingredients) {
-            document.querySelectorAll('.menu_list tr').forEach(tr => tr.classList.remove('active'));
-            rowEl.classList.add('active');
+<script>
+    function selectMenu(rowEl, menuName, ingredients) {
+        var rows = document.querySelectorAll(".menu_list tr");
 
-            const table = document.getElementById('ingredientDetail');
+        rows.forEach(function (tr) {
+            tr.classList.remove("active");
+        });
 
-            while (table.rows.length > 1) {
-                table.deleteRow(1);
-            }
+        rowEl.classList.add("active");
 
-            ingredients.forEach(item => {
-                const newRow = document.createElement('tr');
-                newRow.innerHTML = `
-                    <td>${item[0]}</td>
-                    <td>${item[1]}</td>
-                `;
-                table.appendChild(newRow);
-            });
+        var checkboxes = document.querySelectorAll(".menu_list input[type='checkbox']");
+
+        checkboxes.forEach(function (checkbox) {
+            checkbox.checked = false;
+        });
+
+        var currentCheckbox = rowEl.querySelector("input[type='checkbox']");
+
+        if (currentCheckbox !== null) {
+            currentCheckbox.checked = true;
         }
-    </script>
+
+        drawIngredientTable(ingredients);
+    }
+
+    function drawIngredientTable(ingredients) {
+        var table = document.getElementById("ingredientDetail");
+
+        while (table.rows.length > 1) {
+            table.deleteRow(1);
+        }
+
+        ingredients.forEach(function (item) {
+            var newRow = document.createElement("tr");
+
+            newRow.innerHTML =
+                "<td>" + item[0] + "</td>" +
+                "<td>" + item[1] + "</td>";
+
+            table.appendChild(newRow);
+        });
+    }
+</script>
 </body>
 
 </html>
