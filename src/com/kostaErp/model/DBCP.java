@@ -15,7 +15,7 @@ public class DBCP {
 	
 	
 	public static Connection getConnection() throws ClassNotFoundException, SQLException {
-		if(dbcp==null) dbcp = new DBCP();//ÇÑ¹ø¸¸ 
+		if(dbcp==null) dbcp = new DBCP();
 		String uri = "jdbc:oracle:thin:@127.0.0.1:1521:xe";
 		return  DriverManager.getConnection(uri, "hr", "hr");
 		
