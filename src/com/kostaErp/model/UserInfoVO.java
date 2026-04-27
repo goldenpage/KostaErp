@@ -6,6 +6,8 @@ public class UserInfoVO {
     private String storeName;
     private String email;
     private String phone;
+    
+    
 	public String getbId() {
 		return bId;
 	}
