@@ -234,7 +234,7 @@
                             <label>이름</label>
                             <input type="text" id="inputIngredientName" placeholder="김">
                             <label>수량</label>
-                            <input type="text" id="inputIngredientAmount" placeholder="50">
+                            <input type="number" id="inputIngredientAmount" placeholder="50">
                             <span>g</span>
                             <button onclick="addIngredient()">+ 추가하기</button>
                         </div>
@@ -282,13 +282,19 @@
                 this.classList.add('selected');
             });
         });
+        
+        function getSelectedCategory() {
+            const selectedBtn = document.querySelector('.category_buttons button.selected');
+            return selectedBtn ? selectedBtn.textContent : '';
+        }
 
         function addIngredient() {
             const name = document.getElementById('inputIngredientName').value;
-            const amount = document.getElementById('inputIngredientAmount').value;
-
-            if (!name || !amount) {
-                alert('식자재 이름과 수량을 입력해주세요.');
+            const IngredientAmount = document.getElementById('inputIngredientAmount').value;
+            
+            
+            if ((!name || Number(IngredientAmount) <= 0)) {
+                alert('식자재 이름과 수량을 정확히 입력해주세요.');
                 return;
             }
 
@@ -296,7 +302,7 @@
             const newRow = document.createElement('tr');
             newRow.innerHTML = `
                 <td>${name}</td>
-                <td>${amount}g</td>
+                <td>${IngredientAmount}g</td>
                 <td><span class="remove_btn" onclick="removeRow(this)">⊖</span></td>
             `;
             table.appendChild(newRow);
@@ -324,12 +330,17 @@
 
         function addMenuToList() {
             const menuName = document.getElementById('inputMenuName').value;
-            const menuCategory = document.getElementById('inputMenuCategory').value;
+            const menuCategory = getSelectedCategory();
             const menuPrice = document.getElementById('inputMenuPrice').value;
             const ingredients = getIngredientList();
 
             if (!menuName) {
                 alert('메뉴명을 입력해주세요.');
+                return;
+            }
+            
+            if(!menuPrice){
+            	alert('메뉴 가격을 입력해주세요');
                 return;
             }
 
@@ -350,7 +361,7 @@
             registerTable.appendChild(newRow);
 
             document.getElementById('inputMenuName').value = '';
-            document.getElementById('inputMenuCategory').value = '';
+            document.getElementById('category_buttons').value = '';
             document.getElementById('inputMenuPrice').value = '';
 
             const ingredientTable = document.getElementById('ingredientTable');

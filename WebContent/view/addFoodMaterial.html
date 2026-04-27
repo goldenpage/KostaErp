@@ -208,14 +208,14 @@
                         <div class="input_row">
                             <label>식자재명 입력</label>
                             <input type="text" id="inputName" placeholder="단무지">
-                            <label>카테고리 추가</label>
                         </div>
 
 
                         <div class="input_row">
                             <div class="category_buttons">
-                                <button>기타</button>
-
+                            	<label>카테고리 입력 및 선택</label>
+                            	<input type="text" id="inputName" placeholder="카테고리 입력">
+                                <button>카테고리 추가</button>
                             </div>
                         </div>
 
@@ -342,7 +342,7 @@
 
         function addToList() {
             const name = document.getElementById('inputName').value;
-            const category = getSelectedCategory();
+            const foodcategory = getSelectedCategory();
             const quantity = document.getElementById('inputQuantity').value;
             const weight = document.getElementById('inputWeight').value;
             const unit = document.getElementById('inputUnit').value;
@@ -358,7 +358,7 @@
             const newRow = document.createElement('tr');
             newRow.innerHTML = `
                 <td>${name}</td>
-                <td>${category}</td>
+                <td>${foodcategory}</td>
                 <td>${quantity}</td>
                 <td>${weight}${unit}</td>
                 <td>${Number(price).toLocaleString()}원</td>
