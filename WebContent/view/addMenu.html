@@ -302,7 +302,7 @@
             const newRow = document.createElement('tr');
             newRow.innerHTML = `
                 <td>${name}</td>
-                <td>${IngredientAmount}g</td>
+                <td>${Number(IngredientAmount).toLocaleString()}g</td>
                 <td><span class="remove_btn" onclick="removeRow(this)">⊖</span></td>
             `;
             table.appendChild(newRow);
@@ -365,7 +365,7 @@
             document.getElementById('inputMenuPrice').value = '';
 
             const ingredientTable = document.getElementById('ingredientTable');
-            while (ingredientTable.rows.length > 1) {
+            while (ingredientTable.rows.length > 0) {
                 ingredientTable.deleteRow(1);
             }
         }
