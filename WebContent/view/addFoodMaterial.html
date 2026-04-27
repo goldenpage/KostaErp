@@ -338,9 +338,10 @@
         });
         
         function addCategory(){
-        	var newCategory = document.createElement("button");
-        	newCategory.innerText = document.getElemnetById("inputCategoryName").innerHTML;
-        	var area = document.getElementById("buttonArea");
+        	const categoryName = document.getElementById("inputCategoryName").value;
+        	const newCategory = document.createElement("button");
+        	newCategory.innerText = categoryName;
+        	const area = document.getElementById("buttonArea");
         	area.appendChild(newCategory);
         }
 
