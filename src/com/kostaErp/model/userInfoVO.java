@@ -3,16 +3,36 @@ package com.kostaErp.model;
 import java.sql.Date;
 
 public class userInfoVO {
-    private String bId;
-    private String name;
-    private String storeName;
-    private String email;
-    private String phone;
-    private String pw;
-    private Date MarketingDate;
-	public void setMarketingDate(Date marketingDate) {
-		MarketingDate = marketingDate;
+	private String bId;
+	private String name;
+	private String storeName;
+	private String email;
+	private String phone;
+	private String pw;
+	private Date MarketingDate;
+	private Date signDate;
+	private Date agreementDate;
+	private Date marketingDate;
+
+
+	public userInfoVO(){}
+
+	public userInfoVO(String bId, String name, String phone, String email, String storeName, 
+			String storeType, String storeCategory, String pw, Date signDate,
+			Date agreementDate, Date marketingDate){
+		this.bId = bId;
+		this.name = name;
+		this.phone = phone;
+		this.email = email;
+		this.storeName = storeName;
+		this.pw = pw;
+		this.signDate = signDate;
+		this.agreementDate = agreementDate;
+		this.marketingDate = marketingDate;
+
 	}
+
+
 	public String getPw() {
 		return pw;
 	}
@@ -53,6 +73,23 @@ public class userInfoVO {
 		return MarketingDate;
 	}
 
-    
-    
+
+	public Date getSignDate() {return signDate;}
+	public Date getAgreementDate() {return agreementDate;}
+
+	public void setMarketingDate(Date marketingDate) {
+		this.marketingDate = marketingDate;
+	}
+
+
+
+
+
 }
+
+
+
+
+
+
+

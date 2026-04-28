@@ -1,6 +1,7 @@
 package com.kostaErp.model;
 
 import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -9,203 +10,384 @@ import java.util.List;
 import java.sql.Date;
 
 public class foodMaterialDAO {
-	
-//	public userInfoVO checkMemberByVO(String bId, String name, String pw) throws ClassNotFoundException {
-//	    String sql = "SELECT bId, name, storeName, storeType, pw FROM USERINFO " +
-//	                 "WHERE bId = ? AND name = ? AND pw = ?";
-//	    
-//	    try (Connection conn = DBCP.getConnection();
-//	         PreparedStatement stmt = conn.prepareStatement(sql)) {
-//	        
-//	        stmt.setString(1, bId);
-//	        stmt.setString(2, name);
-//	        stmt.setString(3, pw);
-//
-//	        try (ResultSet rs = stmt.executeQuery()) {
-//	            if (rs.next()) {
-//	                userInfoVO member = new userInfoVO();
-//	                member.setbId(rs.getString("bId"));
-//	                member.setName(rs.getString("name"));
-//	                member.setPw(rs.getString("pw"));
-//	                member.setStoreName(rs.getString("storeName"));
-//	                return member;
-//	            }
-//	        }
-//	    } catch (SQLException e) {
-//	        System.err.println("�α��� üũ �� DB ����: " + e.getMessage());
-//	    }
-//	    return null;
-//	}
-//
-	public List<userInfoVO> getMarketingMembers() throws ClassNotFoundException {
-	    String sql = "SELECT bid, name, phone, email, marketingDate FROM USERINFO WHERE marketingDate IS NOT NULL";
-	    List<userInfoVO> list = new ArrayList<>();
 
-	    try (Connection conn = DBCP.getConnection();
-	         PreparedStatement stmt = conn.prepareStatement(sql);
-	         ResultSet rs = stmt.executeQuery()) {
+	public int getFoodMaterialTotalAmount(String bId) {
+		String sql = "SELECT SUM(foodMaterialPrice) FROM FOODM WHERE bId = ?;";
+		int totalAmount = 0;
 
-	        while (rs.next()) {
-	            userInfoVO member = new userInfoVO();
-	            member.setbId(rs.getString("bid"));
-	            member.setName(rs.getString("name"));
-	            member.setPhone(rs.getString("phone"));
-	            member.setEmail(rs.getString("email"));
-	            member.setMarketingDate(rs.getDate("marketingDate")); 
-	            
-	            list.add(member);
-	        }
-	    } catch (SQLException e) {
-	    	e.printStackTrace();
-	    }
-	    return list;
+		Connection conn;
+		try {
+			conn = DBCP.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, bId);
+
+			ResultSet rs = stmt.executeQuery();
+			if(rs.next()){
+				return rs.getInt(1);
+			}
+
+			rs.close();
+			stmt.close();
+			conn.close();
+
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+
+		return totalAmount;
+
+	}
+
+	public List<foodMaterialVO> getFoodMaterialSpendingRank(String bId, String startDate, String endDate) {
+		String sql = "SELECT foodMaterial_Id, foodMaterialName, foodMaterialPrice * foodMaterialCount AS totalExpense FROM FOODM WHERE bId = ? AND incomeDate >= TO_DATE(?, 'YYYY-MM-DD') AND incomeDate < TO_DATE(?, 'YYYY-MM-DD') ORDER BY totalExpense DESC;";
+		List<foodMaterialVO> list = new ArrayList<>();
+		Connection conn;
+		try {
+			conn = DBCP.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, bId);
+			stmt.setString(2, startDate);
+			stmt.setString(3, endDate);
+
+			ResultSet rs = stmt.executeQuery();
+			while(rs.next()) {
+				foodMaterialVO vo = new foodMaterialVO();
+				vo.setRanking(rs.getInt("ranking"));
+				vo.setFoodMaterialId(rs.getString("foodMaterial_Id"));
+				vo.setFoodMaterialName(rs.getString("foodMaterialName"));
+				vo.setFoodMaterialPrice(rs.getInt("foodMaterialPrice"));
+				vo.setFoodMaterialCount(rs.getInt("foodMaterialCount"));
+				vo.setTotalExpense(rs.getInt("totalExpense"));
+				vo.setIncomeDate(rs.getDate("incomeDate"));
+				vo.setbId(rs.getString("bId"));
+
+				list.add(vo);
+
+			}
+
+			rs.close();
+			stmt.close();
+			conn.close();
+
+		} catch (ClassNotFoundException e) {
+
+			e.printStackTrace();
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
+
+
+		return list;
 	}
 
 
-    public int getFoodMaterialCount(String bId) {
-        int count = 0;
 
-        String sql = "SELECT COUNT(*) FROM FOODM WHERE bId = ?";
 
-        try {
-            Connection conn = DBCP.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql);
+	public foodMaterialDAO(){}
 
-            stmt.setString(1, bId);
+	// 1. 쩍횆�횣�챌 �횚쨌횂
+	public int addFoodMaterial(String foodMaterialName, String foodCategory_Id, int foodMaterialCount, 
+			int foodMaterialCountAll, int foodMaterialPrice, String vender, String foodMaterialType, 
+			String incomeDate, String expirationDate, String bId){
 
-            ResultSet rs = stmt.executeQuery();
+		int result = 0;
 
-            if (rs.next()) {
-                count = rs.getInt(1);
-            }
+		String sql = "INSERT INTO FOODM(foodMaterialName, foodCategory_Id, foodMaterialCount, foodMaterialCountAll, "
+				+ "foodMaterialPrice, foodMaterialType, vender, incomeDate, expirationDate, bId) "
+				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-            rs.close();
-            stmt.close();
-            conn.close();
+		try{
+			Connection conn = DBCP.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+			stmt.setString(1, foodMaterialName);
+			stmt.setString(2, foodCategory_Id);
+			stmt.setInt(3, foodMaterialCount);
+			stmt.setInt(4, foodMaterialCountAll);
+			stmt.setInt(5, foodMaterialPrice);
+			stmt.setString(6, foodMaterialType);
+			stmt.setString(7, vender);
+			stmt.setDate(8, Date.valueOf(incomeDate));
+			stmt.setDate(9, Date.valueOf(expirationDate));
+			stmt.setString(10, bId);
 
-        return count;
-    }
+			result = stmt.executeUpdate();
 
-    public List<foodMaterialVO> getFoodMaterialList(String bId, String sortType, int page, int pageSize) {
-        List<foodMaterialVO> list = new ArrayList<foodMaterialVO>();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return result;
+	}
 
-        int startRow = (page - 1) * pageSize + 1;
-        int endRow = page * pageSize;
 
-        String sql = getFoodListSql(sortType);
+	// 2. 횆짬횇횞째챠쨍짰 횄횩째징
+	public int addFoodCategory(String foodCategoryId, String foodCategory){
+		int result = 0;
+		String sql = "INSERT INTO FOODC(foodCategory_Id, foodCategory) VALUES(?, ?)";
 
-        try {
-            Connection conn = DBCP.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql);
+		try{
+			Connection conn = DBCP.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);
 
-            stmt.setString(1, bId);
-            stmt.setInt(2, startRow);
-            stmt.setInt(3, endRow);
+			stmt.setString(1, foodCategoryId);
+			stmt.setString(2, foodCategory);
 
-            ResultSet rs = stmt.executeQuery();
+			result = stmt.executeUpdate();
 
-            while (rs.next()) {
-                foodMaterialVO vo = new foodMaterialVO();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return result;
+	}
 
-                vo.setFoodMaterialId(rs.getString("foodMaterial_Id"));
-                vo.setFoodMaterialName(rs.getString("foodMaterialName"));
-                vo.setFoodCategory(rs.getString("foodCategory"));
-                vo.setFoodMaterialCount(rs.getInt("foodMaterialCount"));
-                vo.setFoodMaterialCountAll(rs.getInt("foodMaterialCountAll"));
-                vo.setFoodMaterialPrice(rs.getInt("foodMaterialPrice"));
-                vo.setVender(rs.getString("vender"));
-                vo.setIncomeDate(rs.getDate("incomeDate"));
-                vo.setExpirationDate(rs.getDate("expirationDate"));
-                vo.setFoodMaterialType(rs.getString("foodMaterialType"));
+	// 3. 횆짬횇횞째챠쨍짰 쨩챔횁짝
+	public int deleteFoodCategory(String foodCategory) {
+		int result = 0;
+		String sql = "DELETE FROM FOODC WHERE foodCategory = ?";
 
-                list.add(vo);
-            }
+		try{
+			Connection conn = DBCP.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);
 
-            rs.close();
-            stmt.close();
-            conn.close();
+			stmt.setString(1, foodCategory);
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+			result = stmt.executeUpdate();
 
-        return list;
-    }
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return result;
+	}
 
-    public foodMaterialVO getFoodMaterialDetail(String foodMaterialId) {
-        foodMaterialVO vo = null;
+	// 4. 쩍횆�횣�챌쨍챠�쨍쨌횓 째횏쨩철
+	public List<foodMaterialVO> getFoodMaterialByName(String foodMaterialName) {
+		List<foodMaterialVO> list = new ArrayList<>();
+		String sql = "SELECT foodMaterialName, foodCategory_Id, vender FROM FOODM "
+				+ "WHERE foodMaterialName = ?";
 
-        String sql =
-            "SELECT f.foodMaterial_Id, f.foodMaterialName, c.foodCategory, " +
-            " f.foodMaterialCount, f.foodMaterialCountAll, f.foodMaterialPrice, " +
-            " f.foodMaterialType, f.vender, f.incomeDate, f.expirationDate, f.bId " +
-            "FROM FOODM f " +
-            "JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id " +
-            "WHERE f.foodMaterial_Id = ?";
+		try{
+			Connection conn = DBCP.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);
 
-        try {
-            Connection conn = DBCP.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, foodMaterialName);
+			ResultSet rs = stmt.executeQuery();
 
-            stmt.setString(1, foodMaterialId);
+			while (rs.next()) {
+				foodMaterialVO foodMaterial = new foodMaterialVO();
+				foodMaterial.setFoodMaterialName(rs.getString("foodMaterialName"));
+				foodMaterial.setFoodCategory(rs.getString("foodCategory_Id"));
+				foodMaterial.setVender(rs.getString("vender"));
+				list.add(foodMaterial);
+			}
 
-            ResultSet rs = stmt.executeQuery();
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return list;
+	}
 
-            if (rs.next()) {
-                vo = new foodMaterialVO();
 
-                vo.setFoodMaterialId(rs.getString("foodMaterial_Id"));
-                vo.setFoodMaterialName(rs.getString("foodMaterialName"));
-                vo.setFoodCategory(rs.getString("foodCategory"));
-                vo.setFoodMaterialCount(rs.getInt("foodMaterialCount"));
-                vo.setFoodMaterialCountAll(rs.getInt("foodMaterialCountAll"));
-                vo.setFoodMaterialPrice(rs.getInt("foodMaterialPrice"));
-                vo.setFoodMaterialType(rs.getString("foodMaterialType"));
-                vo.setVender(rs.getString("vender"));
-                vo.setIncomeDate(rs.getDate("incomeDate"));
-                vo.setExpirationDate(rs.getDate("expirationDate"));
-                vo.setbId(rs.getString("bId"));
-            }
+	//	public userInfoVO checkMemberByVO(String bId, String name, String pw) throws ClassNotFoundException {
+	//	    String sql = "SELECT bId, name, storeName, storeType, pw FROM USERINFO " +
+	//	                 "WHERE bId = ? AND name = ? AND pw = ?";
+	//	    
+	//	    try (Connection conn = DBCP.getConnection();
+	//	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+	//	        
+	//	        stmt.setString(1, bId);
+	//	        stmt.setString(2, name);
+	//	        stmt.setString(3, pw);
+	//
+	//	        try (ResultSet rs = stmt.executeQuery()) {
+	//	            if (rs.next()) {
+	//	                userInfoVO member = new userInfoVO();
+	//	                member.setbId(rs.getString("bId"));
+	//	                member.setName(rs.getString("name"));
+	//	                member.setPw(rs.getString("pw"));
+	//	                member.setStoreName(rs.getString("storeName"));
+	//	                return member;
+	//	            }
+	//	        }
+	//	    } catch (SQLException e) {
+	//	        System.err.println("쨌횓짹횞�횓 횄쩌횇짤 횁횩 DB 쩔징쨌짱: " + e.getMessage());
+	//	    }
+	//	    return null;
+	//	}
+	//
+	public List<userInfoVO> getMarketingMembers() throws ClassNotFoundException {
+		String sql = "SELECT bid, name, phone, email, marketingDate FROM USERINFO WHERE marketingDate IS NOT NULL";
+		List<userInfoVO> list = new ArrayList<>();
 
-            rs.close();
-            stmt.close();
-            conn.close();
+		try (Connection conn = DBCP.getConnection();
+				PreparedStatement stmt = conn.prepareStatement(sql);
+				ResultSet rs = stmt.executeQuery()) {
 
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+			while (rs.next()) {
+				userInfoVO member = new userInfoVO();
+				member.setbId(rs.getString("bid"));
+				member.setName(rs.getString("name"));
+				member.setPhone(rs.getString("phone"));
+				member.setEmail(rs.getString("email"));
+				member.setMarketingDate(rs.getDate("marketingDate")); 
 
-        return vo;
-    }
+				list.add(member);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 
-    private String getFoodListSql(String sortType) {
-        String orderBy = "f.foodMaterial_Id DESC";
 
-        if ("idAsc".equals(sortType)) {
-            orderBy = "f.foodMaterial_Id ASC";
-        } else if ("idDesc".equals(sortType)) {
-            orderBy = "f.foodMaterial_Id DESC";
-        } else if ("expAsc".equals(sortType)) {
-            orderBy = "f.expirationDate ASC";
-        } else if ("expDesc".equals(sortType)) {
-            orderBy = "f.expirationDate DESC";
-        }
+	public int getFoodMaterialCount(String bId) {
+		int count = 0;
 
-        return
-            "SELECT * " +
-            "FROM ( " +
-            " SELECT ROW_NUMBER() OVER (ORDER BY " + orderBy + ") AS rn, " +
-            " f.foodMaterial_Id, f.foodMaterialName, c.foodCategory, " +
-            " f.foodMaterialCount, f.foodMaterialCountAll, f.foodMaterialPrice, " +
-            " f.vender, f.incomeDate, f.expirationDate, f.foodMaterialType " +
-            " FROM FOODM f " +
-            " JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id " +
-            " WHERE f.bId = ? " +
-            ") " +
-            "WHERE rn BETWEEN ? AND ?";
-    }
+		String sql = "SELECT COUNT(*) FROM FOODM WHERE bId = ?";
+
+		try {
+			Connection conn = DBCP.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);
+
+			stmt.setString(1, bId);
+
+			ResultSet rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				count = rs.getInt(1);
+			}
+
+			rs.close();
+			stmt.close();
+			conn.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return count;
+	}
+
+	public List<foodMaterialVO> getFoodMaterialList(String bId, String sortType, int page, int pageSize) {
+		List<foodMaterialVO> list = new ArrayList<foodMaterialVO>();
+
+		int startRow = (page - 1) * pageSize + 1;
+		int endRow = page * pageSize;
+
+		String sql = getFoodListSql(sortType);
+
+		try {
+			Connection conn = DBCP.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);
+
+			stmt.setString(1, bId);
+			stmt.setInt(2, startRow);
+			stmt.setInt(3, endRow);
+
+			ResultSet rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				foodMaterialVO vo = new foodMaterialVO();
+
+				vo.setFoodMaterialId(rs.getString("foodMaterial_Id"));
+				vo.setFoodMaterialName(rs.getString("foodMaterialName"));
+				vo.setFoodCategory(rs.getString("foodCategory"));
+				vo.setFoodMaterialCount(rs.getInt("foodMaterialCount"));
+				vo.setFoodMaterialCountAll(rs.getInt("foodMaterialCountAll"));
+				vo.setFoodMaterialPrice(rs.getInt("foodMaterialPrice"));
+				vo.setVender(rs.getString("vender"));
+				vo.setIncomeDate(rs.getDate("incomeDate"));
+				vo.setExpirationDate(rs.getDate("expirationDate"));
+				vo.setFoodMaterialType(rs.getString("foodMaterialType"));
+
+				list.add(vo);
+			}
+
+			rs.close();
+			stmt.close();
+			conn.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return list;
+	}
+
+	public foodMaterialVO getFoodMaterialDetail(String foodMaterialId) {
+		foodMaterialVO vo = null;
+
+		String sql =
+				"SELECT f.foodMaterial_Id, f.foodMaterialName, c.foodCategory, " +
+						" f.foodMaterialCount, f.foodMaterialCountAll, f.foodMaterialPrice, " +
+						" f.foodMaterialType, f.vender, f.incomeDate, f.expirationDate, f.bId " +
+						"FROM FOODM f " +
+						"JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id " +
+						"WHERE f.foodMaterial_Id = ?";
+
+		try {
+			Connection conn = DBCP.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);
+
+			stmt.setString(1, foodMaterialId);
+
+			ResultSet rs = stmt.executeQuery();
+
+			if (rs.next()) {
+				vo = new foodMaterialVO();
+
+				vo.setFoodMaterialId(rs.getString("foodMaterial_Id"));
+				vo.setFoodMaterialName(rs.getString("foodMaterialName"));
+				vo.setFoodCategory(rs.getString("foodCategory"));
+				vo.setFoodMaterialCount(rs.getInt("foodMaterialCount"));
+				vo.setFoodMaterialCountAll(rs.getInt("foodMaterialCountAll"));
+				vo.setFoodMaterialPrice(rs.getInt("foodMaterialPrice"));
+				vo.setFoodMaterialType(rs.getString("foodMaterialType"));
+				vo.setVender(rs.getString("vender"));
+				vo.setIncomeDate(rs.getDate("incomeDate"));
+				vo.setExpirationDate(rs.getDate("expirationDate"));
+				vo.setbId(rs.getString("bId"));
+			}
+
+			rs.close();
+			stmt.close();
+			conn.close();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return vo;
+	}
+
+	private String getFoodListSql(String sortType) {
+		String orderBy = "f.foodMaterial_Id DESC";
+
+		if ("idAsc".equals(sortType)) {
+			orderBy = "f.foodMaterial_Id ASC";
+		} else if ("idDesc".equals(sortType)) {
+			orderBy = "f.foodMaterial_Id DESC";
+		} else if ("expAsc".equals(sortType)) {
+			orderBy = "f.expirationDate ASC";
+		} else if ("expDesc".equals(sortType)) {
+			orderBy = "f.expirationDate DESC";
+		}
+
+		return
+				"SELECT * " +
+				"FROM ( " +
+				" SELECT ROW_NUMBER() OVER (ORDER BY " + orderBy + ") AS rn, " +
+				" f.foodMaterial_Id, f.foodMaterialName, c.foodCategory, " +
+				" f.foodMaterialCount, f.foodMaterialCountAll, f.foodMaterialPrice, " +
+				" f.vender, f.incomeDate, f.expirationDate, f.foodMaterialType " +
+				" FROM FOODM f " +
+				" JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id " +
+				" WHERE f.bId = ? " +
+				") " +
+				"WHERE rn BETWEEN ? AND ?";
+	}
 }
+
