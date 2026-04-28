@@ -1,6 +1,18 @@
 package com.kostaErp.model;
 
 public class foodMaterialCategoryVO {
+
+	private String foodCategoryId;
+	private String foodCategory;
+	
+	public foodMaterialCategoryVO() {}
+
+    public foodMaterialCategoryVO(String foodCategoryId, String foodCategory) {
+        this.foodCategoryId = foodCategoryId;
+        this.foodCategory = foodCategory;
+    }
+    
+
     private String foodCategoryId;
     private String foodCategory;
 
@@ -20,3 +32,4 @@ public class foodMaterialCategoryVO {
         this.foodCategory = foodCategory;
     }
 }
+
