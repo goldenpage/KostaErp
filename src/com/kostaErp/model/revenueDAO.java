@@ -10,53 +10,125 @@ import java.util.List;
 public class revenueDAO {
 
 	public revenueDAO(){}
+	
+	// 1. 월별 메뉴 판매 랭킹 조회
+	public List<revenueVO> getMonthlyMenuSalesRank(String bId, String startDate, String endDate) {
+	    String sql =
+	        "SELECT " +
+	        "    RANK() OVER (ORDER BY SUM(s.saleMenuCount) DESC) AS ranking, " +
+	        "    s.menu_Id, " +
+	        "    m.menuName, " +
+	        "    m.menuPrice, " +
+	        "    SUM(s.saleMenuCount) AS totalSaleCount, " +
+	        "    SUM(s.saleMenuCount * m.menuPrice) AS totalSalesAmount " +
+	        "FROM SALES s " +
+	        "JOIN MENUS m ON s.menu_Id = m.menu_Id " +
+	        "JOIN MENUC mc ON m.menuCategory_Id = mc.menuCategory_Id " +
+	        "JOIN REVENUE r ON s.revenue_Id = r.revenue_Id " +
+	        "WHERE mc.bId = ? " +
+	        "AND r.revenueDate >= TO_DATE(?, 'YYYY-MM-DD') " +
+	        "AND r.revenueDate < TO_DATE(?, 'YYYY-MM-DD') " +
+	        "GROUP BY s.menu_Id, m.menuName, m.menuPrice " +
+	        "ORDER BY ranking";
 
-	public List<revenueVO> selectMonthlyMenuSalesRank(String bId, String startDate, String endDate) {
-		String sql = "SELECT RANK() OVER (ORDER BY SUM(s.saleMenuCount) DESC) AS ranking, s.menu_Id, m.menuName, m.menuPrice, SUM(s.saleMenuCount) AS totalSaleCount, SUM(s.saleMenuCount * m.menuPrice) AS totalSalesAmount FROM SALES s JOIN MENUS m ON s.menu_Id = m.menu_Id JOIN MENUC mc ON m.menuCategory_Id = mc.menuCategory_Id JOIN REVENUE r ON s.revenue_Id = r.revenue_Id WHERE mc.bId = ? AND r.revenueDate >= TO_DATE(?, 'YYYY-MM-DD') AND r.revenueDate < TO_DATE(?, 'YYYY-MM-DD') GROUP BY s.menu_Id, m.menuName, m.menuPrice ORDER BY totalSaleCount DESC";
-		List<revenueVO> list = new ArrayList<>();
+	    List<revenueVO> list = new ArrayList<>();
 
+	    try (
+	        Connection conn = DBCP.getConnection();
+	        PreparedStatement stmt = conn.prepareStatement(sql)
+	    ) {
+	        stmt.setString(1, bId);
+	        stmt.setString(2, startDate);
+	        stmt.setString(3, endDate);
+
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            while (rs.next()) {
+	                revenueVO vo = new revenueVO();
+
+	                vo.setRanking(rs.getInt("ranking"));
+	                vo.setMenuId(rs.getString("menu_Id"));
+	                vo.setMenuName(rs.getString("menuName"));
+	                vo.setMenuPrice(rs.getInt("menuPrice"));
+	                vo.setTotalSaleCount(rs.getInt("totalSaleCount"));
+	                vo.setTotalSalesAmount(rs.getInt("totalSalesAmount"));
+
+	                list.add(vo);
+	            }
+	        }
+
+	    } catch (ClassNotFoundException e) {
+	        e.printStackTrace();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return list;
+	}
+	
+	public int getRevenue(String bId, String startDate, String endDate) {
+		String sql = "SELECT SUM(menuprice * salemenucount) FROM SALES, MENUS";
+		
 		Connection conn;
-
 		try {
 			conn = DBCP.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(sql);
-
 			stmt.setString(1, bId);
-			stmt.setString(2, startDate);
-			stmt.setString(3, endDate);
-
-			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
-				revenueVO vo = new revenueVO();
-
-				vo.setRanking(rs.getInt("ranking"));
-				vo.setMenuId(rs.getString("menu_Id"));
-				vo.setMenuName(rs.getString("menuName"));
-				vo.setMenuPrice(rs.getInt("menuPrice"));
-				vo.setTotalSaleCount(rs.getInt("totalSaleCount"));
-				vo.setTotalSalesAmount(rs.getInt("totalSalesAmount"));
-
-				list.add(vo);
-			}
-			rs.close();
-			stmt.close();
-			conn.close();
-
+	        stmt.setString(2, startDate);
+	        stmt.setString(3, endDate);
+	        
+	        ResultSet rs = stmt.executeQuery();
+	        
+	        
 		} catch (ClassNotFoundException e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (SQLException e) {
-
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-
-
-
-		return list;
-
+		
+		
+	
+        
+		return 0;
 	}
+	
+	
+	// 월별 총 매출
+	public int getMonthlyRevenue(String bId, String startDate, String endDate) {
+	    String sql =
+	        "SELECT NVL(SUM(s.saleMenuCount * m.menuPrice), 0) AS totalRevenue " +
+	        "FROM SALES s " +
+	        "JOIN MENUS m ON s.menu_Id = m.menu_Id " +
+	        "JOIN MENUC mc ON m.menuCategory_Id = mc.menuCategory_Id " +
+	        "JOIN REVENUE r ON s.revenue_Id = r.revenue_Id " +
+	        "WHERE mc.bId = ? " +
+	        "AND r.revenueDate >= TO_DATE(?, 'YYYY-MM-DD') " +
+	        "AND r.revenueDate < TO_DATE(?, 'YYYY-MM-DD')";
 
+	    try (
+	        Connection conn = DBCP.getConnection();
+	        PreparedStatement stmt = conn.prepareStatement(sql)
+	    ) {
+	        stmt.setString(1, bId);
+	        stmt.setString(2, startDate);
+	        stmt.setString(3, endDate);
+
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            if (rs.next()) {
+	                return rs.getInt("totalRevenue");
+	            }
+	        }
+
+	    } catch (ClassNotFoundException e) {
+	        e.printStackTrace();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return 0;
+	}
+	
 	public List<userInfoVO> checkMemberByVO(String bId, String name, String pw) throws ClassNotFoundException {
 		String sql = "SELECT bId, name, storeName, storeType, pw FROM USERINFO " +
 				"WHERE bId = ? AND name = ? AND pw = ?";

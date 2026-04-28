@@ -14,86 +14,218 @@ import org.junit.Test;
 public class disposalDAOTest {
 	private disposalDAO dao;
 
-    //�׽�Ʈ ���� DAO ����
-    @Before
-    public void setUp() {
-        dao = new disposalDAO();
-        System.out.println("�׽�Ʈ ����");
-    }
-    
-    //�׽�Ʈ ���� �� ����
-    @After
-    public void tearDown() {
-        dao = null;
-        System.out.println("�׽�Ʈ ����");
-    }
+	//占쌓쏙옙트 占쏙옙占쏙옙 DAO 占쏙옙占쏙옙
+	@Before
+	public void setUp() {
+		dao = new disposalDAO();
+		System.out.println("占쌓쏙옙트 占쏙옙占쏙옙");
+	}
 
-    //1. ��� ǰ�� ��ȸ �׽�Ʈ
-    @Test
-    public void getDisposalsTest() {
-        List<disposalVO> list = dao.getDisposals();
-        assertNotNull(list);
-        assertTrue(list.size() > 0);
-        for (disposalVO vo : list) {
-            System.out.println(vo.getDisposalId() + " / " + vo.getReasonId());
-        }
-    }
-    
-    //2. ��� ������� ��ȸ �׽�Ʈ
-    //@Test
-    public void getFoodMaterialNamesTest() { 
-    	List<String> list = dao.getFoodMaterialNames(); 
-    	assertNotNull(list); assertTrue(list.size() > 0); 
-    	for (String name : list) { 
-    		System.out.println("������� : " + name); 
-    		} 
-    }
-    
-    //3. ī�װ��� ��ȸ �׽�Ʈ
-    //@Test 
-    public void getCategoriesTest() { 
-    	List<String> list = dao.getCategories(); 
-    	assertNotNull(list); 
-    	assertTrue(list.size() > 0); 
-    	for (String category : list) { 
-    		System.out.println("ī�װ���: " + category); 
-    		} 
-    }
-    
-    //4. ������ ��ȸ �׽�Ʈ 
-    //@Test 
-    public void getReasonsTest() { 
-    	List<String> list = dao.getReasons(); 
-    	assertNotNull(list); 
-    	assertTrue(list.size() > 0); 
-    	for (String reason : list) { 
-    		System.out.println("����: " + reason); 
-    		}
-    }
-    
-    //5. ����¡ �׽�Ʈ 
-    //@Test 
-    public void getDisposalsPagingTest() { 
-    	List<disposalVO> list = dao.getDisposalsPaging(1, 4); 
-    	assertNotNull(list); 
-    	assertTrue(list.size() > 0); 
-    	for (disposalVO vo : list) { 
-    		System.out.println("ID: " + vo.getDisposalId()); 
-    		} 
-   	}
-    //6. ������ ���� �׽�Ʈ
-    	//@Test 
-    	public void updateReasonTest() { 
-    		String disposalId = "DIS001"; 
-    		String before = "D"; 
-    		String after = "B"; 
-    		//���� 
-    		boolean result = dao.updateReason(disposalId, after); 
-    		assertTrue(result); 
-    		System.out.println("���� ����"); 
-    		//�ٽ� ���� (�׽�Ʈ ������ ����) 
-    		dao.updateReason(disposalId, before); 
-    		}
+	//占쌓쏙옙트 占쏙옙占쏙옙 占쏙옙 占쏙옙占쏙옙
+	@After
+	public void tearDown() {
+		dao = null;
+		System.out.println("占쌓쏙옙트 占쏙옙占쏙옙");
+	}
+
+	//1. 占쏙옙占� 품占쏙옙 占쏙옙회 占쌓쏙옙트
+	//@Test
+	public void getDisposalsTest() {
+		List<disposalVO> list = dao.getDisposals();
+		assertNotNull(list);
+		assertTrue(list.size() > 0);
+		for (disposalVO vo : list) {
+			System.out.println(vo.getDisposalId() + " / " + vo.getReasonId());
+		}
+	}
+
+	//2. 占쏙옙占� 占쏙옙占쏙옙占쏙옙占� 占쏙옙회 占쌓쏙옙트
+	//@Test
+	public void getFoodMaterialNamesTest() { 
+		List<String> list = dao.getFoodMaterialNames(); 
+		assertNotNull(list); assertTrue(list.size() > 0); 
+		for (String name : list) { 
+			System.out.println("占쏙옙占쏙옙占쏙옙占� : " + name); 
+		} 
+	}
+
+	//3. 카占쌓곤옙占쏙옙 占쏙옙회 占쌓쏙옙트
+	//@Test 
+	public void getCategoriesTest() { 
+		List<String> list = dao.getCategories(); 
+		assertNotNull(list); 
+		assertTrue(list.size() > 0); 
+		for (String category : list) { 
+			System.out.println("카占쌓곤옙占쏙옙: " + category); 
+		} 
+	}
+
+	//4. 占쏙옙占쏙옙占쏙옙 占쏙옙회 占쌓쏙옙트 
+	//@Test 
+	public void getReasonsTest() { 
+		List<String> list = dao.getReasons(); 
+		assertNotNull(list); 
+		assertTrue(list.size() > 0); 
+		for (String reason : list) { 
+			System.out.println("占쏙옙占쏙옙: " + reason); 
+		}
+	}
+
+	//5. 占쏙옙占쏙옙징 占쌓쏙옙트 
+	//@Test 
+	public void getDisposalsPagingTest() { 
+		List<disposalVO> list = dao.getDisposalsPaging(1, 4); 
+		assertNotNull(list); 
+		assertTrue(list.size() > 0); 
+		for (disposalVO vo : list) { 
+			System.out.println("ID: " + vo.getDisposalId()); 
+		} 
+	}
+	//6. 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙 占쌓쏙옙트
+	//@Test 
+	public void updateReasonTest() { 
+		String disposalId = "DIS001"; 
+		String before = "D"; 
+		String after = "B"; 
+		//占쏙옙占쏙옙 
+		boolean result = dao.updateReason(disposalId, after); 
+		assertTrue(result); 
+		System.out.println("占쏙옙占쏙옙 占쏙옙占쏙옙"); 
+		//占쌕쏙옙 占쏙옙占쏙옙 (占쌓쏙옙트 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙) 
+		dao.updateReason(disposalId, before); 
+	}
+	//7. 월별 폐기율
+	//@Test
+	public void getDisoposalRateTest() throws ClassNotFoundException {
+
+		double result = dao.getDisposalRate("0000000000", "2026-04-01","2026-05-01");
+		assertNotNull(result);
+		System.out.println(result);
+		assertEquals(176.47, result, 0.01);
+
+
+	}
+	//8. 월별 폐기금액
+	//@Test
+	public void getTotalDisposalPrice() throws ClassNotFoundException {
+		int result = dao.getTotalDisposalPrice("0000000000", "2026-04-01","2026-05-01");
+		assertNotNull(result);
+		assertEquals(100000, result);
+
+	}
+
+	//9.월별 폐기품목 Top3
+	//@Test
+	public void getTop3DisposalItems() throws ClassNotFoundException {
+		List<disposalVO> list = dao.getTop3DisposalItems("0000000000", "2026-04-01","2026-05-01");
+		assertNotNull(list); 
+		assertTrue(list.size() > 0);
+
+		boolean hasChamgireum = false;
+		boolean hasCheese = false;
+
+		for (disposalVO vo : list) {
+			System.out.println(
+					vo.getFoodMaterialId() + " / " +
+							vo.getFoodMaterialName() + " / " +
+							vo.getTotalDisposalPrice() + " / " +
+							vo.getDisposalCount()
+					);
+
+			if ("참기름".equals(vo.getFoodMaterialName())) {
+				hasChamgireum = true;
+				assertEquals(50000, vo.getTotalDisposalPrice());
+				assertEquals(1, vo.getDisposalCount());
+			}
+
+			if ("치즈".equals(vo.getFoodMaterialName())) {
+				hasCheese = true;
+				assertEquals(50000, vo.getTotalDisposalPrice());
+				assertEquals(1, vo.getDisposalCount());
+			}
+		}
+		assertTrue(hasChamgireum);
+		assertTrue(hasCheese);
+	}
+
+	//10. 폐기사유비율
+	//@Test
+	public void getDisposalReasonRatio() throws ClassNotFoundException {
+		List<disposalVO> list = dao.getTop3DisposalItems("0000000000", "2026-04-01","2026-05-01");
+		assertNotNull(list); 
+		assertTrue(list.size() > 0);
+		boolean hasBroken = false;
+		boolean hasExpiration = false;
+
+		for (disposalVO vo : list) {
+			System.out.println(
+					vo.getReasonId() + "\t" +
+							vo.getReason() + "\t" +
+							vo.getDisposalCount() + "\t" +
+							vo.getReasonRatio()
+					);
+			
+
+			if ("B".equals(vo.getReasonId())) {
+				hasBroken = true;
+				assertEquals("파손", vo.getReason());
+				assertEquals(1, vo.getDisposalCount());
+				assertEquals(50.0, vo.getReasonRatio(), 0.01);
+			}
+
+			if ("E".equals(vo.getReasonId())) {
+				hasExpiration = true;
+				assertEquals("유통기한만료", vo.getReason());
+				assertEquals(1, vo.getDisposalCount());
+				assertEquals(50.0, vo.getReasonRatio(), 0.01);
+			}
+		}
+
+		assertTrue(hasBroken);
+		assertTrue(hasExpiration);
+
+
+
+	}
+
+	//12. 날짜별 폐기 유형
+	@Test
+	public void selectDailyDisposalByTypeTest() throws ClassNotFoundException {
+
+		List<disposalVO> list = dao.getTop3DisposalItems("0000000000", "2026-04-01","2026-05-01");
+
+	    assertNotNull(list);
+	    assertEquals(2, list.size());
+
+	    boolean hasSolid = false;
+	    boolean hasLiquid = false;
+
+	    for (disposalVO vo : list) {
+	        System.out.println(
+	            vo.getDisposalDay() + "\t" +
+	            vo.getFoodMaterialType() + "\t" +
+	            vo.getDisposalCount() + "\t" +
+	            vo.getTotalDisposalPrice()
+	        );
+
+	        assertEquals(java.sql.Date.valueOf("2026-04-22"), vo.getDisposalDay());
+
+	        if ("고체".equals(vo.getFoodMaterialType())) {
+	            hasSolid = true;
+	            assertEquals(1, vo.getDisposalCount());
+	            assertEquals(50000, vo.getTotalDisposalPrice());
+	        }
+
+	        if ("액체".equals(vo.getFoodMaterialType())) {
+	            hasLiquid = true;
+	            assertEquals(1, vo.getDisposalCount());
+	            assertEquals(50000, vo.getTotalDisposalPrice());
+	        }
+	    }
+
+	    assertTrue(hasSolid);
+	    assertTrue(hasLiquid);
+	}
 }
 
 

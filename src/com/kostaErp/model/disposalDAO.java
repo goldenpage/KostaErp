@@ -1,6 +1,7 @@
 package com.kostaErp.model;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -132,123 +133,171 @@ public class disposalDAO {
 		return false;
 	}
 
-	public double selectDisposalRate(String bId, String startDate, String endDate) throws ClassNotFoundException{
-		String sql = "ROUND((SELECT NVL(SUM(d.disposalPrice), 0)FROM DISPOSALS dWHERE d.bId = ?AND d.disposalDate >= TO_DATE(?, 'YYYY-MM-DD')AND d.disposalDate < TO_DATE(?, 'YYYY-MM-DD'))* 100/NULLIF((SELECT NVL(SUM(f.foodMaterialPrice * f.foodMaterialCount), 0)FROM FOODM fWHERE f.bId = ?AND f.incomeDate >= TO_DATE(?, 'YYYY-MM-DD')AND f.incomeDate < TO_DATE(?, 'YYYY-MM-DD')),0),2) AS disposalRateFROM dual";
+	// 7. 월별 폐기율
+	public double getDisposalRate(String bId, String startDate, String endDate) throws ClassNotFoundException {
+	    String sql =
+	        "SELECT NVL(ROUND(SUM(d.disposalCountAll) * 100 / NULLIF(SUM(f.foodMaterialCountAll), 0), 2), 0) AS disposalRate " +
+	        "FROM DISPOSALS d " +
+	        "JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id " +
+	        "WHERE f.bId = ? " +
+	        "AND d.disposalDate >= TO_DATE(?, 'YYYY-MM-DD') " +
+	        "AND d.disposalDate < TO_DATE(?, 'YYYY-MM-DD')";
 
-		try (
-				Connection conn = DBCP.getConnection();
-				PreparedStatement stmt = conn.prepareStatement(sql)
-				) {
-			stmt.setString(1, bId);
-			stmt.setString(2, startDate);
-			stmt.setString(3, endDate);
+	    try (
+	        Connection conn = DBCP.getConnection();
+	        PreparedStatement stmt = conn.prepareStatement(sql)
+	    ) {
+	        stmt.setString(1, bId);
+	        stmt.setString(2, startDate);
+	        stmt.setString(3, endDate);
 
-			stmt.setString(4, bId);
-			stmt.setString(5, startDate);
-			stmt.setString(6, endDate);
-			try (ResultSet rs = stmt.executeQuery()) {
-				if (rs.next()) {
-					return rs.getDouble("disposalRate");
-				}
-			}
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            if (rs.next()) {
+	                return rs.getDouble("disposalRate");
+	            }
+	        }
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
 
-		return 0;
+	    return 0;
+	}
+	// 8. 월별 폐기금액
+	public int getTotalDisposalPrice(String bId, String startDate, String endDate) throws ClassNotFoundException {
+	    String sql =
+	        "SELECT NVL(SUM(d.disposalPrice), 0) AS totalDisposalPrice " +
+	        "FROM DISPOSALS d " +
+	        "JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id " +
+	        "WHERE f.bId = ? " +
+	        "AND d.disposalDate >= TO_DATE(?, 'YYYY-MM-DD') " +
+	        "AND d.disposalDate < TO_DATE(?, 'YYYY-MM-DD')";
+
+	    try (
+	        Connection conn = DBCP.getConnection();
+	        PreparedStatement stmt = conn.prepareStatement(sql)
+	    ) {
+	        stmt.setString(1, bId);
+	        stmt.setString(2, startDate);
+	        stmt.setString(3, endDate);
+
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            if (rs.next()) {
+	                return rs.getInt("totalDisposalPrice");
+	            }
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return 0;
 	}
 
-	public int selectTotalDisposalPrice(String bId, String startDate, String endDate) throws ClassNotFoundException{
-		String sql = "SELECT NVL(SUM(disposalPrice), 0) AS totalDisposalPrice FROM DISPOSALS WHERE bId = ? AND disposalDate >= TO_DATE(?, 'YYYY-MM-DD') AND disposalDate < TO_DATE(?, 'YYYY-MM-DD')";
+	// 9. 월별 폐기품목 Top3
+	public List<disposalVO> getTop3DisposalItems(String bId, String startDate, String endDate)
+	        throws ClassNotFoundException {
 
-		try (
-				Connection conn = DBCP.getConnection();
-				PreparedStatement stmt = conn.prepareStatement(sql)
-				) {
-			stmt.setString(1, bId);
-			stmt.setString(2, startDate);
-			stmt.setString(3, endDate);
+	    String sql =
+	        "SELECT * " +
+	        "FROM ( " +
+	        "    SELECT " +
+	        "        f.foodMaterial_Id, " +
+	        "        f.foodMaterialName, " +
+	        "        SUM(d.disposalPrice) AS totalDisposalPrice, " +
+	        "        COUNT(d.disposal_Id) AS disposalCount " +
+	        "    FROM DISPOSALS d " +
+	        "    JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id " +
+	        "    WHERE f.bId = ? " +
+	        "    AND d.disposalDate >= TO_DATE(?, 'YYYY-MM-DD') " +
+	        "    AND d.disposalDate < TO_DATE(?, 'YYYY-MM-DD') " +
+	        "    GROUP BY f.foodMaterial_Id, f.foodMaterialName " +
+	        "    ORDER BY totalDisposalPrice DESC, f.foodMaterial_Id ASC " +
+	        ") " +
+	        "WHERE ROWNUM <= 3";
 
-			try (ResultSet rs = stmt.executeQuery()) {
-				if (rs.next()) {
-					return rs.getInt("totalDisposalPrice");
-				}
-			}
+	    List<disposalVO> list = new ArrayList<>();
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	    try (
+	        Connection conn = DBCP.getConnection();
+	        PreparedStatement stmt = conn.prepareStatement(sql)
+	    ) {
+	        stmt.setString(1, bId);
+	        stmt.setString(2, startDate);
+	        stmt.setString(3, endDate);
 
-		return 0;
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            while (rs.next()) {
+	                disposalVO vo = new disposalVO();
+
+	                vo.setFoodMaterialId(rs.getString("foodMaterial_Id"));
+	                vo.setFoodMaterialName(rs.getString("foodMaterialName"));
+	                vo.setTotalDisposalPrice(rs.getInt("totalDisposalPrice"));
+	                vo.setDisposalCount(rs.getInt("disposalCount"));
+
+	                list.add(vo);
+	            }
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return list;
+	}
+	// 10. 월별 폐기사유비율
+	public List<disposalVO> getDisposalReasonRatio(String bId, String startDate, String endDate)
+	        throws ClassNotFoundException {
+
+	    String sql =
+	        "SELECT " +
+	        "    r.reason_Id, " +
+	        "    r.reason, " +
+	        "    COUNT(d.disposal_Id) AS disposalCount, " +
+	        "    ROUND( " +
+	        "        COUNT(d.disposal_Id) * 100 / SUM(COUNT(d.disposal_Id)) OVER (), " +
+	        "        2 " +
+	        "    ) AS reasonRatio " +
+	        "FROM DISPOSALS d " +
+	        "JOIN REASON r ON d.reason_Id = r.reason_Id " +
+	        "JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id " +
+	        "WHERE f.bId = ? " +
+	        "AND d.disposalDate >= TO_DATE(?, 'YYYY-MM-DD') " +
+	        "AND d.disposalDate < TO_DATE(?, 'YYYY-MM-DD') " +
+	        "GROUP BY r.reason_Id, r.reason " +
+	        "ORDER BY reasonRatio DESC";
+
+	    List<disposalVO> list = new ArrayList<>();
+
+	    try (
+	        Connection conn = DBCP.getConnection();
+	        PreparedStatement stmt = conn.prepareStatement(sql)
+	    ) {
+	        stmt.setString(1, bId);
+	        stmt.setString(2, startDate);
+	        stmt.setString(3, endDate);
+
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            while (rs.next()) {
+	                disposalVO vo = new disposalVO();
+
+	                vo.setReasonId(rs.getString("reason_Id"));
+	                vo.setReason(rs.getString("reason"));
+	                vo.setDisposalCount(rs.getInt("disposalCount"));
+	                vo.setReasonRatio(rs.getDouble("reasonRatio"));
+
+	                list.add(vo);
+	            }
+	        }
+
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return list;
 	}
 
-	public List<disposalVO> selectTop3DisposalItems(String bId, String startDate, String endDate) throws ClassNotFoundException{
-		String sql = "SELECT *FROM (SELECT f.foodMaterial_Id, f.foodMaterialName, SUM(d.disposalPrice) AS totalDisposalPrice, COUNT(d.disposal_Id) AS disposalCount FROM DISPOSALS d JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id WHERE d.bId = ? AND d.disposalDate >= TO_DATE(?, 'YYYY-MM-DD') AND d.disposalDate < TO_DATE(?, 'YYYY-MM-DD') GROUP BY f.foodMaterial_Id, f.foodMaterialName ORDER BY totalDisposalPrice DESC) WHERE ROWNUM <= 3";
-
-		List<disposalVO> list = new ArrayList<>();
-
-		try (
-				Connection conn = DBCP.getConnection();
-				PreparedStatement stmt = conn.prepareStatement(sql)
-				) {
-			stmt.setString(1, bId);
-			stmt.setString(2, startDate);
-			stmt.setString(3, endDate);
-
-			try (ResultSet rs = stmt.executeQuery()) {
-				while (rs.next()) {
-					disposalVO vo = new disposalVO();
-
-					vo.setFoodMaterialId(rs.getString("foodMaterial_Id"));
-					vo.setFoodMaterialName(rs.getString("foodMaterialName"));
-					vo.setTotalDisposalPrice(rs.getInt("totalDisposalPrice"));
-					vo.setDisposalCount(rs.getInt("disposalCount"));
-
-					list.add(vo);
-				}
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return list;
-	}
-
-	public List<disposalVO> selectDisposalReasonRatio(String bId, String startDate, String endDate) throws ClassNotFoundException{
-		String sql = "SELECT r.reason_Id, r.reason, COUNT(d.disposal_Id) AS disposalCount, ROUND( COUNT(d.disposal_Id) * 100 / SUM(COUNT(d.disposal_Id)) OVER (),2) AS reasonRatio FROM DISPOSALS d JOIN REASON r ON d.reason_Id = r.reason_Id WHERE d.bId = ? AND d.disposalDate >= TO_DATE(?, 'YYYY-MM-DD') AND d.disposalDate < TO_DATE(?, 'YYYY-MM-DD') GROUP BY r.reason_Id, r.reason ORDER BY reasonRatio DESC";
-
-		List<disposalVO> list = new ArrayList<>();
-
-		try (
-				Connection conn = DBCP.getConnection();
-				PreparedStatement stmt = conn.prepareStatement(sql)
-				) {
-			stmt.setString(1, bId);
-			stmt.setString(2, startDate);
-			stmt.setString(3, endDate);
-
-			try (ResultSet rs = stmt.executeQuery()) {
-				while (rs.next()) {
-					disposalVO vo = new disposalVO();
-
-					vo.setReasonId(rs.getString("reason_Id"));
-					vo.setReason(rs.getString("reason"));
-					vo.setDisposalCount(rs.getInt("disposalCount"));
-					vo.setReasonRatio(rs.getDouble("reasonRatio"));
-
-					list.add(vo);
-				}
-			}
-
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-
-		return list;
-	}
-
+	//11. 날짜별 폐기량
 	public List<disposalVO> selectDailyDisposalAmount(String bId, String startDate, String endDate) throws ClassNotFoundException{
 		String sql = "SELECTTRUNC(disposalDate) AS disposalDay,COUNT(disposal_Id) AS disposalCount,NVL(SUM(disposalPrice), 0) AS totalDisposalPriceFROM DISPOSALSWHERE bId = ?AND disposalDate >= TO_DATE(?, 'YYYY-MM-DD')AND disposalDate < TO_DATE(?, 'YYYY-MM-DD')GROUP BY TRUNC(disposalDate)ORDER BY disposalDay";
 
@@ -280,36 +329,52 @@ public class disposalDAO {
 
 		return list;
 	}
-	public List<disposalVO> selectDailyDisposalByType(String bId, String startDate, String endDate) throws ClassNotFoundException{
-		String sql = "SELECTTRUNC(d.disposalDate) AS disposalDay,SUM(CASE WHEN f.foodMaterialType = '째챠횄쩌' THEN 1 ELSE 0 END) AS solidCount,SUM(CASE WHEN f.foodMaterialType = '쩐횞횄쩌' THEN 1 ELSE 0 END) AS liquidCountFROM DISPOSALS d JOIN FOODM fON d.foodMaterial_Id = f.foodMaterial_IdWHERE d.bId = ?AND d.disposalDate >= TO_DATE(?, 'YYYY-MM-DD')AND d.disposalDate < TO_DATE(?, 'YYYY-MM-DD')GROUP BY TRUNC(d.disposalDate)ORDER BY disposalDay";
+	// 12. 날짜별 폐기량 유형
+	public List<disposalVO> selectDailyDisposalByType(String bId, String startDate, String endDate)
+	        throws ClassNotFoundException {
 
-		List<disposalVO> list = new ArrayList<>();
+	    String sql =
+	        "SELECT " +
+	        "    TRUNC(d.disposalDate) AS disposalDay, " +
+	        "    f.foodMaterialType, " +
+	        "    COUNT(d.disposal_Id) AS disposalCount, " +
+	        "    SUM(d.disposalPrice) AS totalDisposalPrice " +
+	        "FROM DISPOSALS d " +
+	        "JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id " +
+	        "WHERE f.bId = ? " +
+	        "AND d.disposalDate >= TO_DATE(?, 'YYYY-MM-DD') " +
+	        "AND d.disposalDate < TO_DATE(?, 'YYYY-MM-DD') " +
+	        "GROUP BY TRUNC(d.disposalDate), f.foodMaterialType " +
+	        "ORDER BY disposalDay, f.foodMaterialType";
 
-		try (
-				Connection conn = DBCP.getConnection();
-				PreparedStatement stmt = conn.prepareStatement(sql)
-				) {
-			stmt.setString(1, bId);
-			stmt.setString(2, startDate);
-			stmt.setString(3, endDate);
+	    List<disposalVO> list = new ArrayList<>();
 
-			try (ResultSet rs = stmt.executeQuery()) {
-				while (rs.next()) {
-					disposalVO vo = new disposalVO();
+	    try (
+	        Connection conn = DBCP.getConnection();
+	        PreparedStatement stmt = conn.prepareStatement(sql)
+	    ) {
+	        stmt.setString(1, bId);
+	        stmt.setString(2, startDate);
+	        stmt.setString(3, endDate);
 
-					vo.setDisposalDay(rs.getDate("disposalDay"));
-					vo.setSolidCount(rs.getInt("solidCount"));
-					vo.setLiquidCount(rs.getInt("liquidCount"));
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            while (rs.next()) {
+	                disposalVO vo = new disposalVO();
 
-					list.add(vo);
-				}
-			}
+	                vo.setDisposalDay(rs.getDate("disposalDay"));
+	                vo.setFoodMaterialType(rs.getString("foodMaterialType"));
+	                vo.setDisposalCount(rs.getInt("disposalCount"));
+	                vo.setTotalDisposalPrice(rs.getInt("totalDisposalPrice"));
 
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
+	                list.add(vo);
+	            }
+	        }
 
-		return list;
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return list;
 	}
 }
 
