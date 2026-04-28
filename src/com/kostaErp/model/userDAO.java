@@ -1,6 +1,7 @@
 package com.kostaErp.model;
 
 import java.sql.Connection;
+
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,9 +10,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class userDAO {
+	
 	public userDAO(){}
 
-	// 1. È¸¿ø°¡ÀÔ
 	public int register(String bId, String name, String phone, 
 			String email, String storeName, String storeType, String storeCategory, 
 			String pw, String signDate, String agreementDate, String marketingDate){
@@ -46,7 +47,6 @@ public class userDAO {
 		return result;
 	}
 
-	// 2. ·Î±×ÀÎ
 	public userInfoVO checkMemberByVO(String bId, String name, String pw) throws ClassNotFoundException {
 		String sql = "SELECT bId, name, pw FROM USERINFO " +
 				"WHERE bId = ? AND name = ? AND pw = ?";
@@ -68,12 +68,11 @@ public class userDAO {
 				}
 			}
 		} catch (SQLException e) {
-			System.err.println("·Î±×ÀÎ Ã¼Å© Áß DB ¿¡·¯: " + e.getMessage());
+			System.err.println("ï¿½Î±ï¿½ï¿½ï¿½ Ã¼Å© ï¿½ï¿½ DB ï¿½ï¿½ï¿½ï¿½: " + e.getMessage());
 		}
 		return null;
 	}
-
-	// 3. ºñ¹Ð¹øÈ£ º¯°æ 
+ 
 	public int setPw(String pw, String bId, String name, String phone){
 
 		int result = 0;
@@ -97,7 +96,6 @@ public class userDAO {
 		return result;
 	}
 
-	// 4. ¸¶ÄÉÆÃ µ¿ÀÇ
 	public List<userInfoVO> getMarketingMembers() throws ClassNotFoundException {
 		String sql = "SELECT bid, name, phone, email, marketingDate FROM USERINFO WHERE marketingDate IS NOT NULL";
 		List<userInfoVO> list = new ArrayList<>();
