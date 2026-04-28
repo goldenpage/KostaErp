@@ -1,6 +1,5 @@
 package com.kostaErp.model;
 
-import java.sql.Date;
 
 public class disposalVO {
 	private String disposalId;
