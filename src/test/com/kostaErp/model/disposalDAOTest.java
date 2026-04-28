@@ -1,5 +1,6 @@
 package test.com.kostaErp.model;
 
+
 import com.kostaErp.model.disposalDAO;
 import com.kostaErp.model.disposalVO;
 
@@ -13,21 +14,21 @@ import org.junit.Test;
 public class disposalDAOTest {
 	private disposalDAO dao;
 
-    //Å×½ºÆ® Àü¿¡ DAO »ý¼º
+    //ï¿½×½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ DAO ï¿½ï¿½ï¿½ï¿½
     @Before
     public void setUp() {
         dao = new disposalDAO();
-        System.out.println("Å×½ºÆ® ½ÃÀÛ");
+        System.out.println("ï¿½×½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½");
     }
     
-    //Å×½ºÆ® Á¾·á ÈÄ ½ÇÇà
+    //ï¿½×½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     @After
     public void tearDown() {
         dao = null;
-        System.out.println("Å×½ºÆ® Á¾·á");
+        System.out.println("ï¿½×½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½");
     }
 
-    //1. Æó±â Ç°¸ñ Á¶È¸ Å×½ºÆ®
+    //1. ï¿½ï¿½ï¿½ Ç°ï¿½ï¿½ ï¿½ï¿½È¸ ï¿½×½ï¿½Æ®
     @Test
     public void getDisposalsTest() {
         List<disposalVO> list = dao.getDisposals();
@@ -38,39 +39,39 @@ public class disposalDAOTest {
         }
     }
     
-    //2. Æó±â ½ÄÀÚÀç¸í Á¶È¸ Å×½ºÆ®
+    //2. ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸ ï¿½×½ï¿½Æ®
     //@Test
     public void getFoodMaterialNamesTest() { 
     	List<String> list = dao.getFoodMaterialNames(); 
     	assertNotNull(list); assertTrue(list.size() > 0); 
     	for (String name : list) { 
-    		System.out.println("½ÄÀÚÀç¸í : " + name); 
+    		System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ : " + name); 
     		} 
     }
     
-    //3. Ä«Å×°í¸® Á¶È¸ Å×½ºÆ®
+    //3. Ä«ï¿½×°ï¿½ï¿½ï¿½ ï¿½ï¿½È¸ ï¿½×½ï¿½Æ®
     //@Test 
     public void getCategoriesTest() { 
     	List<String> list = dao.getCategories(); 
     	assertNotNull(list); 
     	assertTrue(list.size() > 0); 
     	for (String category : list) { 
-    		System.out.println("Ä«Å×°í¸®: " + category); 
+    		System.out.println("Ä«ï¿½×°ï¿½ï¿½ï¿½: " + category); 
     		} 
     }
     
-    //4. Æó±â»çÀ¯ Á¶È¸ Å×½ºÆ® 
+    //4. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½È¸ ï¿½×½ï¿½Æ® 
     //@Test 
     public void getReasonsTest() { 
     	List<String> list = dao.getReasons(); 
     	assertNotNull(list); 
     	assertTrue(list.size() > 0); 
     	for (String reason : list) { 
-    		System.out.println("»çÀ¯: " + reason); 
+    		System.out.println("ï¿½ï¿½ï¿½ï¿½: " + reason); 
     		}
     }
     
-    //5. ÆäÀÌÂ¡ Å×½ºÆ® 
+    //5. ï¿½ï¿½ï¿½ï¿½Â¡ ï¿½×½ï¿½Æ® 
     //@Test 
     public void getDisposalsPagingTest() { 
     	List<disposalVO> list = dao.getDisposalsPaging(1, 4); 
@@ -80,18 +81,19 @@ public class disposalDAOTest {
     		System.out.println("ID: " + vo.getDisposalId()); 
     		} 
    	}
-    //6. Æó±â»çÀ¯ ¼öÁ¤ Å×½ºÆ®
+    //6. ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½×½ï¿½Æ®
     	//@Test 
     	public void updateReasonTest() { 
     		String disposalId = "DIS001"; 
     		String before = "D"; 
     		String after = "B"; 
-    		//º¯°æ 
+    		//ï¿½ï¿½ï¿½ï¿½ 
     		boolean result = dao.updateReason(disposalId, after); 
     		assertTrue(result); 
-    		System.out.println("¼öÁ¤ ¼º°ø"); 
-    		//´Ù½Ã ¿øº¹ (Å×½ºÆ® µ¥ÀÌÅÍ À¯Áö) 
+    		System.out.println("ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½"); 
+    		//ï¿½Ù½ï¿½ ï¿½ï¿½ï¿½ï¿½ (ï¿½×½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½) 
     		dao.updateReason(disposalId, before); 
     		}
 }
+
 

@@ -1,6 +1,7 @@
 package com.kostaErp.model;
 
 import java.sql.Connection;
+
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -9,9 +10,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class userDAO {
+	
 	public userDAO(){}
 
-	// 1. È¸¿ø°¡ÀÔ
+	// 1. íšŒì›ê°€ì…
 	public int register(String bId, String name, String phone, 
 			String email, String storeName, String storeType, String storeCategory, 
 			String pw, String signDate, String agreementDate, String marketingDate){
@@ -46,7 +48,7 @@ public class userDAO {
 		return result;
 	}
 
-	// 2. ·Î±×ÀÎ
+	// 2. ë¡œê·¸ì¸
 	public userInfoVO checkMemberByVO(String bId, String name, String pw) throws ClassNotFoundException {
 		String sql = "SELECT bId, name, pw FROM USERINFO " +
 				"WHERE bId = ? AND name = ? AND pw = ?";
@@ -68,12 +70,12 @@ public class userDAO {
 				}
 			}
 		} catch (SQLException e) {
-			System.err.println("·Î±×ÀÎ Ã¼Å© Áß DB ¿¡·¯: " + e.getMessage());
+			System.err.println("ë¡œê·¸ì¸ ì²´í¬ ì¤‘ DB ì—ëŸ¬: " + e.getMessage());
 		}
 		return null;
 	}
 
-	// 3. ºñ¹Ğ¹øÈ£ º¯°æ 
+	// 3. ë¹„ë°€ë²ˆí˜¸ ë³€ê²½ 
 	public int setPw(String pw, String bId, String name, String phone){
 
 		int result = 0;
@@ -97,7 +99,7 @@ public class userDAO {
 		return result;
 	}
 
-	// 4. ¸¶ÄÉÆÃ µ¿ÀÇ
+	// 4. ë§ˆì¼€íŒ… ë™ì˜
 	public List<userInfoVO> getMarketingMembers() throws ClassNotFoundException {
 		String sql = "SELECT bid, name, phone, email, marketingDate FROM USERINFO WHERE marketingDate IS NOT NULL";
 		List<userInfoVO> list = new ArrayList<>();
