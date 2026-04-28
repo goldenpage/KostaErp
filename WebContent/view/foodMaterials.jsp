@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="kr">
 
@@ -79,20 +81,20 @@
         <section class="sideMenu">
             <ul>
                 <li>메뉴조회</li>
-                <li><button type="button" onclick="location.href='controller?cmd=foodMaterialInputUIAction'">식자재입력</button></li>
-                <li><button type="button" onclick="location.href='controller?cmd=menuInputUIAction'">메뉴입력</button></li>
-                <li><button type="button" onclick="location.href='controller?cmd=foodMaterialUIAction'">식자재조회</button></li>
-                <li><button type="button" onclick="location.href='controller?cmd=menuDetailUIAction'">메뉴상세조회</button></li>
+                <li><button type="button" onclick="location.href='controller?cmd=foodMaterialInputUI'">식자재입력</button></li>
+                <li><button type="button" onclick="location.href='controller?cmd=menuInputUI'">메뉴입력</button></li>
+                <li><button type="button" onclick="location.href='controller?cmd=foodMaterialUI'">식자재조회</button></li>
+                <li><button type="button" onclick="location.href='controller?cmd=menuDetailUI'">메뉴상세조회</button></li>
             </ul>
             <ul>
                 <li>폐기관리</li>
-                <li><button type="button" onclick="location.href='controller?cmd=disposalUIAction'">폐기품목확인</button></li>
+                <li><button type="button" onclick="location.href='controller?cmd=disposalUI'">폐기품목확인</button></li>
             </ul>
             <ul>
                 <li>통계</li>
-                <li><button type="button" onclick="location.href='controller?cmd=revenueUIAction'">매출통계</button></li>
-                <li><button type="button" onclick="location.href='controller?cmd=expendStatUIAction'">지출통계</button></li>
-                <li><button type="button" onclick="location.href='controller?cmd=disposalStatUIAction'">폐기통계</button></li>
+                <li><button type="button" onclick="location.href='controller?cmd=revenueStatisticsUI'">매출통계</button></li>
+                <li><button type="button" onclick="location.href='controller?cmd=expendStatisticsUI'">지출통계</button></li>
+                <li><button type="button" onclick="location.href='controller?cmd=disposalStatisticsUI'">폐기통계</button></li>
             </ul>
         </section>
 
@@ -266,3 +268,4 @@
 </body>
 
 </html>
+

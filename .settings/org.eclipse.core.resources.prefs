@@ -2,5 +2,7 @@ eclipse.preferences.version=1
 encoding//src/com/kostaErp/model/disposalDAO.java=UTF-8
 encoding//src/com/kostaErp/model/foodMaterialDAO.java=UTF-8
 encoding//src/com/kostaErp/model/menuDAO.java=UTF-8
+encoding/<project>=UTF-8
 encoding//src/test/com/kostaErp/model/DAOTest.java=UTF-8
 encoding//src/test/com/kostaErp/model/disposalDAOTest.java=UTF-8
+

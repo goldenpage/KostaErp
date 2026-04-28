@@ -13,7 +13,6 @@ public class foodMaterialDAO {
 	
 	public foodMaterialDAO(){}
 
-	// 1. 쩍횆�횣�챌 �횚쨌횂
 	public int addFoodMaterial(String foodMaterialName, String foodCategory_Id, int foodMaterialCount, 
 			int foodMaterialCountAll, int foodMaterialPrice, String vender, String foodMaterialType, 
 			String incomeDate, String expirationDate, String bId){
@@ -47,28 +46,6 @@ public class foodMaterialDAO {
 		return result;
 	}
 
-
-	// 2. 횆짬횇횞째챠쨍짰 횄횩째징
-	public int addFoodCategory(String foodCategoryId, String foodCategory){
-		int result = 0;
-		String sql = "INSERT INTO FOODC(foodCategory_Id, foodCategory) VALUES(?, ?)";
-
-		try{
-			Connection conn = DBCP.getConnection();
-			PreparedStatement stmt = conn.prepareStatement(sql);
-
-			stmt.setString(1, foodCategoryId);
-			stmt.setString(2, foodCategory);
-
-			result = stmt.executeUpdate();
-
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return result;
-	}
-
-	// 3. 횆짬횇횞째챠쨍짰 쨩챔횁짝
 	public int deleteFoodCategory(String foodCategory) {
 		int result = 0;
 		String sql = "DELETE FROM FOODC WHERE foodCategory = ?";
@@ -87,7 +64,6 @@ public class foodMaterialDAO {
 		return result;
 	}
 
-	// 4. 쩍횆�횣�챌쨍챠�쨍쨌횓 째횏쨩철
 	public List<foodMaterialVO> getFoodMaterialByName(String foodMaterialName) {
 		List<foodMaterialVO> list = new ArrayList<>();
 		String sql = "SELECT foodMaterialName, foodCategory_Id, vender FROM FOODM "
