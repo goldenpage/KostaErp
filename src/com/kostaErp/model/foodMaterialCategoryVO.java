@@ -13,9 +13,6 @@ public class foodMaterialCategoryVO {
     }
     
 
-    private String foodCategoryId;
-    private String foodCategory;
-
     public String getFoodCategoryId() {
         return foodCategoryId;
     }
