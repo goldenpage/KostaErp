@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="kr">
 
@@ -9,7 +11,7 @@
 
 <body>
 	<h1>회원가입</h1>
-	<form method="post" action="controller?cmd=addMemberAction">
+	<form method="post" action="controller?cmd=addUserAction">
 		<div>
 			<div>사업자번호</div>
 			<input type="text" value="" placeholder="사업자번호">
@@ -65,7 +67,7 @@
 		</div>
 		<input type="submit" value="회원가입">
 	</form>
-	
+
 	<form method="post" action="controller?cmd=loginUI">
 		<input type="submit" value="취소">
 	</form>

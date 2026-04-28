@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -20,12 +22,12 @@
 		</div>
 		<input type="submit" value="로그인">
 	</form>
-	
-	<form method="post" action="controller?cmd=register">
+
+	<form method="post" action="controller?cmd=addUserUI">
 		<input type="submit" value="회원가입">
 	</form>
-	
-	<form method="post" action="controller?cmd=searchPw">
+
+	<form method="post" action="controller?cmd=searchPwUI">
 		<input type="submit" value="비밀번호찾기">
 	</form>
 </body>

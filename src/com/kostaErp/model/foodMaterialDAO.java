@@ -10,7 +10,6 @@ import java.util.List;
 public class foodMaterialDAO {
 	public foodMaterialDAO(){}
 	
-	// 1. 식자재 입력
 	public int addFoodMaterial(String foodMaterialName, String foodCategory_Id, int foodMaterialCount, 
 			int foodMaterialCountAll, int foodMaterialPrice, String vender, String foodMaterialType, 
 			String incomeDate, String expirationDate, String bId){
@@ -44,8 +43,6 @@ public class foodMaterialDAO {
 		return result;
 	}
 	
-
-    // 2. 카테고리 추가
     public int addFoodCategory(String foodCategoryId, String foodCategory){
         int result = 0;
         String sql = "INSERT INTO FOODC(foodCategory_Id, foodCategory) VALUES(?, ?)";
@@ -65,7 +62,6 @@ public class foodMaterialDAO {
         return result;
     }
 
-    // 3. 카테고리 삭제
     public int deleteFoodCategory(String foodCategory) {
         int result = 0;
         String sql = "DELETE FROM FOODC WHERE foodCategory = ?";
@@ -84,7 +80,6 @@ public class foodMaterialDAO {
         return result;
     }
 
-    // 4. 식자재명으로 검색
     public List<foodMaterialVO> getFoodMaterialByName(String foodMaterialName) {
         List<foodMaterialVO> list = new ArrayList<>();
         String sql = "SELECT foodMaterialName, foodCategory_Id, vender FROM FOODM "
