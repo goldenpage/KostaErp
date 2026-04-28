@@ -14,6 +14,14 @@ public class saleVO {
 	private int ranking;
 	private int totalSaleCount;
 	private int totalSalesAmount;
+	
+	public saleVO(){}
+
+	public saleVO(int saleMenuCount, String menuId, String revenueId){
+		this.saleMenuCount = saleMenuCount; //String 인지 int인지 체크
+		this.menuId = menuId;
+		this.revenueId = revenueId; 
+	}
 
 	public String getSaleId() {
 		return saleId;
@@ -83,22 +91,9 @@ public class saleVO {
 	}
 
 
+	
 
-
-
-	private String saleMenuCount;
-	private String menuId;
-	private String revenueId;
-
-	public saleVO(){}
-
-	public saleVO(String saleMenuCount, String menuId, String revenueId){
-		this.saleMenuCount = saleMenuCount;
-		this.menuId = menuId;
-		this.revenueId = revenueId; 
-	}
-
-	public String getSaleId(){ return saleId; }
+	
 	public String getSalMenuCount(){ return saleId; }
 	public String getmenuId(){ return saleId; }
 	public String getrevenueId(){ return saleId; }

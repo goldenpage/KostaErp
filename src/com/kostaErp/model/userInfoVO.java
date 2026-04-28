@@ -25,8 +25,6 @@ public class userInfoVO {
 		this.phone = phone;
 		this.email = email;
 		this.storeName = storeName;
-		this.storeType = storeType;
-		this.storeCategory = storeCategory;
 		this.pw = pw;
 		this.signDate = signDate;
 		this.agreementDate = agreementDate;
@@ -34,9 +32,7 @@ public class userInfoVO {
 
 	}
 
-	public void setMarketingDate(Date marketingDate) {
-		MarketingDate = marketingDate;
-	}
+
 	public String getPw() {
 		return pw;
 	}
@@ -77,9 +73,6 @@ public class userInfoVO {
 		return MarketingDate;
 	}
 
-
-	public String getStoreType() {return storeType;}
-	public String getStoreCategory() {return storeCategory;}
 
 	public Date getSignDate() {return signDate;}
 	public Date getAgreementDate() {return agreementDate;}

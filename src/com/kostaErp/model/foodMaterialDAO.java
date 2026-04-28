@@ -1,12 +1,13 @@
 package com.kostaErp.model;
 
 import java.sql.Connection;
-<<<<<<< HEAD
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Date;
 
 public class foodMaterialDAO {
 
@@ -83,14 +84,9 @@ public class foodMaterialDAO {
 		return list;
 	}
 
-}
-import java.sql.Date;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.List;
 
-public class foodMaterialDAO {
+
+
 	public foodMaterialDAO(){}
 
 	// 1. 쩍횆�횣�챌 �횚쨌횂
@@ -394,3 +390,4 @@ public class foodMaterialDAO {
 				"WHERE rn BETWEEN ? AND ?";
 	}
 }
+

@@ -9,14 +9,11 @@ public class disposalVO {
 	private String disposalDate;
 	private String foodMaterialId;
 	private String reasonId;
-	
 	private String foodMaterialName;
     private int disposalCount;
     private int totalDisposalPrice;
-
     private String reason;
     private double reasonRatio;
-
     private Date disposalDay;
     private int solidCount;
     private int liquidCount;
@@ -114,8 +111,5 @@ public class disposalVO {
 		this.reasonId = reasonId;
 	}
 	
-	
-	
-
 	
 }
