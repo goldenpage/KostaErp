@@ -19,5 +19,5 @@ public class DBCP {
 		String uri = "jdbc:oracle:thin:@192.168.0.234:1521:xe";
 		return  DriverManager.getConnection(uri, "kosta", "0707");
 		
-	} 
+	}
 }
