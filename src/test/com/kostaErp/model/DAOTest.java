@@ -190,7 +190,7 @@ public class DAOTest {
 	}
 
 	@Test
-	public void 마케팅테스트2() throws ClassNotFoundException {
+	public void 마케팅테스트() throws ClassNotFoundException {
 		foodMaterialDAO dao = new foodMaterialDAO();
 		List<userInfoVO> list = dao.getMarketingMembers();
 		assertNotNull("조회된 리스트가 null입니다.", list);

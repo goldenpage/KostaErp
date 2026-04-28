@@ -13,7 +13,7 @@ public class userDAO {
 	
 	public userDAO(){}
 
-	// 1. íšŒì›ê°€ì…
+	// 1. È¸¿ø°¡ÀÔ
 	public int register(String bId, String name, String phone, 
 			String email, String storeName, String storeType, String storeCategory, 
 			String pw, String signDate, String agreementDate, String marketingDate){
@@ -48,7 +48,7 @@ public class userDAO {
 		return result;
 	}
 
-	// 2. ë¡œê·¸ì¸
+	// 2. ·Î±×ÀÎ
 	public userInfoVO checkMemberByVO(String bId, String name, String pw) throws ClassNotFoundException {
 		String sql = "SELECT bId, name, pw FROM USERINFO " +
 				"WHERE bId = ? AND name = ? AND pw = ?";
@@ -70,12 +70,12 @@ public class userDAO {
 				}
 			}
 		} catch (SQLException e) {
-			System.err.println("ë¡œê·¸ì¸ ì²´í¬ ì¤‘ DB ì—ëŸ¬: " + e.getMessage());
+			System.err.println("·Î±×ÀÎ Ã¼Å© Áß DB ¿¡·¯: " + e.getMessage());
 		}
 		return null;
 	}
 
-	// 3. ë¹„ë°€ë²ˆí˜¸ ë³€ê²½ 
+	// 3. ºñ¹Ğ¹øÈ£ º¯°æ 
 	public int setPw(String pw, String bId, String name, String phone){
 
 		int result = 0;
@@ -99,7 +99,7 @@ public class userDAO {
 		return result;
 	}
 
-	// 4. ë§ˆì¼€íŒ… ë™ì˜
+	// 4. ¸¶ÄÉÆÃ µ¿ÀÇ
 	public List<userInfoVO> getMarketingMembers() throws ClassNotFoundException {
 		String sql = "SELECT bid, name, phone, email, marketingDate FROM USERINFO WHERE marketingDate IS NOT NULL";
 		List<userInfoVO> list = new ArrayList<>();
@@ -114,7 +114,7 @@ public class userDAO {
 				member.setName(rs.getString("name"));
 				member.setPhone(rs.getString("phone"));
 				member.setEmail(rs.getString("email"));
-				member.setMarketingDate(rs.getDate("marketingDate")); 
+				member.setMarketingDate(rs.getString("marketingDate")); 
 
 				list.add(member);
 			}
@@ -122,6 +122,11 @@ public class userDAO {
 			e.printStackTrace();
 		}
 		return list;
+	}
+
+	public boolean addUser(String parameter, String parameter2, String parameter3) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
