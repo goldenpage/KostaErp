@@ -114,7 +114,7 @@ public class userDAO {
 				member.setName(rs.getString("name"));
 				member.setPhone(rs.getString("phone"));
 				member.setEmail(rs.getString("email"));
-				member.setMarketingDate(rs.getDate("marketingDate")); 
+				member.setMarketingDate(rs.getString("marketingDate")); 
 
 				list.add(member);
 			}
