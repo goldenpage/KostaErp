@@ -110,7 +110,7 @@ public class userDAO {
 				member.setName(rs.getString("name"));
 				member.setPhone(rs.getString("phone"));
 				member.setEmail(rs.getString("email"));
-				member.setMarketingDate(rs.getDate("marketingDate")); 
+				member.setMarketingDate(rs.getString("marketingDate")); 
 
 				list.add(member);
 			}
@@ -118,6 +118,11 @@ public class userDAO {
 			e.printStackTrace();
 		}
 		return list;
+	}
+
+	public boolean addUser(String parameter, String parameter2, String parameter3) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
