@@ -6,135 +6,131 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
-
-public class disposalDAO {	
-	//1. Æó±â Ç°¸ñ Á¶È¸
-	public List<disposalVO> getDisposals() {
-        List<disposalVO> list = new ArrayList<>();
-        String sql = "SELECT disposal_Id, disposalCountAll, disposalPrice, disposalDate, reason_Id, foodMaterial_id FROM DISPOSALS";
-        try (Connection conn = DBCP.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-
-        	while (rs.next()) {
-        	    disposalVO vo = new disposalVO();
-        	    vo.setDisposalId(rs.getString("disposal_Id"));
-        	    vo.setDisposalCountAll(rs.getInt("disposalCountAll"));
-        	    vo.setDisposalPrice(rs.getInt("disposalPrice"));
-        	    vo.setDisposalDate(rs.getDate("disposalDate"));
-        	    vo.setReasonId(rs.getString("reason_Id"));
-        	    vo.setFoodMaterialId(rs.getString("foodMaterial_id"));
-        	    list.add(vo);
-        	}
-        	rs.close();
-        	pstmt.close();
-        	conn.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
-	
-	//2. Æó±â ½ÄÀÚÀç¸í Á¶È¸
-	public List<String> getFoodMaterialNames() {
-        List<String> list = new ArrayList<>();
-        String sql = "SELECT f.foodMaterialName FROM DISPOSALS d JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id";
-        try (Connection conn = DBCP.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-            while (rs.next()) {
-                list.add(rs.getString("foodMaterialName"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
-	
-	// 3. Æó±â ½ÄÀÚÀç Ä«Å×°í¸® Á¶È¸
-    public List<String> getCategories() {
-        List<String> list = new ArrayList<>();
-        String sql = "SELECT fc.foodCategory FROM DISPOSALS d JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id JOIN FOODC fc ON f.foodCategory_Id = fc.foodCategory_Id";
-
-        try (Connection conn = DBCP.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-            while (rs.next()) {
-                list.add(rs.getString("foodCategory"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
-
-    //4. Æó±â»çÀ¯ Á¶È¸
-    public List<String> getReasons() {
-        List<String> list = new ArrayList<>();
-        String sql = "SELECT reason FROM REASON";
-        try (Connection conn = DBCP.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql);
-             ResultSet rs = pstmt.executeQuery()) {
-            while (rs.next()) {
-                list.add(rs.getString("reason"));
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
-
-    //5. Æó±âÇ°¸ñ ÆäÀÌÁö ÀÌµ¿ (ÆäÀÌÂ¡)
-    public List<disposalVO> getDisposalsPaging(int start, int end) {
-        List<disposalVO> list = new ArrayList<>();
-        String sql = "SELECT disposal_Id, disposalCountAll, disposalPrice, disposalDate, reason_Id, foodMaterial_id FROM (" +
-                " SELECT d.disposal_Id, d.disposalCountAll, d.disposalPrice, d.disposalDate, d.reason_Id, d.foodMaterial_id," +
-                " ROW_NUMBER() OVER (ORDER BY d.disposal_Id DESC) AS rn" +
-                " FROM DISPOSALS d" +
-                ") WHERE rn BETWEEN ? AND ?";
-        try (Connection conn = DBCP.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setInt(1, start);
-            pstmt.setInt(2, end);
-            ResultSet rs = pstmt.executeQuery();
-            while (rs.next()) {
-                disposalVO vo = new disposalVO();
-                vo.setDisposalId(rs.getString("disposal_Id"));
-                vo.setDisposalCountAll(rs.getInt("disposalCountAll"));
-                vo.setDisposalPrice(rs.getInt("disposalPrice"));
-                vo.setDisposalDate(rs.getDate("disposalDate"));
-                vo.setReasonId(rs.getString("reason_Id"));
-                vo.setFoodMaterialId(rs.getString("foodMaterial_id"));
-                list.add(vo);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return list;
-    }
-
-    //6. Æó±â»çÀ¯ ¼öÁ¤
-    public boolean updateReason(String disposalId, String reasonId) {
-        String sql = "UPDATE DISPOSALS SET reason_Id = ? WHERE disposal_Id = ?";
-        try (Connection conn = DBCP.getConnection();
-             PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, reasonId);
-            pstmt.setString(2, disposalId);
-            return pstmt.executeUpdate() > 0;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-}
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class disposalDAO {
+public class disposalDAO {	
+	//1. 횈처짹창 횉째쨍챰 횁쨋횊쨍
+	public List<disposalVO> getDisposals() {
+		List<disposalVO> list = new ArrayList<>();
+		String sql = "SELECT disposal_Id, disposalCountAll, disposalPrice, disposalDate, reason_Id, foodMaterial_id FROM DISPOSALS";
+		try (Connection conn = DBCP.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				ResultSet rs = pstmt.executeQuery()) {
+
+			while (rs.next()) {
+				disposalVO vo = new disposalVO();
+				vo.setDisposalId(rs.getString("disposal_Id"));
+				vo.setDisposalCountAll(rs.getInt("disposalCountAll"));
+				vo.setDisposalPrice(rs.getInt("disposalPrice"));
+				vo.setDisposalDate(rs.getString("disposalDate"));
+				vo.setReasonId(rs.getString("reason_Id"));
+				vo.setFoodMaterialId(rs.getString("foodMaterial_id"));
+				list.add(vo);
+			}
+			rs.close();
+			pstmt.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	//2. 횈처짹창 쩍횆�횣�챌쨍챠 횁쨋횊쨍
+	public List<String> getFoodMaterialNames() {
+		List<String> list = new ArrayList<>();
+		String sql = "SELECT f.foodMaterialName FROM DISPOSALS d JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id";
+		try (Connection conn = DBCP.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				ResultSet rs = pstmt.executeQuery()) {
+			while (rs.next()) {
+				list.add(rs.getString("foodMaterialName"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	// 3. 횈처짹창 쩍횆�횣�챌 횆짬횇횞째챠쨍짰 횁쨋횊쨍
+	public List<String> getCategories() {
+		List<String> list = new ArrayList<>();
+		String sql = "SELECT fc.foodCategory FROM DISPOSALS d JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id JOIN FOODC fc ON f.foodCategory_Id = fc.foodCategory_Id";
+
+		try (Connection conn = DBCP.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				ResultSet rs = pstmt.executeQuery()) {
+			while (rs.next()) {
+				list.add(rs.getString("foodCategory"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	//4. 횈처짹창쨩챌�짱 횁쨋횊쨍
+	public List<String> getReasons() {
+		List<String> list = new ArrayList<>();
+		String sql = "SELECT reason FROM REASON";
+		try (Connection conn = DBCP.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql);
+				ResultSet rs = pstmt.executeQuery()) {
+			while (rs.next()) {
+				list.add(rs.getString("reason"));
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	//5. 횈처짹창횉째쨍챰 횈채�횑횁철 �횑쨉쩔 (횈채�횑횂징)
+	public List<disposalVO> getDisposalsPaging(int start, int end) {
+		List<disposalVO> list = new ArrayList<>();
+		String sql = "SELECT disposal_Id, disposalCountAll, disposalPrice, disposalDate, reason_Id, foodMaterial_id FROM (" +
+				" SELECT d.disposal_Id, d.disposalCountAll, d.disposalPrice, d.disposalDate, d.reason_Id, d.foodMaterial_id," +
+				" ROW_NUMBER() OVER (ORDER BY d.disposal_Id DESC) AS rn" +
+				" FROM DISPOSALS d" +
+				") WHERE rn BETWEEN ? AND ?";
+		try (Connection conn = DBCP.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setInt(1, start);
+			pstmt.setInt(2, end);
+			ResultSet rs = pstmt.executeQuery();
+			while (rs.next()) {
+				disposalVO vo = new disposalVO();
+				vo.setDisposalId(rs.getString("disposal_Id"));
+				vo.setDisposalCountAll(rs.getInt("disposalCountAll"));
+				vo.setDisposalPrice(rs.getInt("disposalPrice"));
+				vo.setDisposalDate(rs.getString("disposalDate"));
+				vo.setReasonId(rs.getString("reason_Id"));
+				vo.setFoodMaterialId(rs.getString("foodMaterial_id"));
+				list.add(vo);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	//6. 횈처짹창쨩챌�짱 쩌철횁짚
+	public boolean updateReason(String disposalId, String reasonId) {
+		String sql = "UPDATE DISPOSALS SET reason_Id = ? WHERE disposal_Id = ?";
+		try (Connection conn = DBCP.getConnection();
+				PreparedStatement pstmt = conn.prepareStatement(sql)) {
+			pstmt.setString(1, reasonId);
+			pstmt.setString(2, disposalId);
+			return pstmt.executeUpdate() > 0;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
 
 	public double selectDisposalRate(String bId, String startDate, String endDate) throws ClassNotFoundException{
 		String sql = "ROUND((SELECT NVL(SUM(d.disposalPrice), 0)FROM DISPOSALS dWHERE d.bId = ?AND d.disposalDate >= TO_DATE(?, 'YYYY-MM-DD')AND d.disposalDate < TO_DATE(?, 'YYYY-MM-DD'))* 100/NULLIF((SELECT NVL(SUM(f.foodMaterialPrice * f.foodMaterialCount), 0)FROM FOODM fWHERE f.bId = ?AND f.incomeDate >= TO_DATE(?, 'YYYY-MM-DD')AND f.incomeDate < TO_DATE(?, 'YYYY-MM-DD')),0),2) AS disposalRateFROM dual";
@@ -285,7 +281,7 @@ public class disposalDAO {
 		return list;
 	}
 	public List<disposalVO> selectDailyDisposalByType(String bId, String startDate, String endDate) throws ClassNotFoundException{
-		String sql = "SELECTTRUNC(d.disposalDate) AS disposalDay,SUM(CASE WHEN f.foodMaterialType = '°íÃ¼' THEN 1 ELSE 0 END) AS solidCount,SUM(CASE WHEN f.foodMaterialType = '¾×Ã¼' THEN 1 ELSE 0 END) AS liquidCountFROM DISPOSALS d JOIN FOODM fON d.foodMaterial_Id = f.foodMaterial_IdWHERE d.bId = ?AND d.disposalDate >= TO_DATE(?, 'YYYY-MM-DD')AND d.disposalDate < TO_DATE(?, 'YYYY-MM-DD')GROUP BY TRUNC(d.disposalDate)ORDER BY disposalDay";
+		String sql = "SELECTTRUNC(d.disposalDate) AS disposalDay,SUM(CASE WHEN f.foodMaterialType = '째챠횄쩌' THEN 1 ELSE 0 END) AS solidCount,SUM(CASE WHEN f.foodMaterialType = '쩐횞횄쩌' THEN 1 ELSE 0 END) AS liquidCountFROM DISPOSALS d JOIN FOODM fON d.foodMaterial_Id = f.foodMaterial_IdWHERE d.bId = ?AND d.disposalDate >= TO_DATE(?, 'YYYY-MM-DD')AND d.disposalDate < TO_DATE(?, 'YYYY-MM-DD')GROUP BY TRUNC(d.disposalDate)ORDER BY disposalDay";
 
 		List<disposalVO> list = new ArrayList<>();
 
@@ -316,5 +312,6 @@ public class disposalDAO {
 		return list;
 	}
 }
+
 
 
