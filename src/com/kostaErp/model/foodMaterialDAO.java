@@ -3,10 +3,64 @@ package com.kostaErp.model;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.sql.Date;
 
 public class foodMaterialDAO {
+	
+//	public userInfoVO checkMemberByVO(String bId, String name, String pw) throws ClassNotFoundException {
+//	    String sql = "SELECT bId, name, storeName, storeType, pw FROM USERINFO " +
+//	                 "WHERE bId = ? AND name = ? AND pw = ?";
+//	    
+//	    try (Connection conn = DBCP.getConnection();
+//	         PreparedStatement stmt = conn.prepareStatement(sql)) {
+//	        
+//	        stmt.setString(1, bId);
+//	        stmt.setString(2, name);
+//	        stmt.setString(3, pw);
+//
+//	        try (ResultSet rs = stmt.executeQuery()) {
+//	            if (rs.next()) {
+//	                userInfoVO member = new userInfoVO();
+//	                member.setbId(rs.getString("bId"));
+//	                member.setName(rs.getString("name"));
+//	                member.setPw(rs.getString("pw"));
+//	                member.setStoreName(rs.getString("storeName"));
+//	                return member;
+//	            }
+//	        }
+//	    } catch (SQLException e) {
+//	        System.err.println("로그인 체크 중 DB 에러: " + e.getMessage());
+//	    }
+//	    return null;
+//	}
+//
+	public List<userInfoVO> getMarketingMembers() throws ClassNotFoundException {
+	    String sql = "SELECT bid, name, phone, email, marketingDate FROM USERINFO WHERE marketingDate IS NOT NULL";
+	    List<userInfoVO> list = new ArrayList<>();
+
+	    try (Connection conn = DBCP.getConnection();
+	         PreparedStatement stmt = conn.prepareStatement(sql);
+	         ResultSet rs = stmt.executeQuery()) {
+
+	        while (rs.next()) {
+	            userInfoVO member = new userInfoVO();
+	            member.setbId(rs.getString("bid"));
+	            member.setName(rs.getString("name"));
+	            member.setPhone(rs.getString("phone"));
+	            member.setEmail(rs.getString("email"));
+	            member.setMarketingDate(rs.getDate("marketingDate")); 
+	            
+	            list.add(member);
+	        }
+	    } catch (SQLException e) {
+	    	e.printStackTrace();
+	    }
+	    return list;
+	}
+
 
     public int getFoodMaterialCount(String bId) {
         int count = 0;

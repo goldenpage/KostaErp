@@ -95,4 +95,42 @@ public class menuDAO {
 
         return list;
     }
+    public boolean updateFoodMaterialAfterSale(String menuId, int saleCount, String bId) {
+        boolean flag = false;
+
+        String sql =
+            "UPDATE FOODM f " +
+            "SET f.foodMaterialCountAll = f.foodMaterialCountAll - ( " +
+            "    SELECT u.usedCount * ? " +
+            "    FROM USED u " +
+            "    WHERE u.foodMaterial_Id = f.foodMaterial_Id " +
+            "      AND u.menu_Id = ? " +
+            ") " +
+            "WHERE EXISTS ( " +
+            "    SELECT 1 " +
+            "    FROM USED u " +
+            "    WHERE u.foodMaterial_Id = f.foodMaterial_Id " +
+            "      AND u.menu_Id = ? " +
+            ") " +
+            "AND f.bId = ?";
+
+        try {
+        	Connection conn = DBCP.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+
+            stmt.setInt(1, saleCount);
+            stmt.setString(2, menuId);
+            stmt.setString(3, menuId);
+            stmt.setString(4, bId);
+
+            flag = stmt.executeUpdate() > 0;
+
+            stmt.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return flag;
+    }
 }
