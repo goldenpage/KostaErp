@@ -14,6 +14,8 @@ public class foodMaterialVO {
     private Date expirationDate;
     private String foodMaterialType;
     private String bId;
+    private int ranking;
+    private int totalExpense;
 
     public String getFoodMaterialId() {
         return foodMaterialId;
@@ -102,4 +104,23 @@ public class foodMaterialVO {
     public void setbId(String bId) {
         this.bId = bId;
     }
+
+	public int getRanking() {
+		return ranking;
+	}
+
+	public void setRanking(int ranking) {
+		this.ranking = ranking;
+	}
+
+	public int getTotalExpense() {
+		return totalExpense;
+	}
+
+	public void setTotalExpense(int totalExpense) {
+		this.totalExpense = totalExpense;
+	}
+    
+    
+    
 }
