@@ -208,19 +208,21 @@
                         <div class="input_row">
                             <label>식자재명 입력</label>
                             <input type="text" id="inputName" placeholder="단무지">
-                            <label>카테고리 추가</label>
                         </div>
 
 
                         <div class="input_row">
                             <div class="category_buttons">
-                                <button>기타</button>
-
+                            	<label>카테고리 추가</label>
+                            	<input type="text" id="inputCategoryName" placeholder="카테고리 입력">
+                                <button onclick="addCategory()">추가하기</button>
+                                
                             </div>
                         </div>
 
                         <div class="input_row">
                             <div class="category_buttons">
+                            	<div id="buttonArea"></div>
                                 <button>유제품</button>
                                 <button>재료</button>
                                 <button>밀</button>
@@ -250,11 +252,11 @@
                             <input type="number" id="inputPrice" placeholder="10000">
 
                             <label>유통기한</label>
-                            <input type="date" id="inputExpiry" value="2026-04-22">
+                            <input type="date" id="inputExpiry">
                             <span>✓</span>
 
                             <label>매입일자</label>
-                            <input type="date" id="inputPurchase" value="2026-04-10">
+                            <input type="date" id="inputPurchase">
                         </div>
 
 
@@ -265,7 +267,7 @@
 
 
                     <div class="search_section">
-                        <h3>기존 식자재 발견기</h3>
+                        <h3>기존 식자재 찾기</h3>
 
                         <div class="search_row">
                             <label>검색</label>
@@ -274,28 +276,25 @@
                         </div>
 
                         <div class="search_row">
-                            <span>검색된 식자재 입력/취소</span>
+                            <span>기존에 등록된 식자재 목록</span>
                         </div>
 
                         <div>
                             <table class="list_container">
                                 <tr class="list_item">
                                     <th>이름</th>
-                                    <th>용량</th>
                                     <th>카테고리</th>
                                     <th>구입처</th>
                                     <th>추가</th>
                                 </tr>
                                 <tr>
                                     <td>단무지</td>
-                                    <td>300g</td>
                                     <td>가공식품</td>
                                     <td>웰빙푸드</td>
                                     <td><button>⊕</button></td>
                                 </tr>
                                 <tr>
                                     <td>단무지</td>
-                                    <td>400g</td>
                                     <td>가공식품</td>
                                     <td>건강푸드</td>
                                     <td><button>⊕</button></td>
@@ -327,6 +326,9 @@
     </div>
 
     <script>
+    	
+    	document.getElementById('inputExpiry').value = new Date().toISOString().substring(0, 10);
+    	document.getElementById('inputPurchase').value = new Date().toISOString().substring(0, 10);
 
         document.querySelectorAll('.category_buttons button').forEach(btn => {
             btn.addEventListener('click', function () {
@@ -334,6 +336,14 @@
                 this.classList.add('selected');
             });
         });
+        
+        function addCategory(){
+        	const categoryName = document.getElementById("inputCategoryName").value;
+        	const newCategory = document.createElement("button");
+        	newCategory.innerText = categoryName;
+        	const area = document.getElementById("buttonArea");
+        	area.appendChild(newCategory);
+        }
 
         function getSelectedCategory() {
             const selectedBtn = document.querySelector('.category_buttons button.selected');
@@ -352,6 +362,18 @@
                 alert('식자재명을 입력해주세요.');
                 return;
             }
+           	if (!quantity){
+           		alert('전체수량을 입력해주세요.');
+                return;
+           	}
+           	if (!weight){
+           		alert('식자재 용량을 입력해주세요.');
+                return;
+           	}
+           	if (!price){
+           		alert('매입가격을 입력해주세요.');
+                return;
+           	}
 
 
             const table = document.getElementById('registerTable');

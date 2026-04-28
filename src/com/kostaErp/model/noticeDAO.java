@@ -7,27 +7,11 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class noticeDAO {
-	String uri = "jdbc:oracle:thin:@127.0.0.1:1521:xe";
-	String user = "hr";
-	String password = "hr";
-	
-	public noticeDAO() {
-        try {
-            Class.forName("oracle.jdbc.driver.OracleDriver");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-	
-	private Connection getConnection() throws Exception{
-		return DriverManager.getConnection(uri, user, password);
-	}
-	
 	public boolean insertNotice(String noticeId, String disposalId) {
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
-            conn = getConnection();
+        	conn = DBCP.getConnection();
             String sql = "INSERT INTO DISPOSAL_NOTICE (notice_id, disposal_id, notice_date, read_yn) VALUES (?, ?, SYSDATE, 'N')";
 
             pstmt = conn.prepareStatement(sql);
@@ -57,7 +41,7 @@ public class noticeDAO {
         PreparedStatement pstmt = null;
         ResultSet rs = null;
         try {
-            conn = getConnection();
+        	conn = DBCP.getConnection();
             String sql = "SELECT notice_id, disposal_id, notice_date, read_yn FROM DISPOSAL_NOTICE ORDER BY notice_date DESC";
             pstmt = conn.prepareStatement(sql);
             rs = pstmt.executeQuery();
@@ -93,7 +77,7 @@ public class noticeDAO {
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
-            conn = getConnection();
+        	conn = DBCP.getConnection();
             conn.setAutoCommit(false);
             String sql = "DELETE FROM DISPOSAL_NOTICE";
             pstmt = conn.prepareStatement(sql);
@@ -123,7 +107,7 @@ public class noticeDAO {
         Connection conn = null;
         PreparedStatement pstmt = null;
         try {
-            conn = getConnection();
+        	conn = DBCP.getConnection();
             String sql = "UPDATE DISPOSAL_NOTICE SET read_yn = 'Y' WHERE notice_id = ?";
             pstmt = conn.prepareStatement(sql);
             pstmt.setString(1, noticeId);

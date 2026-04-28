@@ -1,6 +1,7 @@
 package com.kostaErp.model;
 
 public class reasonVO {
+<<<<<<< HEAD
 	private String reasonId;
 	private String reason;
 	
@@ -14,4 +15,7 @@ public class reasonVO {
 	public String getReason() {
 		return reason;
 	}
+=======
+
+>>>>>>> refs/remotes/origin/master
 }

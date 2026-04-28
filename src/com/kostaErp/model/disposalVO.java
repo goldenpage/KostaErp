@@ -1,5 +1,6 @@
 package com.kostaErp.model;
 
+
 import java.util.Date;
 
 public class disposalVO {
