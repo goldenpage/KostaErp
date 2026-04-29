@@ -75,7 +75,7 @@ public class userDAO {
    }
 
    // 3. ��й�ȣ ���� 
-   public int setPw1(String pw, String bId, String name, String phone){
+   public int setPw(String pw, String bId, String name, String phone){
 
       int result = 0;
 
@@ -99,7 +99,7 @@ public class userDAO {
    }
 
    // 4. ������ ����
-   public List<userInfoVO> getMarketingMembers1() throws ClassNotFoundException {
+   public List<userInfoVO> getMarketingMembers() throws ClassNotFoundException {
       String sql = "SELECT bid, name, phone, email, marketingDate FROM USERINFO WHERE marketingDate IS NOT NULL";
       List<userInfoVO> list = new ArrayList<>();
 
