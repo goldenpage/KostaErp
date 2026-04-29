@@ -1,12 +1,12 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="kr">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>식자재 확인</title>
+    <title>Document</title>
 
     <style>
         ul {
@@ -18,15 +18,12 @@
             gap: 30px;
             border: 5px solid;
             height: 100vh;
-            min-width: 1000px;
         }
 
         .sideMenu {
             height: 100vh;
             border: 1px solid;
             width: 300px;
-            min-width: 300px;
-            flex-shrink: 0;
         }
 
         .main {
@@ -37,6 +34,7 @@
         .profile {
             display: flex;
             justify-content: end;
+
         }
 
         .content_item {
@@ -54,15 +52,20 @@
         }
 
         .list_container {
-            width: 100%;
+            display: flex;
+            justify-content: center;
+            height: 100%;
             border: 3px solid red;
             font-size: 14px;
             line-height: 14px;
+
         }
 
         table {
             border-spacing: 24px;
+
         }
+
 
         .page {
             display: flex;
@@ -72,200 +75,412 @@
             width: 100%;
             font-size: 18px;
             line-height: 18px;
+
         }
     </style>
 </head>
 
 <body>
+	<div>${message}</div>
     <div class="container">
         <section class="sideMenu">
-            <ul>
-                <li>메뉴조회</li>
-                <li><button type="button" onclick="location.href='controller?cmd=foodMaterialInputUI'">식자재입력</button></li>
-                <li><button type="button" onclick="location.href='controller?cmd=menuInputUI'">메뉴입력</button></li>
-                <li><button type="button" onclick="location.href='controller?cmd=foodMaterialUI'">식자재조회</button></li>
-                <li><button type="button" onclick="location.href='controller?cmd=menuDetailUI'">메뉴상세조회</button></li>
-            </ul>
-            <ul>
-                <li>폐기관리</li>
-                <li><button type="button" onclick="location.href='controller?cmd=disposalUI'">폐기품목확인</button></li>
-            </ul>
-            <ul>
-                <li>통계</li>
-                <li><button type="button" onclick="location.href='controller?cmd=revenueStatisticsUI'">매출통계</button></li>
-                <li><button type="button" onclick="location.href='controller?cmd=expendStatisticsUI'">지출통계</button></li>
-                <li><button type="button" onclick="location.href='controller?cmd=disposalStatisticsUI'">폐기통계</button></li>
-            </ul>
-        </section>
 
+           <jsp:include page="common/sideMenu.jsp" />
+
+        </section>
         <div class="main">
             <div>
-                <ul class="profile">
-                    <li><span>${loginUser.name}님</span></li>
-                    <li><span>알림</span></li>
-                </ul>
+               <jsp:include page="common/userName.jsp" />
             </div>
             <h1>식자재 확인</h1>
             <div class="content_item">
                 <div>
                     <ul class="category">
-                        <li>
-                            <input type="text" id="searchName" placeholder="식자재명 검색">
-                            <button onclick="searchFood()">검색하기</button>
-                        </li>
-                        <li>전체</li>
-                        <select id="categorySelect">
-                            <option value="">전체</option>
-                            <option value="채소">채소</option>
-                            <option value="정육">정육</option>
-                            <option value="유제품">유제품</option>
-                            <option value="가공품">가공품</option>
-                            <option value="음료/주류">음료/주류</option>
-                            <option value="양념">양념</option>
+
+                        <li><input type="text" placeholder="검색"> <button>검색하기</button></li>
+                        <select name="" id="">
+                            <option value="">채소</option>
+                            <option value="">정육</option>
+                            <option value="">유제품</option>
+                            <option value="">가공품</option>
+                            <option value="">음료/주류</option>
+                            <option value="">양념</option>
+                            <option value="">양념</option>
                         </select>
-                        <li style="cursor:pointer" onclick="searchFood()">적용하기</li>
-                        <button onclick="resetFood()">초기화</button>
-                        <button type="button" onclick="location.href='controller?cmd=foodMaterialUIAction&sortType=idDesc&page=1'">번호순</button>
-                        <button type="button" onclick="location.href='controller?cmd=foodMaterialUIAction&sortType=expAsc&page=1'">유통기한순</button>
+                        <li>적용하기</li>
+                        <button>초기화</button>
                     </ul>
+
                 </div>
 
                 <div>
                     <table class="list_container">
-                        <thead>
-                            <tr class="list_item">
-                                <th>번호</th>
-                                <th>식자재명</th>
-                                <th>카테고리</th>
-                                <th>전체수량</th>
-                                <th>전체용량(단위:g)</th>
-                                <th>매입가격(단위:원)</th>
-                                <th>구입처</th>
-                                <th>매입날짜</th>
-                                <th>유통기한</th>
-                                <th>품목유형</th>
-                                <th>폐기수정</th>
-                                <th>
-                                    <input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)">전체선택
-                                </th>
-                                <th style="cursor:pointer" onclick="deleteSelected()">삭제하기</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tableBody">
-                            <c:forEach var="vo" items="${foodList}" varStatus="status">
-                                <tr>
-                                    <td>${(currentPage - 1) * 5 + status.count}</td>
-                                    <td>${vo.foodMaterialName}</td>
-                                    <td>${vo.foodCategory}</td>
-                                    <td>${vo.foodMaterialCount}</td>
-                                    <td>${vo.foodMaterialCountAll}g</td>
-                                    <td>${vo.foodMaterialPrice}</td>
-                                    <td>${vo.vender}</td>
-                                    <td>${vo.incomeDate}</td>
-                                    <td>${vo.expirationDate}</td>
-                                    <td>${vo.foodMaterialType}</td>
-                                    <td>
-                                        <button type="button" onclick="location.href='controller?cmd=disposalUIAction&foodMaterialId=${vo.foodMaterialId}'">폐기수정</button>
-                                    </td>
-                                    <td>
-                                        <input type="checkbox" name="select_item" value="${vo.foodMaterialId}">
-                                    </td>
-                                </tr>
-                            </c:forEach>
-                        </tbody>
+                        <tr class="list_item">
+                            <th>번호</th>
+                            <th>식자재명</th>
+                            <th>카테고리</th>
+                            <th>전체수량</th>
+                            <th>전체용량(단위:g)</th>
+                            <th>매입가격(단위:원)</th>
+                            <th>구입처</th>
+                            <th>매입날짜</th>
+                            <th>유통기한</th>
+                            <th>품목유형</th>
+
+                            <th>폐기수정</th>
+                            <th>전체선택</th>
+                            <th>삭제하기</th>
+
+
+
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td>돼지고기</td>
+                            <td>정육</td>
+                            <td>5</td>
+                            <td>2000g</td>
+                            <td>50,000</td>
+                            <td>최고정육점</td>
+                            <td>2026-04-19</td>
+                            <td>2026-04-27</td>
+                            <td>고체</td>
+                            <td>폐기수정</td>
+                            <td><input type="checkbox" name="select_item" id=""></td>
+
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td>단무지</td>
+                            <td>가공품</td>
+                            <td>50</td>
+                            <td>2000g</td>
+                            <td>20,000</td>
+                            <td>건강푸드</td>
+                            <td>2026-04-19</td>
+                            <td>2026-04-25</td>
+                            <td>고체</td>
+                            <td>폐기수정</td>
+                            <td><input type="checkbox" name="select_item" id=""></td>
+
+
+
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td>상추</td>
+                            <td>채소</td>
+                            <td>10</td>
+                            <td>500g</td>
+                            <td>20,000</td>
+                            <td>상혁이네야채가게</td>
+                            <td>2026-04-17</td>
+                            <td>2026-04-25</td>
+                            <td>고체</td>
+                            <td>폐기수정</td>
+                            <td><input type="checkbox" name="select_item" id=""></td>
+
+
+
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>김치</td>
+                            <td>가공품</td>
+                            <td>5</td>
+                            <td>2000g</td>
+                            <td>40,000</td>
+                            <td>건강푸드</td>
+                            <td>2026-04-15</td>
+                            <td>2026-04-30</td>
+                            <td>고체</td>
+                            <td>폐기수정</td>
+                            <td><input type="checkbox" name="select_item" id=""></td>
+
+
+
+                        </tr>
+                        <tr>
+                            <td>1</td>
+                            <td>단무지</td>
+                            <td>가공품</td>
+                            <td>10</td>
+                            <td>2000g</td>
+                            <td>10,000</td>
+                            <td>건강푸드</td>
+                            <td>2026-04-14</td>
+                            <td>2026-04-25</td>
+                            <td>고체</td>
+                            <td>폐기수정</td>
+                            <td><input type="checkbox" name="select_item" id=""></td>
+
+
+
+                        </tr>
                     </table>
 
                     <div>
                         <ul class="page">
-                            <c:if test="${currentPage > 1}">
-                                <li style="cursor:pointer">
-                                    <a href="controller?cmd=foodMaterialUIAction&sortType=${sortType}&page=${currentPage - 1}">&lt;</a>
-                                </li>
-                            </c:if>
-
-                            <c:forEach begin="1" end="${totalPage}" var="p">
-                                <li style="cursor:pointer">
-                                    <a href="controller?cmd=foodMaterialUIAction&sortType=${sortType}&page=${p}"
-                                       style="${p == currentPage ? 'font-weight:bold' : ''}">${p}</a>
-                                </li>
-                            </c:forEach>
-
-                            <c:if test="${currentPage < totalPage}">
-                                <li style="cursor:pointer">
-                                    <a href="controller?cmd=foodMaterialUIAction&sortType=${sortType}&page=${currentPage + 1}">&gt;</a>
-                                </li>
-                            </c:if>
+                            <li>&lt</li>
+                            <li>1</li>
+                            <li>2</li>
+                            <li>3</li>
+                            <li>4</li>
+                            <li>5</li>
+                            <li>&gt</li>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+<script>
+    var pageSize = 5;
+    var currentPage = 1;
+    var allRows = [];
+    var viewRows = [];
 
-    <script>
-        var allRows = [];
-        var viewRows = [];
+    window.onload = function () {
+        var table = document.querySelector(".list_container");
+        var rows = table.querySelectorAll("tr");
 
-        window.onload = function () {
-            var tbody = document.getElementById("tableBody");
-            allRows = Array.from(tbody.querySelectorAll("tr"));
-            viewRows = allRows.slice();
+
+        allRows = Array.from(rows).slice(1);
+        viewRows = allRows.slice();
+
+        connectButtons();
+        showPage(1);
+    };
+
+    function connectButtons() {
+        var searchInput = document.querySelector("input[placeholder='검색']");
+        var buttons = document.querySelectorAll(".category button");
+
+
+        buttons[0].onclick = function () {
+            searchFood();
         };
 
-        function searchFood() {
-            var keyword  = document.getElementById("searchName").value.trim();
-            var category = document.getElementById("categorySelect").value;
+        buttons[1].onclick = function () {
+            resetFood();
+        };
 
-            viewRows = allRows.filter(function (row) {
-                var cells        = row.querySelectorAll("td");
-                var foodName     = cells[1].textContent.trim();
-                var foodCategory = cells[2].textContent.trim();
+        var lis = document.querySelectorAll(".category li");
+        lis.forEach(function (li) {
+            if (li.textContent.trim() === "적용하기") {
+                li.style.cursor = "pointer";
+                li.onclick = function () {
+                    searchFood();
+                };
+            }
+        });
 
-                var keywordOk  = keyword  === "" || foodName.indexOf(keyword) !== -1;
-                var categoryOk = category === "" || foodCategory === category;
+        searchInput.onkeydown = function (event) {
+            if (event.key === "Enter") {
+                searchFood();
+            }
+        };
 
-                return keywordOk && categoryOk;
-            });
+        var thList = document.querySelectorAll(".list_container th");
 
-            allRows.forEach(function (row) { row.style.display = "none"; });
-            viewRows.forEach(function (row) { row.style.display = ""; });
-        }
+        thList.forEach(function (th) {
+            var text = th.textContent.trim();
 
-        function resetFood() {
-            document.getElementById("searchName").value = "";
-            document.getElementById("categorySelect").selectedIndex = 0;
-            allRows.forEach(function (row) { row.style.display = ""; });
-            viewRows = allRows.slice();
-        }
-
-        function toggleSelectAll(selectAllCheckbox) {
-            allRows.forEach(function (row) {
-                if (row.style.display !== "none") {
-                    var checkbox = row.querySelector("input[name='select_item']");
-                    if (checkbox) checkbox.checked = selectAllCheckbox.checked;
-                }
-            });
-        }
-
-        function deleteSelected() {
-            var checkedList = document.querySelectorAll("input[name='select_item']:checked");
-
-            if (checkedList.length === 0) {
-                alert("삭제할 식자재를 선택해주세요.");
-                return;
+            if (text === "번호") {
+                th.style.cursor = "pointer";
+                th.onclick = function () {
+                    sortByNumberDesc();
+                    showPage(1);
+                };
             }
 
-            if (!confirm("선택한 식자재를 삭제하시겠습니까?")) return;
+            if (text === "유통기한") {
+                th.style.cursor = "pointer";
+                th.onclick = function () {
+                    sortByExpireAsc();
+                    showPage(1);
+                };
+            }
 
-            var ids = [];
-            checkedList.forEach(function (checkbox) {
-                ids.push(checkbox.value);
+            if (text === "전체선택") {
+                th.style.cursor = "pointer";
+                th.onclick = function () {
+                    selectVisibleRows();
+                };
+            }
+
+            if (text === "삭제하기") {
+                th.style.cursor = "pointer";
+                th.onclick = function () {
+                    deleteSelected();
+                };
+            }
+        });
+
+        var pageItems = document.querySelectorAll(".page li");
+
+        pageItems.forEach(function (li) {
+            li.style.cursor = "pointer";
+
+            li.onclick = function () {
+                var text = li.textContent.trim();
+                var totalPage = Math.ceil(viewRows.length / pageSize);
+
+                if (text === "<") {
+                    if (currentPage > 1) {
+                        showPage(currentPage - 1);
+                    }
+                } else if (text === ">") {
+                    if (currentPage < totalPage) {
+                        showPage(currentPage + 1);
+                    }
+                } else {
+                    var page = Number(text);
+
+                    if (page >= 1 && page <= totalPage) {
+                        showPage(page);
+                    }
+                }
+            };
+        });
+    }
+
+    function getSelectedCategoryText() {
+        var selectBox = document.querySelector(".category select");
+        var selectedText = selectBox.options[selectBox.selectedIndex].textContent.trim();
+
+
+        return selectedText;
+    }
+
+    function searchFood() {
+        var keyword = document.querySelector("input[placeholder='검색']").value.trim();
+        var category = getSelectedCategoryText();
+
+        viewRows = allRows.filter(function (row) {
+            var cells = row.querySelectorAll("td");
+
+            var foodName = cells[1].textContent.trim();
+            var foodCategory = cells[2].textContent.trim();
+
+            var keywordOk = true;
+            var categoryOk = true;
+
+            if (keyword !== "") {
+                keywordOk = foodName.indexOf(keyword) !== -1;
+            }
+
+            if (category !== "") {
+                categoryOk = foodCategory === category;
+            }
+
+            return keywordOk && categoryOk;
+        });
+
+        showPage(1);
+    }
+
+    function resetFood() {
+        document.querySelector("input[placeholder='검색']").value = "";
+        document.querySelector(".category select").selectedIndex = 0;
+
+        viewRows = allRows.slice();
+
+        sortByNumberDesc();
+        showPage(1);
+    }
+
+    function showPage(page) {
+        currentPage = page;
+
+        var totalPage = Math.ceil(viewRows.length / pageSize);
+
+        if (totalPage === 0) {
+            currentPage = 1;
+        } else if (currentPage > totalPage) {
+            currentPage = totalPage;
+        }
+
+        allRows.forEach(function (row) {
+            row.style.display = "none";
+        });
+
+        var start = (currentPage - 1) * pageSize;
+        var end = start + pageSize;
+
+        viewRows.slice(start, end).forEach(function (row) {
+            row.style.display = "";
+        });
+    }
+
+    function sortByNumberDesc() {
+        viewRows.sort(function (a, b) {
+            var aNo = parseInt(a.querySelectorAll("td")[0].textContent.trim()) || 0;
+            var bNo = parseInt(b.querySelectorAll("td")[1].textContent.trim()) || 0; 
+
+            return aNo - bNo;
+        });
+        renderTable();
+    }
+
+    function sortByExpireAsc() {
+        viewRows.sort(function (a, b) {
+            var aDate = a.querySelectorAll("td")[8].textContent.trim();
+            var bDate = b.querySelectorAll("td")[8].textContent.trim();
+            return aDate.localeCompare(bDate);
+        });
+        renderTable(); 
+    }
+
+    function renderTable() {
+        var table = document.querySelector(".list_container");
+        var parent = table.querySelector("tbody") || table;
+        
+        viewRows.forEach(function(row) {
+            parent.appendChild(row); 
+        });
+    }
+
+    function selectVisibleRows() {
+        allRows.forEach(function (row) {
+            if (row.style.display !== "none") {
+                var checkbox = row.querySelector("input[name='select_item']");
+                if (checkbox !== null) {
+                    checkbox.checked = true;
+                }
+            }
+        });
+    }
+
+    function deleteSelected() {
+        var checkedList = document.querySelectorAll("input[name='select_item']:checked");
+
+        if (checkedList.length === 0) {
+            alert("삭제할 식자재를 선택해주세요.");
+            return;
+        }
+
+        if (!confirm("선택한 식자재를 삭제하시겠습니까?")) {
+            return;
+        }
+
+        checkedList.forEach(function (checkbox) {
+            var row = checkbox.closest("tr");
+
+            allRows = allRows.filter(function (item) {
+                return item !== row;
             });
 
-            location.href = "controller?cmd=foodMaterialDeleteAction&ids=" + ids.join(",");
-        }
-    </script>
+            viewRows = viewRows.filter(function (item) {
+                return item !== row;
+            });
+
+            row.remove();
+        });
+
+        showPage(currentPage);
+    }
+</script>
 </body>
 
 </html>
-

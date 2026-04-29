@@ -94,6 +94,11 @@
 </head>
 <body>
 
+
+	
+    <form action="${pageContext.request.contextPath}/controller?cmd=loginAction" class="login-box" method="post">
+        <h1 class="main-title">로그인</h1>
+
     <form action="" class="login-box">
         <h1 class="main-title">로그인</h1>
 
@@ -114,6 +119,27 @@
             <a href="#">비밀번호 찾기</a>
         </div>
     </form>
+
+        <div class="form-group">
+            <div class="section-title">사업자번호</div>
+            <input name="bId" type="text" class="inputbutton" placeholder="사업자번호를 입력하세요" required>
+        </div>
+
+        <div class="form-group">
+            <div class="section-title">비밀번호</div>
+            <input name = "pw" type="password" class="inputbutton" placeholder="비밀번호를 입력하세요" required>
+        </div>
+
+        <button type="submit" value="로그인" class="submitbutton">로그인</button>
+
+        <div class="auth-links">
+            <a href="${pageContext.request.contextPath}/controller?cmd=addUserUIAction"">회원가입</a> | 
+            <a href="#">비밀번호 찾기</a>
+        </div>
+    </form>
+    
+    <div><//%=request.getAttribute("errorMessage") %></div>
+
 
 </body>
 	

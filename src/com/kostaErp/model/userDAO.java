@@ -7,10 +7,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class userDAO {
-	
+
 	public userDAO(){}
 
 	public int register(String bId, String name, String phone, 
@@ -47,6 +49,7 @@ public class userDAO {
 		return result;
 	}
 
+	// 2. �α���
 	public userInfoVO checkMemberByVO(String bId, String name, String pw) throws ClassNotFoundException {
 		String sql = "SELECT bId, name, pw FROM USERINFO " +
 				"WHERE bId = ? AND name = ? AND pw = ?";
@@ -72,7 +75,8 @@ public class userDAO {
 		}
 		return null;
 	}
- 
+
+	// 3. ��й�ȣ ���� 
 	public int setPw(String pw, String bId, String name, String phone){
 
 		int result = 0;
@@ -96,6 +100,7 @@ public class userDAO {
 		return result;
 	}
 
+	// 4. ������ ����
 	public List<userInfoVO> getMarketingMembers() throws ClassNotFoundException {
 		String sql = "SELECT bid, name, phone, email, marketingDate FROM USERINFO WHERE marketingDate IS NOT NULL";
 		List<userInfoVO> list = new ArrayList<>();
@@ -122,6 +127,42 @@ public class userDAO {
 	public boolean addUser(String parameter, String parameter2, String parameter3) {
 		// TODO Auto-generated method stub
 		return false;
+	}
+
+
+	public Map<String,Object> login(String bId, String pw) {
+		Map<String, Object> tmp = new HashMap<>();
+		
+		String sql = "SELECT  bId, name FROM USERINFO" 
+				+ " WHERE bId = ?  AND pw = ? ";
+	
+		Connection conn;
+		try {
+			conn = DBCP.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, bId );
+			stmt.setString(2, pw);
+			ResultSet rs = stmt.executeQuery();
+			
+			if(rs.next()) {
+				tmp.put("bId", rs.getString(1));
+				tmp.put("name", rs.getString(2));
+				
+			}
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (ClassNotFoundException e) {
+			
+			e.printStackTrace();
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+		
+		
+		return tmp;
 	}
 
 }

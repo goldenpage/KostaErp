@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.sql.Date;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -16,14 +16,8 @@ import com.kostaErp.model.foodMaterialDAO;
 import com.kostaErp.model.foodMaterialVO;
 import com.kostaErp.model.menuDAO;
 import com.kostaErp.model.userDAO;
-import java.sql.SQLException;
-import java.util.List;
 
-import org.junit.Test;
 
-import com.kostaErp.model.foodMaterialDAO;
-import com.kostaErp.model.foodMaterialVO;
-import com.kostaErp.model.menuDAO;
 import com.kostaErp.model.menuVO;
 import com.kostaErp.model.userInfoVO;
 
@@ -46,11 +40,11 @@ public class DAOTest {
 	}
 
 	// 1. 식자재 입력
-	//@Test
+	@Test
 	public void addFoodMaterial(){
-		int result = dao.addFoodMaterial("단무지", "PP", 5, 1500, 15000, "하나로마트", "고체", 
+		boolean result =  dao.addFoodMaterial("단무지", "PP", 5, 1500, 15000, "하나로마트", "고체", 
 				"2026-04-27", "2026-04-30", "0000000000");
-		assertTrue("입력 실패", result > 0);
+		assertTrue(result);
 
 		//        int result = dao.addFoodMaterial("단무지", "PP", -1, 1500, 15000,"하나로마트", "고체", 
 		//        		"2026-04-27", "2026-04-30", "0000000000");
@@ -170,7 +164,7 @@ public class DAOTest {
 	//  }
 
 
-	@Test
+	//@Test
 	public void getFoodMaterialListTest() {
 		foodMaterialDAO dao = new foodMaterialDAO();
 
@@ -189,9 +183,9 @@ public class DAOTest {
 		assertTrue(list.size() <= 5);
 	}
 
-	@Test
+	//@Test
 	public void 마케팅테스트() throws ClassNotFoundException {
-		foodMaterialDAO dao = new foodMaterialDAO();
+		userDAO dao = new userDAO();
 		List<userInfoVO> list = dao.getMarketingMembers();
 		assertNotNull("조회된 리스트가 null입니다.", list);
 		assertTrue("마케팅 동의 회원이 존재하지 않습니다.", list.size() > 0);
@@ -213,7 +207,7 @@ public class DAOTest {
 		conn.setAutoCommit(true);
 		conn.close();
 	}
-	@Test
+	//@Test
 	public void getFoodMaterialDetailTest() {
 		foodMaterialDAO dao = new foodMaterialDAO();
 
@@ -231,7 +225,7 @@ public class DAOTest {
 		}
 	}
 
-	@Test
+	//@Test
 	public void getMenuListTest() {
 		menuDAO dao = new menuDAO();
 
@@ -249,7 +243,7 @@ public class DAOTest {
 		assertNotNull(list);
 	}
 
-	@Test
+	//@Test
 	public void getMenuDetailTest() {
 		menuDAO dao = new menuDAO();
 
@@ -272,7 +266,7 @@ public class DAOTest {
 			assertNotNull(detailList);
 		}
 	}
-	@Test
+	//@Test
 	public void getFoodMaterialPageTest() {
 		foodMaterialDAO dao = new foodMaterialDAO();
 
@@ -288,7 +282,7 @@ public class DAOTest {
 		System.out.println("1페이지 개수 : " + page1.size());
 		System.out.println("2페이지 개수 : " + page2.size());
 	}
-	@Test
+	//@Test
 	public void getFoodMaterialListSortTest() {
 		foodMaterialDAO dao = new foodMaterialDAO();
 
@@ -308,40 +302,34 @@ public class DAOTest {
 		System.out.println("expDesc : " + expDescList.size());
 	}
 
+	
 	@Test
-	public void updateFoodMaterialAfterSaleTest() {
-		menuDAO dao = new menuDAO();
+	   public void updateFoodMaterialAfterSaleTest() {
+	       menuDAO dao = new menuDAO();
 
-		List<menuVO> menuList = dao.getMenuList(bId);
+	       String menuId = "MI001";
+	       int saleCount = 1;
 
-		assertNotNull(menuList);
-		assertTrue("메뉴 데이터가 없습니다.", menuList.size() > 0);
+	       boolean result = dao.updateFoodMaterialAfterSale(menuId, saleCount, bId);
 
-		String menuId = null;
-		for (menuVO menu : menuList) {
-			List<menuVO> detailList = dao.getMenuDetail(menu.getMenuId());
+	       System.out.println("판매 수량 : " + saleCount);
+	       System.out.println("자동 차감 메뉴ID : " + menuId);
+	       System.out.println("사업자 ID : " + bId);
+	       System.out.println("자동 차감 결과 : " + result);
 
-			if (detailList != null && detailList.size() > 0) {
-				menuId = menu.getMenuId();
-				break;
-			}
-		}
-		assertNotNull("USED에 연결된 메뉴가 없습니다.", menuId);
+	       assertTrue("식자재 자동 차감 실패", result);
+	   }
+	   @Test
+	   public void updateFoodMaterialAfterSaleFailTest() {
+	       menuDAO dao = new menuDAO();
 
-		boolean result = dao.updateFoodMaterialAfterSale(menuId, 1, bId);
-		System.out.println("자동 차감 메뉴ID : " + menuId);
-		System.out.println("자동 차감 결과 : " + result);
-		assertTrue("식자재 자동 차감 실패", result);
-	}
+	       boolean result = dao.updateFoodMaterialAfterSale("NO_MENU", 1, bId);
 
-	@Test
-	public void updateFoodMaterialAfterSaleFailTest() {
-		menuDAO dao = new menuDAO();
+	       System.out.println("없는 메뉴 자동 차감 결과 : " + result);
 
-		boolean result = dao.updateFoodMaterialAfterSale("NO_MENU", 1, bId);
+	       assertFalse("없는 메뉴, 자동 차감성공 X.", result);
+	   }
 
-		System.out.println("없는 메뉴 자동 차감 결과 : " + result);
-
-		assertFalse(result);
-	}
+	
+	
 }

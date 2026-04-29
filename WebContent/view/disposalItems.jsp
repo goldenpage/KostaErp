@@ -82,30 +82,13 @@
 <body>
     <div class="container">
         <section class="sideMenu">
-            <ul>
-                <li>메뉴조회</li>
-                <li><button type="button" onclick="location.href='controller?cmd=foodMaterialInputUI'">식자재입력</button></li>
-                <li><button type="button" onclick="location.href='controller?cmd=menuInputUI'">메뉴입력</button></li>
-                <li><button type="button" onclick="location.href='controller?cmd=foodMaterialUI'">식자재조회</button></li>
-                <li><button type="button" onclick="location.href='controller?cmd=menuDetailUI'">메뉴상세조회</button></li>
-            </ul>
-            <ul>
-                <li>폐기관리</li>
-                <li><button type="button" onclick="location.href='controller?cmd=disposalUI'">폐기품목확인</button></li>
-            </ul>
-            <ul>
-                <li>통계</li>
-                <li><button type="button" onclick="location.href='controller?cmd=revenueStatisticsUI'">매출통계</button></li>
-                <li><button type="button" onclick="location.href='controller?cmd=expendStatisticsUI'">지출통계</button></li>
-                <li><button type="button" onclick="location.href='controller?cmd=disposalStatisticsUI'">폐기통계</button></li>
-            </ul>
+
+          <jsp:include page="common/sideMenu.jsp" />
+
         </section>
         <div class="main">
             <div>
-                <ul class="profile">
-                    <td>김상혁님</td>
-                    <td>알림</td>
-                </ul>
+               <jsp:include page="common/userName.jsp" />
             </div>
             <h2>폐기품목 확인</h2>
             <div class="content_item">

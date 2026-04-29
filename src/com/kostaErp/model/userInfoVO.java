@@ -3,36 +3,30 @@ package com.kostaErp.model;
 import java.sql.Date;
 
 public class userInfoVO {
-
-	private String bld;
+	private String bId;
 	private String name;
-	private int phone;
 	private String storeName;
-	private String storeType;
-	private String storeCategory;
+	private String email;
+	private String phone;
 	private String pw;
+	private String signDate;
 	private String agreementDate;
 	private String marketingDate;
-
-	private String email;
-	private Date MarketingDate;
-	private Date signDate;
-	
 
 
 	public userInfoVO(){}
 
 	public userInfoVO(String bId, String name, String phone, String email, String storeName, 
-			String storeType, String storeCategory, String pw, Date signDate,
-			Date agreementDate, String marketingDate){
-	
+			String storeType, String storeCategory, String pw, String signDate,
+			String agreementDate, String marketingDate){
+		this.bId = bId;
 		this.name = name;
-		
+		this.phone = phone;
 		this.email = email;
 		this.storeName = storeName;
 		this.pw = pw;
 		this.signDate = signDate;
-		
+		this.agreementDate = agreementDate;
 		this.marketingDate = marketingDate;
 
 	}
@@ -44,7 +38,12 @@ public class userInfoVO {
 	public void setPw(String pw) {
 		this.pw = pw;
 	}
-	
+	public String getbId() {
+		return bId;
+	}
+	public void setbId(String bId) {
+		this.bId = bId;
+	}
 	public String getName() {
 		return name;
 	}
@@ -63,7 +62,12 @@ public class userInfoVO {
 	public void setEmail(String email) {
 		this.email = email;
 	}
-	
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
 	public String getMarketingDate() {
 		return marketingDate;
 	}
@@ -71,67 +75,18 @@ public class userInfoVO {
 
 
 
-	public Date getSignDate() {return signDate;}
-	
+	public String getSignDate() {return signDate;}
+	public String getAgreementDate() {return agreementDate;}
 
-	
-
-
-
-
+	public void setMarketingDate(String marketingDate) {
+		this.marketingDate = marketingDate;
+	}
 
 
 
-    public void setbld(String bld) {
-        this.bld = bld;
-    }
-
-    public String name() {
-        return name;
-    }
-
-    public void setname(String name) {
-        this.name = name;
-    }
 
 
-    public void setstoreName(String storeName) {
-        this.storeName = storeName;
-    }
-
- 
-
-    public void setstoreCategory(String storeCategory) {
-        this.storeCategory = storeCategory;
-    }
-
-    public String getstoreCategory() {
-        return storeCategory;
-    }
-
-    public void setpw(String pw) {
-        this.pw = pw;
-    }
-
-    public String agreementDate() {
-        return agreementDate;
-    }
-
-    public void setagreementDate(String agreementDate) {
-        this.agreementDate = agreementDate;
-    }
-
- 
-
-    public void setmarketingDate(String marketingDate) {
-        this.marketingDate = marketingDate;
-    }
-
-
-
-   
 }
-
 
 
 
