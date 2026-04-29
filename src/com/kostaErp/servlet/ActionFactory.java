@@ -90,12 +90,34 @@ public class ActionFactory {
                 a = new revenueAction();
                 break;
 
-            case "idCheck":
+            case "idCheckAction":
                 a = new IdCheckAction();
                 break;
-            case "phoneCheckAction":
-            	a = new phoneCheckAction();
-            	break;
+
+            case "phoneSendAction":
+                a = new phoneSendAction();
+                break;
+
+            case "phoneVerifyAction":
+                a = new phoneVerifyAction();
+                break;
+
+            case "pwFindUIAction":
+                a = new pwFindUIAction();
+                break;
+
+            case "pwUpdateAction":
+                a = new pwUpdateAction();
+                break;
+
+            case "pwPhoneSendAction":
+                a = new pwPhoneSendAction();
+                break;
+
+            case "pwPhoneVerifyAction":
+                a = new pwPhoneVerifyAction();
+                break;
+
             default:
                 a = new loginUIAction();
         }

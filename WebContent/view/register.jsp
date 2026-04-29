@@ -145,15 +145,14 @@
 <body>
 	<form method="post"
 		action="${pageContext.request.contextPath}/controller?cmd=addUserAction"
-		onsubmit="return checkPassword()"
-		class="signup-box">
+		onsubmit="return checkPassword()" class="signup-box">
 
 		<h1 class="main-title">회원가입</h1>
 
 		<div class="form-group">
 			<div class="section-title">사업자번호</div>
-			<input type="text" name="bId" class="inputbutton" maxlength=10 minlength=10
-				placeholder="사업자번호 입력해주세요" required>
+			<input type="text" id="bId" name="bId" class="inputbutton" maxlength=10
+				minlength=10 placeholder="사업자번호 입력해주세요" required>
 		</div>
 
 		<div class="form-group">
@@ -180,13 +179,22 @@
 				<input type="text" id="phone" name="phone" class="phone-input"
 					placeholder="휴대폰 번호 입력 (숫자만)" required>
 				<button type="button" id="sendBtn" class="auth-send-btn"
-					onclick="checkPhone()">인증발송</button>
+					onclick="sendPhoneCode()">인증발송</button>
 			</div>
+			<div id="phoneMessage">${phoneMessage}</div>
+		</div>
+
+		<div class="form-group">
+			<input type="text" id="phoneCode" name="phoneCode"
+				class="phone-input" placeholder="인증번호 입력">
+
+			<button type="button" class="auth-send-btn"
+				onclick="verifyPhoneCode()">확인</button>
 		</div>
 
 		<div class="form-group">
 			<div class="section-title">비밀번호</div>
-			<input name="pw" type="password"  class="inputbutton"
+			<input name="pw" type="password" class="inputbutton"
 				placeholder="비밀번호 입력해주세요" required>
 		</div>
 
@@ -201,11 +209,10 @@
 			<div class="section-title">사업자 유형 선택</div>
 			<div class="flex-row">
 				<label class="click-label"> 
-				<input type="radio" name="storeType" value="간이과세자"> 간이과세자
+				<input type="radio" name="businessType" value="간이과세자"> 간이과세자
+				</label> <label class="click-label"> 
+				<input type="radio" name="businessType" value="일반과세자"> 일반과세자
 				</label>
-				 <label class="click-label">
-				 <input type="radio"name="storeType" value="일반과세자"> 일반과세자
-				 </label>
 			</div>
 		</div>
 
@@ -215,7 +222,7 @@
 				<select name="storeType" class="store-select">
 					<option value="일반음식점">일반음식점</option>
 					<option value="휴게음식점">휴게음식점</option>
-					
+
 				</select> <select name="storeCategory" class="store-select">
 					<option value="한식">한식</option>
 					<option value="중식">중식</option>
@@ -227,8 +234,8 @@
 		<div class="form-group">
 			<div class="section-title">소상공인 증명</div>
 			<div>
-				<button onclick="checkBid()">인증하기</button>
-				<input type="file" name="proofFile">
+				<button type="button" onclick="checkBid()">인증하기</button>
+				<div id="businessMessage">${businessMessage}</div>
 			</div>
 		</div>
 
@@ -252,30 +259,99 @@
 		</div>
 	</form>
 	<script>
-	function checkPassword() {
-	    const pw = document.querySelector('input[name="pw"]').value;
-	    const pwConfirm = document.querySelector('input[name="pwConfirm"]').value;
+		function checkPassword() {
+			const
+			pw = document.querySelector('input[name="pw"]').value;
+			const
+			pwConfirm = document.querySelector('input[name="pwConfirm"]').value;
 
-	    if (pw !== pwConfirm) {
-	        alert("비밀번호가 일치하지 않습니다.");
-	        return false;
-	    }
+			if (pw !== pwConfirm) {
+				alert("비밀번호가 일치하지 않습니다.");
+				return false;
+			}
 
-	    return true;
-	}
-	
-	function checkPhone() {
-		const phone = document.querySelector("#phone").value
-		
-		return location.href = '${pageContext.request.contextPath}/controller?cmd=phoneCheckAction&phone=' + phone;
-	}
-	
-	function checkBid() {
-		const bId = document.querySelector("#bId").value
-		return location.href = '${pageContext.request.contextPath}/controller?cmd=IdCheckAction&bId=' + bId;
-	}
-	
-	
+			return true;
+		}
+
+		function sendPhoneCode() {
+			const
+			phone = document.querySelector("#phone").value
+
+			if (!phone) {
+				alert("휴대폰 번호를 입력해주세요")
+				return;
+			}
+			const xhr = new XMLHttpRequest();
+			const url = '${pageContext.request.contextPath}/controller?cmd=phoneSendAction&phone='+ encodeURIComponent(phone);
+			
+			xhr.open('GET', url, true);
+			xhr.onreadystatechange = function () {
+		        if (xhr.readyState === 4) {
+		            if (xhr.status === 200) {
+		                document.querySelector("#phoneMessage").innerText = xhr.responseText;
+		            } else {
+		                alert("인증번호 발송 중 오류가 발생했습니다.");
+		            }
+		        }
+		    };
+
+		    xhr.send();
+
+		}
+
+		function verifyPhoneCode() {
+			const
+			phone = document.querySelector("#phone").value;
+			const
+			phoneCode = document.querySelector("#phoneCode").value;
+
+			 const xhr = new XMLHttpRequest();
+			    const url = '${pageContext.request.contextPath}/controller?cmd=phoneVerifyAction&phone='
+			        + encodeURIComponent(phone)
+			        + '&phoneCode='
+			        + encodeURIComponent(phoneCode);
+
+			    xhr.open("GET", url, true);
+
+			    xhr.onreadystatechange = function () {
+			        if (xhr.readyState === 4) {
+			            if (xhr.status === 200) {
+			                document.querySelector("#phoneMessage").innerText = xhr.responseText;
+			            } else {
+			                alert("인증번호 확인 중 오류가 발생했습니다.");
+			            }
+			        }
+			    };
+
+			    xhr.send();
+		}
+
+		function checkBid() {
+		    const bId = document.querySelector("#bId").value;
+
+		    if (!bId || bId.length !== 10) {
+		        alert("사업자번호 10자리를 입력해주세요.");
+		        return;
+		    }
+
+		    const xhr = new XMLHttpRequest();
+		    const url = '${pageContext.request.contextPath}/controller?cmd=idCheckAction&bId='
+		        + encodeURIComponent(bId);
+
+		    xhr.open("GET", url, true);
+
+		    xhr.onreadystatechange = function () {
+		        if (xhr.readyState === 4) {
+		            if (xhr.status === 200) {
+		                document.querySelector("#businessMessage").innerText = xhr.responseText;
+		            } else {
+		                alert("사업자번호 인증 중 오류가 발생했습니다.");
+		            }
+		        }
+		    };
+
+		    xhr.send();
+		}
 	</script>
 </body>
 
