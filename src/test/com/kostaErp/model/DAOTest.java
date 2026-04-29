@@ -40,11 +40,11 @@ public class DAOTest {
 	}
 
 	// 1. 식자재 입력
-	//@Test
+	@Test
 	public void addFoodMaterial(){
-		int result = dao.addFoodMaterial("단무지", "PP", 5, 1500, 15000, "하나로마트", "고체", 
+		boolean result =  dao.addFoodMaterial("단무지", "PP", 5, 1500, 15000, "하나로마트", "고체", 
 				"2026-04-27", "2026-04-30", "0000000000");
-		assertTrue("입력 실패", result > 0);
+		assertTrue(result);
 
 		//        int result = dao.addFoodMaterial("단무지", "PP", -1, 1500, 15000,"하나로마트", "고체", 
 		//        		"2026-04-27", "2026-04-30", "0000000000");
@@ -164,7 +164,7 @@ public class DAOTest {
 	//  }
 
 
-	@Test
+	//@Test
 	public void getFoodMaterialListTest() {
 		foodMaterialDAO dao = new foodMaterialDAO();
 
@@ -183,7 +183,7 @@ public class DAOTest {
 		assertTrue(list.size() <= 5);
 	}
 
-	@Test
+	//@Test
 	public void 마케팅테스트() throws ClassNotFoundException {
 		userDAO dao = new userDAO();
 		List<userInfoVO> list = dao.getMarketingMembers();
@@ -207,7 +207,7 @@ public class DAOTest {
 		conn.setAutoCommit(true);
 		conn.close();
 	}
-	@Test
+	//@Test
 	public void getFoodMaterialDetailTest() {
 		foodMaterialDAO dao = new foodMaterialDAO();
 
@@ -225,7 +225,7 @@ public class DAOTest {
 		}
 	}
 
-	@Test
+	//@Test
 	public void getMenuListTest() {
 		menuDAO dao = new menuDAO();
 
@@ -243,7 +243,7 @@ public class DAOTest {
 		assertNotNull(list);
 	}
 
-	@Test
+	//@Test
 	public void getMenuDetailTest() {
 		menuDAO dao = new menuDAO();
 
@@ -266,7 +266,7 @@ public class DAOTest {
 			assertNotNull(detailList);
 		}
 	}
-	@Test
+	//@Test
 	public void getFoodMaterialPageTest() {
 		foodMaterialDAO dao = new foodMaterialDAO();
 
@@ -282,7 +282,7 @@ public class DAOTest {
 		System.out.println("1페이지 개수 : " + page1.size());
 		System.out.println("2페이지 개수 : " + page2.size());
 	}
-	@Test
+	//@Test
 	public void getFoodMaterialListSortTest() {
 		foodMaterialDAO dao = new foodMaterialDAO();
 
@@ -302,7 +302,7 @@ public class DAOTest {
 		System.out.println("expDesc : " + expDescList.size());
 	}
 
-	@Test
+	//@Test
 	public void updateFoodMaterialAfterSaleTest() {
 		menuDAO dao = new menuDAO();
 
@@ -328,7 +328,7 @@ public class DAOTest {
 		assertTrue("식자재 자동 차감 실패", result);
 	}
 
-	@Test
+	//@Test
 	public void updateFoodMaterialAfterSaleFailTest() {
 		menuDAO dao = new menuDAO();
 

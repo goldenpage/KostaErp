@@ -186,34 +186,34 @@
 
                         <div class="input_row">
                             <label>식자재명 입력 *</label>
-                            <input type="text" id="inputName" placeholder="단무지">
+                            <input name="foodMaterialName" placeholder="단무지">
                         </div>
 
                         <div class="input_row">
                             <div class="category_buttons">
                                 <label>카테고리 추가</label>
-                                <input type="text" id="inputCategoryName" placeholder="카테고리 입력">
-                                <button type="button" onclick="addCategory()">추가하기</button>
+                                <input name="categoryName" placeholder="카테고리 입력">
+                                <button onclick="addCategory()">추가하기</button>
                             </div>
                         </div>
 
                         <div class="input_row">
                             <div class="category_buttons" id="categoryArea">
-                                <button type="button" onclick="selectCategory(this)">유제품</button>
-                                <button type="button" onclick="selectCategory(this)">재료</button>
-                                <button type="button" onclick="selectCategory(this)">밀</button>
-                                <button type="button" onclick="selectCategory(this)">과일</button>
-                                <button type="button" onclick="selectCategory(this)" class="selected">가공식품</button>
-                                <button type="button" onclick="selectCategory(this)">기타(E)</button>
+                                <button name = "M" onclick="selectCategory(this)">유제품</button>
+                                <button name = "B" onclick="selectCategory(this)">정육</button>
+                                <button name = "V" onclick="selectCategory(this)">채소</button>
+                                <button name = "F" onclick="selectCategory(this)">과일</button>
+                                <button name = "PP" onclick="selectCategory(this)" class="selected">가공식품</button>
+                                <button name = "ETC" onclick="selectCategory(this)">기타</button>
                             </div>
                         </div>
 
                         <div class="input_fields">
                             <label>전체수량 *</label>
-                            <input type="number" id="inputQuantity" placeholder="5" min="0">
+                            <input type="number" name="foodMaterialCount" placeholder="5" min="0">
 
                             <label>전체수량(단위:g) *</label>
-                            <input type="text" id="inputWeight" placeholder="1.5">
+                            <input type="text" name="foodMaterialCountAll" placeholder="1.5">
                             <select id="inputUnit">
                                 <option value="g">g</option>
                                 <option value="kg">kg</option>
@@ -224,22 +224,23 @@
 
                         <div class="input_fields">
                             <label>가격 *</label>
-                            <input type="number" id="inputPrice" placeholder="10000" min="0">
-
-                            <label>유통기한 *</label>
-                            <input type="date" id="inputExpiry">
-                            <span>&#10003;</span>
+                            <input type="number" name="foodMaterialPrice" placeholder="10000" min="0">
+							
+							<label>타입 *</label>
+                            <input type="text" name="foodMaterialType" placeholder="고체">
+                            
+                            <label>구입처 *</label>
+                            <input type="text" name="vender" placeholder="하나로마트">
                         </div>
 
                         <div class="input_fields">
                             <label>매입일자</label>
-                            <input type="date" id="inputPurchase">
+                            <input type="date" id="incomeDate">
                             <span class="auto_date_hint">※ 미입력 시 오늘 날짜 자동 설정</span>
-                        </div>
-
-                        <div class="input_fields">
-                            <label>구입처 *</label>
-                            <input type="text" id="inputVender" placeholder="하나로마트">
+                            
+                            <label>유통기한 *</label>
+                            <input type="date" name="expirationDate">
+                            <span>&#10003;</span>
                         </div>
 
                         <div class="register_btn">
@@ -294,7 +295,7 @@
                         </tbody>
                     </table>
                     <div class="register_final_btn">
-                        <button type="button" onclick="registerAll()">등록</button>
+                        <button type="submit" name="" onclick="registerAll()">식자재 등록</button>
                     </div>
                 </div>
 
@@ -303,13 +304,6 @@
     </div>
 
     <script>
-        const dummyMaterials = [
-            { name: '단무지', category: '가공식품', vender: '웰빙푸드', quantity: 5,  weight: 1.5, unit: 'kg', price: 10000 },
-            { name: '단무지', category: '가공식품', vender: '건강푸드', quantity: 3,  weight: 2.0, unit: 'kg', price: 12000 },
-            { name: '당근',   category: '재료',     vender: '농협마트', quantity: 10, weight: 500, unit: 'g',  price: 3000  },
-            { name: '우유',   category: '유제품',   vender: '서울우유', quantity: 6,  weight: 1,   unit: 'L',  price: 5000  },
-            { name: '밀가루', category: '밀',       vender: '대한제분', quantity: 10, weight: 1,   unit: 'kg', price: 4500  },
-        ];
 
         function today() {
             return new Date().toISOString().substring(0, 10);
@@ -347,16 +341,16 @@
         }
 
         function addToList() {
-            var name     = document.getElementById('inputName').value.trim();
+            var name     = document.getElementById('foodMaterialName').value.trim();
             var category = getSelectedCategory();
-            var quantity = document.getElementById('inputQuantity').value;
-            var weight   = document.getElementById('inputWeight').value;
+            var quantity = document.getElementById('foodMaterialCount').value;
+            var weight   = document.getElementById('foodMaterialCountAll').value;
             var unit     = document.getElementById('inputUnit').value;
-            var price    = document.getElementById('inputPrice').value;
-            var expiry   = document.getElementById('inputExpiry').value;
-            var vender   = document.getElementById('inputVender').value.trim();
-
-            var purchase = document.getElementById('inputPurchase').value;
+            var price    = document.getElementById('foodMaterialPrice').value;
+            var type     = document.getElementById('foodMaterialType').value;
+            var vender   = document.getElementById('vender').value.trim();
+            var purchase = document.getElementById('incomeDate').value;
+            var expiry   = document.getElementById('expirationDate').value;
             if (!purchase) purchase = today();
 
             if (!name)                             { alert('식자재명을 입력해주세요.'); return; }
@@ -386,14 +380,15 @@
                 '<td><span class="remove_btn" onclick="removeRow(this)">&#10005;</span></td>';
             body.appendChild(tr);
 
-            document.getElementById('inputName').value = '';
-            document.getElementById('inputQuantity').value = '';
-            document.getElementById('inputWeight').value = '';
+            document.getElementById('foodMaterialName').value = '';
+            document.getElementById('foodMaterialCount').value = '';
+            document.getElementById('foodMaterialCountAll').value = '';
             document.getElementById('inputUnit').selectedIndex = 0;
-            document.getElementById('inputPrice').value = '';
-            document.getElementById('inputExpiry').value = today();
-            document.getElementById('inputPurchase').value = '';
-            document.getElementById('inputVender').value = '';
+            document.getElementById('foodMaterialPrice').value = '';
+            document.getElementById('foodMaterialType').value = '';
+            document.getElementById('vender').value = '';
+            document.getElementById('incomeDate').value = '';
+            document.getElementById('expirationDate').value = today();
         }
 
         function removeRow(el) {
@@ -412,10 +407,6 @@
                 body.innerHTML = '<tr><td colspan="4" class="empty_msg">검색어를 입력하세요</td></tr>';
                 return;
             }
-
-            var results = dummyMaterials.filter(function(m) {
-                return m.name.indexOf(keyword) !== -1 || m.category.indexOf(keyword) !== -1;
-            });
 
             if (results.length === 0) {
                 body.innerHTML = '<tr><td colspan="4" class="empty_msg">검색 결과가 없습니다</td></tr>';
