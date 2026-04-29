@@ -20,11 +20,15 @@ public class menuVO {
 		this.menuCategoryId = menuCategoryId;
 	}
 
-	public String getMenuId(){ return menuId; }
+	
 	public String getMenuName(){ return menuName; }
 	public int getMenuPrice(){ return menuPrice; }
 	public String getMenuCategoryId(){ return menuCategoryId; }
 
+	public String getMenuId(){
+	    	return menuId;
+	}
+	
 	public void setMenuId(String menuId){ 
 		this.menuId = menuId;
 	}
@@ -36,15 +40,30 @@ public class menuVO {
 	}
 	public void setMenuCategory_Id(String menuCategoryId){
 		this.menuCategoryId = menuCategoryId;
+<<<<<<< HEAD
 	}    
 
+=======
+	}
+  
+
+  
+>>>>>>> refs/remotes/origin/master
     public String getMenuCategory() {
         return menuCategory;
     }
 
     public void setMenuCategory(String menuCategory) {
         this.menuCategory = menuCategory;
+<<<<<<< HEAD
     }    
+=======
+    }
+
+  
+
+ 
+>>>>>>> refs/remotes/origin/master
 
     public String getFoodMaterialName() {
         return foodMaterialName;
@@ -85,4 +104,6 @@ public class menuVO {
     public void setUsedPrice(int usedPrice) {
         this.usedPrice = usedPrice;
     }
+    
+  
 }

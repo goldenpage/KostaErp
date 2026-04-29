@@ -1,0 +1,57 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Document</title>
+</head>
+<style>
+body {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	font-family: 'Malgun Gothic', dotum, sans-serif;
+}
+
+.button {
+	width: 23%;
+	padding: 15px;
+	margin-top: 10px;
+	background-color: #333333;
+	color: #ffffff;
+	border: none;
+	border-radius: 5px;
+	font-size: 10px;
+	font-weight: bold;
+	cursor: pointer;
+	transition: background-color 0.3s;
+}
+
+.astyle {
+	text-align: center;
+	margin-top: 20px;
+}
+</style>
+<body>
+	<h1>로그인</h1>
+	<form method="post" action="${pageContext.request.contextPath}/controller?cmd=loginAction">
+	<div>
+		<div>사업자번호</div>
+		<input type="text" name="bId" placeholder="사업자번호를 입력하세요">
+	</div>
+	<div>
+		<div>비밀번호</div>
+		<input type="password" name="pw" placeholder="비밀번호 입력하세요">
+	</div>
+	<button type="submit" class="button">로그인</button>
+	</form>
+
+	<div class="astyle">
+		<a href="${pageContext.request.contextPath}/controller?cmd=addUserUIAction">회원가입</a> <a>비밀번호 찾기</a>
+	</div>
+</body>
+
+</html>

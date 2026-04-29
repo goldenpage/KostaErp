@@ -11,6 +11,10 @@ public class foodMaterialCategoryVO {
         this.foodCategoryId = foodCategoryId;
         this.foodCategory = foodCategory;
     }
+<<<<<<< HEAD
+=======
+    
+>>>>>>> refs/remotes/origin/master
 
     public String getFoodCategoryId() {
         return foodCategoryId;
