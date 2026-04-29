@@ -26,7 +26,15 @@ public class ActionFactory {
             case "addUserAction":
                 a = new addUserAction();
                 break;
-
+            
+            case "addFoodMaterialUIAction":
+            	a = new addFoodMaterialUIAction();
+            	break;
+            	
+            case "addFoodMaterialAction":
+            	a = new addFoodMaterialAction();
+            	break;
+            	
             case "foodMaterialUIAction":
                 a = new foodMaterialUIAction();
                 break;
@@ -35,6 +43,14 @@ public class ActionFactory {
                 a = new foodMaterialAction();
                 break;
 
+            case "addMenuUIAction":
+            	a = new addMenuUIAction();
+            	break;
+            	
+            case "addMenuAction":
+            	a = new addMenuAction();
+            	break;
+            	
             case "menuUIAction":
                 a = new menuUIAction();
                 break;
