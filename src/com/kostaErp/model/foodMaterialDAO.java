@@ -13,11 +13,11 @@ public class foodMaterialDAO {
 	
 	public foodMaterialDAO(){}
 
-	public int addFoodMaterial(String foodMaterialName, String foodCategory_Id, int foodMaterialCount, 
+	public boolean addFoodMaterial(String foodMaterialName, String foodCategory_Id, int foodMaterialCount, 
 			int foodMaterialCountAll, int foodMaterialPrice, String vender, String foodMaterialType, 
 			String incomeDate, String expirationDate, String bId){
 
-		int result = 0;
+		boolean flag = false;
 
 		String sql = "INSERT INTO FOODM(foodMaterialName, foodCategory_Id, foodMaterialCount, foodMaterialCountAll, "
 				+ "foodMaterialPrice, foodMaterialType, vender, incomeDate, expirationDate, bId) "
@@ -38,12 +38,14 @@ public class foodMaterialDAO {
 			stmt.setDate(9, Date.valueOf(expirationDate));
 			stmt.setString(10, bId);
 
-			result = stmt.executeUpdate();
+			flag = (stmt.executeUpdate()==1);
+			stmt.close();
+			conn.close();
 
 		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return result;
+		return flag;
 	}
 	
 	
