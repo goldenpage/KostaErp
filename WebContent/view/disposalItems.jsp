@@ -1,316 +1,220 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <!DOCTYPE html>
 <html lang="kr">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+<meta charset="UTF-8">
+<title>폐기품목 관리</title>
+<style>
+ul { list-style: none; }
 
-    <style>
-        ul {
-            list-style: none;
-        }
+.container {
+    display: flex;
+    gap: 30px;
+    border: 5px solid;
+    height: 100vh;
+}
 
-        .container {
-            display: flex;
-            gap: 30px;
-            border: 5px solid;
-            height: 100vh;
-        }
+.sideMenu {
+    height: 100vh;
+    border: 1px solid;
+    width: 300px;
+}
 
-        .sideMenu {
-            height: 100vh;
-            border: 1px solid;
-            width: 300px;
-        }
+.main {
+    border: 1px solid;
+    width: 100%;
+}
 
-        .main {
-            border: 1px solid;
-            width: 100%;
-        }
+.profile {
+    display: flex;
+    justify-content: end;
+}
 
-        .profile {
-            display: flex;
-            justify-content: end;
+.content_item {
+    border: 3px solid blue;
+    height: calc(100vh - 150px);
+    overflow: hidden;
+}
 
-        }
+.content_item .category {
+    display: flex;
+    width: 75%;
+    gap: 16px;
+    align-items: center;
+    border: 3px solid;
+}
 
-        .content_item {
-            border: 3px solid blue;
-            height: 100%;
-            align-items: center;
-        }
+.content_item .list_container {
+    width: 100%;
+    max-height: 100%;
+    overflow-y: auto;
+    border: 3px solid red;
+    font-size: 14px;
+}
 
-        .content_item .category {
-            display: flex;
-            width: 75%;
-            gap: 16px;
-            align-items: center;
-            border: 3px solid;
-        }
+.content_item table {
+    width: 100%;
+    border-spacing: 20px;
+}
 
-        .content_item .list_container {
-            display: flex;
-            justify-content: center;
-            height: 100%;
-            border: 3px solid red;
-            font-size: 14px;
-            line-height: 14px;
-        }
+.page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
 
-        .content_item table {
-            border-spacing: 20px;
+.center {
+  text-align: center;
+}
 
-        }
+.center select,
+.center button {
+  display: inline-block;
+}
+</style>
+<script>
+//필터
+function filterData() {
+    var keyword = document.getElementById("searchInput").value.toLowerCase();
+    var category = document.getElementById("categoryFilter").value;
+    var reasonFilter = document.getElementById("reasonFilter").value;
+    var rows = document.querySelectorAll(".list_container tbody tr");
+    for (var i = 0; i < rows.length; i++) {
+        var row = rows[i];
+        var name = row.cells[1].innerText.toLowerCase();
+        var cat = row.cells[2].innerText;
+        var reason = row.querySelector("select").value;
+        var show = true;
+        if (keyword && name.indexOf(keyword) === -1) show = false;
+        if (category !== "전체" && cat !== category) show = false;
+        if (reasonFilter !== "전체" && reason !== reasonFilter) show = false;
+        row.style.display = show ? "" : "none";
+    }
+}
 
+//필터링 초기화
+function resetFilter() {
+    document.getElementById("searchInput").value = "";
+    document.getElementById("categoryFilter").value = "전체";
+    document.getElementById("reasonFilter").value = "전체";
+    var rows = document.querySelectorAll(".list_container tbody tr");
+    for (var i = 0; i < rows.length; i++) {
+        rows[i].style.display = "";
+    }
+}
 
-        .page {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 16px;
-            width: 100%;
-            font-size: 18px;
-            line-height: 18px;
+//알림 이동
+function goNotification() {
+    location.href = "controller?cmd=notificationUI";
+}
 
-        }
-    </style>
+//확인 버튼
+function confirmDisposal(button) {
+    var row = button.parentNode.parentNode;
+    var data = {
+        name: row.cells[1].innerText,
+        category: row.cells[2].innerText,
+        totalAmount: row.cells[4].innerText,
+        reason: row.querySelector("select").value,
+        date: row.cells[10].innerText
+    };
+    var list = JSON.parse(sessionStorage.getItem("noticeList")) || [];
+    list.push(data);
+    sessionStorage.setItem("noticeList", JSON.stringify(list));
+    row.remove();
+}
+</script>
 </head>
-
 <body>
-    <div class="container">
-        <section class="sideMenu">
-            <ul>
-                <li>메뉴조회</li>
-                <li><button type="button" onclick="location.href='controller?cmd=foodMaterialInputUI'">식자재입력</button></li>
-                <li><button type="button" onclick="location.href='controller?cmd=menuInputUI'">메뉴입력</button></li>
-                <li><button type="button" onclick="location.href='controller?cmd=foodMaterialUI'">식자재조회</button></li>
-                <li><button type="button" onclick="location.href='controller?cmd=menuDetailUI'">메뉴상세조회</button></li>
+<div class="container">
+    <section class="sideMenu">
+        <ul>
+            <li><button onclick="location.href='controller?cmd=foodMaterialInputUI'">식자재입력</button></li>
+            <li><button onclick="location.href='controller?cmd=menuInputUI'">메뉴입력</button></li>
+            <li><button onclick="location.href='controller?cmd=foodMaterialUI'">식자재조회</button></li>
+            <li><button onclick="location.href='controller?cmd=menuDetailUI'">메뉴상세조회</button></li>
+        </ul>
+        <ul>
+            <li><button onclick="location.href='controller?cmd=disposalUI'">폐기품목확인</button></li>
+        </ul>
+        <ul>
+            <li><button onclick="location.href='controller?cmd=revenueStatisticsUI'">매출통계</button></li>
+            <li><button onclick="location.href='controller?cmd=expendStatisticsUI'">지출통계</button></li>
+            <li><button onclick="location.href='controller?cmd=disposalStatisticsUI'">폐기통계</button></li>
+        </ul>
+    </section>
+    <div class="main">
+        <ul class="profile">
+            <li>김상혁님</li>
+            <li><button onclick="location.href='controller?cmd=notificationUI'">알림</button></li>
+        </ul>
+        <h2>폐기품목 확인</h2>
+        <div class="content_item">
+            <ul class="category">
+                <li>
+                    <input type="text" id="searchInput" onkeyup="filterData()" placeholder="검색">
+                </li>
+                <li>카테고리</li>
+                <select id="categoryFilter" onchange="filterData()">
+                    <option>전체</option>
+                    <option>채소</option>
+                    <option>정육</option>
+                    <option>가공품</option>
+                </select>
+                <li>사유</li>
+                <select id="reasonFilter" onchange="filterData()">
+                    <option>전체</option>
+                    <option>변질</option>
+                    <option>파손</option>
+                    <option>유통기한지남</option>
+                </select>
+                <button onclick="resetFilter()">초기화</button>
             </ul>
-            <ul>
-                <li>폐기관리</li>
-                <li><button type="button" onclick="location.href='controller?cmd=disposalUI'">폐기품목확인</button></li>
-            </ul>
-            <ul>
-                <li>통계</li>
-                <li><button type="button" onclick="location.href='controller?cmd=revenueStatisticsUI'">매출통계</button></li>
-                <li><button type="button" onclick="location.href='controller?cmd=expendStatisticsUI'">지출통계</button></li>
-                <li><button type="button" onclick="location.href='controller?cmd=disposalStatisticsUI'">폐기통계</button></li>
-            </ul>
-        </section>
-        <div class="main">
-            <div>
-                <ul class="profile">
-                    <td>김상혁님</td>
-                    <td>알림</td>
-                </ul>
-            </div>
-            <h2>폐기품목 확인</h2>
-            <div class="content_item">
-                <div>
-                    <ul class="category">
-
-                        <li><input type="text" placeholder="검색"> <button>검색하기</button></li>
-                        <li>전체</li>
-                        <select name="" id="">
-                            <option value="">채소</option>
-                            <option value="">정육</option>
-                            <option value="">유제품</option>
-                            <option value="">가공품</option>
-                            <option value="">음료/주류</option>
-                            <option value="">양념</option>
-                            <option value="">양념</option>
-                        </select>
-                        <li>적용하기</li>
-                    </ul>
-                </div>
-
-                <div>
-                    <table class="list_container">
-                        <tr class="list_item">
-                            <th>번호</th>
-                            <th>식자재명</th>
-                            <th>카테고리</th>
-                            <th>폐기량</th>
-                            <th>총폐기용량(단위:g)</th>
-                            <th>총폐기가격(단위:원)</th>
-                            <th>구입처</th>
-                            <th>매입날짜</th>
-                            <th>유통기한</th>
-                            <th>품목유형</th>
-                            <th>폐기일</th>
-                            <th>폐기사유</th>
-                            <th>폐기수정</th>
-                            <th>전체선택</th>
-                            <th>삭제하기</th>
-
-
-
-                        </tr>
-                        <tr>
-                            <td>5</td>
-                            <td>돼지고기</td>
-                            <td>정육</td>
-                            <td>5</td>
-                            <td>200g</td>
-                            <td>5,000</td>
-                            <td>최고정육점</td>
-                            <td>2026-04-19</td>
-                            <td>2026-04-27</td>
-                            <td>고체</td>
-                            <td>2026-04-22</td>
-
-                            <td>
-                                <select>
-                                    <option value="">변질</option>
-                                    <option value="">파손</option>
-                                    <option value="">유통기한지남</option>
-                                    <option value="">재고과다</option>
-                                    <option value="">기타</option>
-
-                                </select>
-                            </td>
-                            <td>폐기수정</td>
-                            <td><input type="checkbox" name="select_item" id=""></td>
-
-
-
-                        </tr>
-                        <tr>
-                            <td>4</td>
-                            <td>단무지</td>
-                            <td>가공품</td>
-                            <td>50</td>
-                            <td>200g</td>
-                            <td>2,000</td>
-                            <td>건강푸드</td>
-                            <td>2026-04-19</td>
-                            <td>2026-04-25</td>
-                            <td>고체</td>
-                            <td>2026-04-21</td>
-
-                            <td>
-                                <select>
-                                    <option value="">변질</option>
-                                    <option value="">파손</option>
-                                    <option value="">유통기한지남</option>
-                                    <option value="">재고과다</option>
-                                    <option value="">기타</option>
-
-                                </select>
-                            </td>
-                            <td>폐기수정</td>
-                            <td><input type="checkbox" name="select_item" id=""></td>
-
-
-
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>상추</td>
-                            <td>채소</td>
-                            <td>10</td>
-                            <td>50g</td>
-                            <td>2,000</td>
-                            <td>상혁이네야채가게</td>
-                            <td>2026-04-17</td>
-                            <td>2026-04-25</td>
-                            <td>고체</td>
-                            <td>2026-04-21</td>
-
-                            <td>
-                                <select>
-                                    <option value="">변질</option>
-                                    <option value="">파손</option>
-                                    <option value="">유통기한지남</option>
-                                    <option value="">재고과다</option>
-                                    <option value="">기타</option>
-
-                                </select>
-                            </td>
-                            <td>폐기수정</td>
-                            <td><input type="checkbox" name="select_item" id=""></td>
-
-
-
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>김치</td>
-                            <td>가공품</td>
-                            <td>5</td>
-                            <td>200g</td>
-                            <td>4,000</td>
-                            <td>건강푸드</td>
-                            <td>2026-04-15</td>
-                            <td>2026-04-30</td>
-                            <td>고체</td>
-                            <td>2026-04-20</td>
-
-                            <td>
-                                <select>
-                                    <option value="">변질</option>
-                                    <option value="">파손</option>
-                                    <option value="">유통기한지남</option>
-                                    <option value="">재고과다</option>
-                                    <option value="">기타</option>
-
-                                </select>
-                            </td>
-                            <td>폐기수정</td>
-                            <td><input type="checkbox" name="select_item" id=""></td>
-
-
-
-                        </tr>
-                        <tr>
-                            <td>1</td>
-                            <td>단무지</td>
-                            <td>가공품</td>
-                            <td>10</td>
-                            <td>200g</td>
-                            <td>1,000</td>
-                            <td>건강푸드</td>
-                            <td>2026-04-14</td>
-                            <td>2026-04-25</td>
-                            <td>고체</td>
-                            <td>2026-04-20</td>
-
-                            <td>
-                                <select>
-                                    <option value="">변질</option>
-                                    <option value="">파손</option>
-                                    <option value="">유통기한지남</option>
-                                    <option value="">재고과다</option>
-                                    <option value="">기타</option>
-
-                                </select>
-                            </td>
-                            <td>폐기수정</td>
-                            <td><input type="checkbox" name="select_item" id=""></td>
-
-
-
-                        </tr>
-                    </table>
-
-                    <div>
-                        <ul class="page">
-                            <li>&lt</li>
-                            <li>1</li>
-                            <li>2</li>
-                            <li>3</li>
-                            <li>4</li>
-                            <li>5</li>
-                            <li>&gt</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
+            <table class="list_container">
+                <thead>
+                <tr>
+                    <th>번호</th>
+                    <th>식자재명</th>
+                    <th>카테고리</th>
+                    <th>총폐기용량(g)</th>
+                    <th>총폐기가격(원)</th>
+                    <th>폐기일</th>
+                    <th>사유</th>
+                    <th>확인</th>
+                </tr>
+                </thead>
+                <tbody>
+                <c:forEach var="d" items="${list}">
+                    <tr>
+                        <td style="text-align:center;">${fn:substring(d.disposalId, 3,6)}</td>
+                        <td style="text-align:center;">${d.foodMaterialName}</td>
+                        <td style="text-align:center;">${d.foodCategory}</td>
+                        <td style="text-align:right;">${d.disposalCountAll}</td>
+                        <td style="text-align:right;"><fmt:formatNumber value="${d.disposalPrice}" /></td>
+                        <td style="text-align:center;">${d.disposalDate}</td>
+                        <td class="center">
+                            <select>
+                                <option selected>${d.reason}</option>
+                                <option>변질</option>
+                                <option>파손</option>
+                                <option>유통기한지남</option>
+                                <option>기타</option>
+                            </select>
+                        </td>
+                        <td class="center">
+                            <button onclick="confirmDisposal(this)">확인</button>
+                        </td>
+                    </tr>
+                </c:forEach>
+                </tbody>
+            </table>
         </div>
     </div>
+</div>
 </body>
-
-</html>
+</html>	

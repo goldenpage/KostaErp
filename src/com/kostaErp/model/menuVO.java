@@ -40,30 +40,17 @@ public class menuVO {
 	}
 	public void setMenuCategory_Id(String menuCategoryId){
 		this.menuCategoryId = menuCategoryId;
-<<<<<<< HEAD
+
 	}    
 
-=======
-	}
-  
-
-  
->>>>>>> refs/remotes/origin/master
     public String getMenuCategory() {
         return menuCategory;
     }
 
     public void setMenuCategory(String menuCategory) {
         this.menuCategory = menuCategory;
-<<<<<<< HEAD
+
     }    
-=======
-    }
-
-  
-
- 
->>>>>>> refs/remotes/origin/master
 
     public String getFoodMaterialName() {
         return foodMaterialName;

@@ -13,10 +13,9 @@ public class reasonVO {
 	}
 	public String getReason() {
 		return reason;
-<<<<<<< HEAD
+
 }
-=======
+
 	}
 
->>>>>>> refs/remotes/origin/master
-}
+

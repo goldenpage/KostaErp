@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 
 public class noticeDAO {
+	// ì•Œë¦¼ ì¶”ê°€
 	public boolean insertNotice(String noticeId, String disposalId) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -34,7 +35,7 @@ public class noticeDAO {
         return false;
     }
 
-    //¾Ë¸² ¸ñ·Ï Á¶È¸
+    // ì•Œë¦¼ ëª©ë¡ ì¡°íšŒ
     public ArrayList<noticeVO> getNoticeList() {
         ArrayList<noticeVO> list = new ArrayList<>();
         Connection conn = null;
@@ -72,7 +73,7 @@ public class noticeDAO {
         return list;
     }
 
-    //ÀüÃ¼ »èÁ¦ (·Ñ¹é Æ÷ÇÔ)
+ // ì „ì²´ ì‚­ì œ (ë¡¤ë°± í¬í•¨)
     public boolean deleteAll() {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -102,7 +103,7 @@ public class noticeDAO {
         return false;
     }
     
-    //ÀĞÀ½ Ã³¸®
+ // ì½ìŒ ì²˜ë¦¬
     public boolean updateReadYn(String noticeId) {
         Connection conn = null;
         PreparedStatement pstmt = null;

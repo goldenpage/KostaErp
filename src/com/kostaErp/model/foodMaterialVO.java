@@ -36,9 +36,6 @@ public class foodMaterialVO {
 		this.expirationDate = expirationDate;
 		this.bid = bid;
 	}
-<<<<<<< HEAD
-	
-	public foodMaterialVO() {}
 	
     public String getFoodMaterialId() {
         return foodMaterialId;
@@ -120,105 +117,6 @@ public class foodMaterialVO {
         this.foodMaterialType = foodMaterialType;
     }
 
-    public String getbId() {
-        return bid;
-    }
-
-    public void setbId(String bId) {
-        this.bid = bId;
-    }
-}
-=======
-
-
-
-
-	public String getBid(){ return bid; }
-
-
-
-
-
-	public String getFoodMaterialId() {
-		return foodMaterialId;
-	}
-
-	public void setFoodMaterialId(String foodMaterialId) {
-		this.foodMaterialId = foodMaterialId;
-	}
-
-	public String getFoodMaterialName() {
-		return foodMaterialName;
-	}
-
-	public void setFoodMaterialName(String foodMaterialName) {
-		this.foodMaterialName = foodMaterialName;
-	}
-
-	public String getFoodCategory() {
-		return foodCategory;
-	}
-
-	public void setFoodCategory(String foodCategory) {
-		this.foodCategory = foodCategory;
-	}
-
-	public int getFoodMaterialCount() {
-		return foodMaterialCount;
-	}
-
-	public void setFoodMaterialCount(int foodMaterialCount) {
-		this.foodMaterialCount = foodMaterialCount;
-	}
-
-	public int getFoodMaterialCountAll() {
-		return foodMaterialCountAll;
-	}
-
-	public void setFoodMaterialCountAll(int foodMaterialCountAll) {
-		this.foodMaterialCountAll = foodMaterialCountAll;
-	}
-
-	public int getFoodMaterialPrice() {
-		return foodMaterialPrice;
-	}
-
-	public void setFoodMaterialPrice(int foodMaterialPrice) {
-		this.foodMaterialPrice = foodMaterialPrice;
-	}
-
-	public String getVender() {
-		return vender;
-	}
-
-	public void setVender(String vender) {
-		this.vender = vender;
-	}
-
-	public Date getIncomeDate() {
-		return incomeDate;
-	}
-
-	public void setIncomeDate(Date incomeDate) {
-		this.incomeDate = incomeDate;
-	}
-
-	public Date getExpirationDate() {
-		return expirationDate;
-	}
-
-	public void setExpirationDate(Date expirationDate) {
-		this.expirationDate = expirationDate;
-	}
-
-	public String getFoodMaterialType() {
-		return foodMaterialType;
-	}
-
-	public void setFoodMaterialType(String foodMaterialType) {
-		this.foodMaterialType = foodMaterialType;
-	}
-
 	public String getbId() {
 		return bId;
 	}
@@ -247,5 +145,5 @@ public class foodMaterialVO {
 
 }
 
->>>>>>> refs/remotes/origin/master
+
 

@@ -22,13 +22,9 @@ public class menuCategoryVO {
 	public menuCategoryVO(){}
 
 	public menuCategoryVO(String menuCategory, String bId) {
-<<<<<<< HEAD
+
         this.menuCategory = menuCategory;
         this.bId = bId;
-    }
-=======
-		this.menuCategory = menuCategory;
-		this.bId = bId;
 	}
 
 
@@ -38,7 +34,7 @@ public class menuCategoryVO {
 		this.bId = bId;
 	}
 
->>>>>>> refs/remotes/origin/master
+
 
 	public void setMenuCategoryId(String menuCategoryId) {
 		this.menuCategoryId = menuCategoryId;
