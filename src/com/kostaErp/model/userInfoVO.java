@@ -9,17 +9,16 @@ public class userInfoVO {
 	private String email;
 	private String phone;
 	private String pw;
-	private Date MarketingDate;
-	private Date signDate;
-	private Date agreementDate;
+	private String signDate;
+	private String agreementDate;
 	private String marketingDate;
 
 
 	public userInfoVO(){}
 
 	public userInfoVO(String bId, String name, String phone, String email, String storeName, 
-			String storeType, String storeCategory, String pw, Date signDate,
-			Date agreementDate, String marketingDate){
+			String storeType, String storeCategory, String pw, String signDate,
+			String agreementDate, String marketingDate){
 		this.bId = bId;
 		this.name = name;
 		this.phone = phone;
@@ -76,8 +75,8 @@ public class userInfoVO {
 
 
 
-	public Date getSignDate() {return signDate;}
-	public Date getAgreementDate() {return agreementDate;}
+	public String getSignDate() {return signDate;}
+	public String getAgreementDate() {return agreementDate;}
 
 	public void setMarketingDate(String marketingDate) {
 		this.marketingDate = marketingDate;

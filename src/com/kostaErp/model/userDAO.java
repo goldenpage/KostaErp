@@ -10,115 +10,118 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class userDAO {
-	
-	public userDAO(){}
+   
+   public userDAO(){}
 
 	public int register(String bId, String name, String phone, 
 			String email, String storeName, String storeType, String storeCategory, 
 			String pw, String signDate, String agreementDate, String marketingDate){
 
-		int result = 0;
+      int result = 0;
 
-		String sql = "INSERT INTO USERINFO (bid,name,phone,email,storeName, "
-				+ "storeType,storeCategory,pw,signDate,agreementDate,marketingDate) " 
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+      String sql = "INSERT INTO USERINFO (bid,name,phone,email,storeName, "
+            + "storeType,storeCategory,pw,signDate,agreementDate,marketingDate) " 
+            + "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-		try{
-			Connection conn = DBCP.getConnection();
-			PreparedStatement stmt = conn.prepareStatement(sql);
+      try{
+         Connection conn = DBCP.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql);
 
-			stmt.setString(1, bId);
-			stmt.setString(2, name);
-			stmt.setString(3, phone);
-			stmt.setString(4, email);
-			stmt.setString(5, storeName);
-			stmt.setString(6, storeType);
-			stmt.setString(7, storeCategory);
-			stmt.setString(8, pw);
-			stmt.setDate(9, Date.valueOf(signDate));
-			stmt.setDate(10, Date.valueOf(agreementDate));
-			stmt.setDate(11, Date.valueOf(marketingDate));
+         stmt.setString(1, bId);
+         stmt.setString(2, name);
+         stmt.setString(3, phone);
+         stmt.setString(4, email);
+         stmt.setString(5, storeName);
+         stmt.setString(6, storeType);
+         stmt.setString(7, storeCategory);
+         stmt.setString(8, pw);
+         stmt.setDate(9, Date.valueOf(signDate));
+         stmt.setDate(10, Date.valueOf(agreementDate));
+         stmt.setDate(11, Date.valueOf(marketingDate));
 
-			result = stmt.executeUpdate();
+         result = stmt.executeUpdate();
 
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return result;
-	}
+      }catch(Exception e){
+         e.printStackTrace();
+      }
+      return result;
+   }
 
-	public userInfoVO checkMemberByVO(String bId, String name, String pw) throws ClassNotFoundException {
-		String sql = "SELECT bId, name, pw FROM USERINFO " +
-				"WHERE bId = ? AND name = ? AND pw = ?";
+   // 2. �α���
+   public userInfoVO checkMemberByVO(String bId, String name, String pw) throws ClassNotFoundException {
+      String sql = "SELECT bId, name, pw FROM USERINFO " +
+            "WHERE bId = ? AND name = ? AND pw = ?";
 
-		try (Connection conn = DBCP.getConnection();
-				PreparedStatement stmt = conn.prepareStatement(sql)) {
+      try (Connection conn = DBCP.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-			stmt.setString(1, bId);
-			stmt.setString(2, name);
-			stmt.setString(3, pw);
+         stmt.setString(1, bId);
+         stmt.setString(2, name);
+         stmt.setString(3, pw);
 
-			try (ResultSet rs = stmt.executeQuery()) {
-				if (rs.next()) {
-					userInfoVO member = new userInfoVO();
-					member.setbId(rs.getString("bId"));
-					member.setName(rs.getString("name"));
-					member.setPw(rs.getString("pw"));
-					return member;
-				}
-			}
-		} catch (SQLException e) {
-			System.err.println("�α��� üũ �� DB ����: " + e.getMessage());
-		}
-		return null;
-	}
- 
-	public int setPw(String pw, String bId, String name, String phone){
+         try (ResultSet rs = stmt.executeQuery()) {
+            if (rs.next()) {
+               userInfoVO member = new userInfoVO();
+               member.setbId(rs.getString("bId"));
+               member.setName(rs.getString("name"));
+               member.setPw(rs.getString("pw"));
+               return member;
+            }
+         }
+      } catch (SQLException e) {
+         System.err.println("�α��� üũ �� DB ����: " + e.getMessage());
+      }
+      return null;
+   }
 
-		int result = 0;
+   // 3. ��й�ȣ ���� 
+   public int setPw1(String pw, String bId, String name, String phone){
 
-		String sql = "UPDATE USERINFO SET pw = ? WHERE bId = ? AND NAME = ? AND PHONE = ?";
+      int result = 0;
 
-		try{
-			Connection conn = DBCP.getConnection();
-			PreparedStatement stmt = conn.prepareStatement(sql);
+      String sql = "UPDATE USERINFO SET pw = ? WHERE bId = ? AND NAME = ? AND PHONE = ?";
 
-			stmt.setString(1, pw);
-			stmt.setString(2, bId);
-			stmt.setString(3, name);
-			stmt.setString(4, phone);
+      try{
+         Connection conn = DBCP.getConnection();
+         PreparedStatement stmt = conn.prepareStatement(sql);
 
-			result = stmt.executeUpdate();
+         stmt.setString(1, pw);
+         stmt.setString(2, bId);
+         stmt.setString(3, name);
+         stmt.setString(4, phone);
 
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return result;
-	}
+         result = stmt.executeUpdate();
 
-	public List<userInfoVO> getMarketingMembers() throws ClassNotFoundException {
-		String sql = "SELECT bid, name, phone, email, marketingDate FROM USERINFO WHERE marketingDate IS NOT NULL";
-		List<userInfoVO> list = new ArrayList<>();
+      }catch(Exception e){
+         e.printStackTrace();
+      }
+      return result;
+   }
 
-		try (Connection conn = DBCP.getConnection();
-				PreparedStatement stmt = conn.prepareStatement(sql);
-				ResultSet rs = stmt.executeQuery()) {
+   // 4. ������ ����
+   public List<userInfoVO> getMarketingMembers1() throws ClassNotFoundException {
+      String sql = "SELECT bid, name, phone, email, marketingDate FROM USERINFO WHERE marketingDate IS NOT NULL";
+      List<userInfoVO> list = new ArrayList<>();
 
-			while (rs.next()) {
-				userInfoVO member = new userInfoVO();
-				member.setbId(rs.getString("bid"));
-				member.setName(rs.getString("name"));
-				member.setPhone(rs.getString("phone"));
-				member.setEmail(rs.getString("email"));
-				member.setMarketingDate(rs.getString("marketingDate")); 
+      try (Connection conn = DBCP.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            ResultSet rs = stmt.executeQuery()) {
 
-				list.add(member);
-			}
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return list;
-	}
+         while (rs.next()) {
+            userInfoVO member = new userInfoVO();
+            member.setbId(rs.getString("bid"));
+            member.setName(rs.getString("name"));
+            member.setPhone(rs.getString("phone"));
+            member.setEmail(rs.getString("email"));
+            member.setMarketingDate(rs.getString("marketingDate")); 
+
+            list.add(member);
+         }
+      } catch (SQLException e) {
+         e.printStackTrace();
+      }
+      return list;
+   }
 
 	public boolean addUser(String parameter, String parameter2, String parameter3) {
 		// TODO Auto-generated method stub

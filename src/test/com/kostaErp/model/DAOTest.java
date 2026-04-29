@@ -6,7 +6,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.sql.Date;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -185,7 +185,7 @@ public class DAOTest {
 
 	@Test
 	public void 마케팅테스트() throws ClassNotFoundException {
-		foodMaterialDAO dao = new foodMaterialDAO();
+		userDAO dao = new userDAO();
 		List<userInfoVO> list = dao.getMarketingMembers();
 		assertNotNull("조회된 리스트가 null입니다.", list);
 		assertTrue("마케팅 동의 회원이 존재하지 않습니다.", list.size() > 0);

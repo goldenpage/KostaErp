@@ -236,11 +236,51 @@
             viewRows = allRows.slice();
         }
 
-        function toggleSelectAll(selectAllCheckbox) {
-            allRows.forEach(function (row) {
-                if (row.style.display !== "none") {
-                    var checkbox = row.querySelector("input[name='select_item']");
-                    if (checkbox) checkbox.checked = selectAllCheckbox.checked;
+        allRows.forEach(function (row) {
+            row.style.display = "none";
+        });
+
+        var start = (currentPage - 1) * pageSize;
+        var end = start + pageSize;
+
+        viewRows.slice(start, end).forEach(function (row) {
+            row.style.display = "";
+        });
+    }
+
+    function sortByNumberDesc() {
+        viewRows.sort(function (a, b) {
+            var aNo = parseInt(a.querySelectorAll("td")[0].textContent.trim()) || 0;
+            var bNo = parseInt(b.querySelectorAll("td")[1].textContent.trim()) || 0; 
+            return aNo - bNo;
+        });
+        renderTable();
+    }
+
+    function sortByExpireAsc() {
+        viewRows.sort(function (a, b) {
+            var aDate = a.querySelectorAll("td")[8].textContent.trim();
+            var bDate = b.querySelectorAll("td")[8].textContent.trim();
+            return aDate.localeCompare(bDate);
+        });
+        renderTable(); 
+    }
+
+    function renderTable() {
+        var table = document.querySelector(".list_container");
+        var parent = table.querySelector("tbody") || table;
+        
+        viewRows.forEach(function(row) {
+            parent.appendChild(row); 
+        });
+    }
+
+    function selectVisibleRows() {
+        allRows.forEach(function (row) {
+            if (row.style.display !== "none") {
+                var checkbox = row.querySelector("input[name='select_item']");
+                if (checkbox !== null) {
+                    checkbox.checked = true;
                 }
             });
         }

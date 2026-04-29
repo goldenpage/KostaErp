@@ -10,17 +10,23 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet("/controller")
 public class FrontControllerServlet extends HttpServlet {
 
-	protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		request.setCharacterEncoding("UTF-8");
-		
-		
-		String cmd=request.getParameter("cmd");
-		System.out.println(cmd);
+    @Override
+    protected void service(HttpServletRequest request, HttpServletResponse response)
+            throws ServletException, IOException {
 
-		Action a=ActionFactory.getAction(cmd);
+        request.setCharacterEncoding("UTF-8");
 
-		String url = a.execute(request);
-		request.getRequestDispatcher("/view/"+url).forward(request, response);
-	}
+        String cmd = request.getParameter("cmd");
+        System.out.println("cmd : " + cmd);
 
+        Action action = ActionFactory.getAction(cmd);
+
+        String url = action.execute(request);
+
+        if (url == null) {
+            url = "login.jsp";
+        }
+
+        request.getRequestDispatcher("/view/" + url).forward(request, response);
+    }
 }
