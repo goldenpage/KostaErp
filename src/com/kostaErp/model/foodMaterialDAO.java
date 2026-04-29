@@ -45,7 +45,25 @@ public class foodMaterialDAO {
 		}
 		return result;
 	}
+	 // 2. 카테고리 추가
+    public int addFoodCategory(String foodCategoryId, String foodCategory){
+        int result = 0;
+        String sql = "INSERT INTO FOODC(foodCategory_Id, foodCategory) VALUES(?, ?)";
 
+        try{
+        	Connection conn = DBCP.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            
+            stmt.setString(1, foodCategoryId);
+            stmt.setString(2, foodCategory);
+            
+            result = stmt.executeUpdate();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return result;
+    }
 	public int deleteFoodCategory(String foodCategory) {
 		int result = 0;
 		String sql = "DELETE FROM FOODC WHERE foodCategory = ?";
