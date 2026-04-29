@@ -169,31 +169,12 @@
 <body>
     <div class="container">
         <section class="sideMenu">
-            <ul>
-                <li>메뉴조회</li>
-                <li><button type="button" onclick="location.href='controller?cmd=addFoodMaterialUI'">식자재입력</button></li>
-                <li><button type="button" onclick="location.href='controller?cmd=addMenuUI'">메뉴입력</button></li>
-                <li><a href="${pageContext.request.contextPath}/controller?cmd=foodMaterialUIAction">식자재조회</a></li>
-                <li><a href="${pageContext.request.contextPath}/controller?cmd=menuUIAction">메뉴상세조회</a></li>
-            </ul>
-            <ul>
-                <li>폐기관리</li>
-                <li><button type="button" onclick="location.href='controller?cmd=disposalItemsUI'">폐기품목확인</button></li>
-            </ul>
-            <ul>
-                <li>통계</li>
-                <li><button type="button" onclick="location.href='controller?cmd=revenueStatisticsUI'">매출통계</button></li>
-                <li><button type="button" onclick="location.href='controller?cmd=expendStatisticsUI'">지출통계</button></li>
-                <li><button type="button" onclick="location.href='controller?cmd=disposalStatisticsUI'">폐기통계</button></li>
-            </ul>
+          <jsp:include page="common/sideMenu.jsp" />
         </section>
 
         <div class="main">
             <div>
-                <ul class="profile">
-                    <li><span>${loginUser.name}님</span></li>
-                    <li><span>알림</span></li>
-                </ul>
+                <jsp:include page="common/userName.jsp" />
             </div>
             <h1>식자재 입력</h1>
             <div class="content_item">
