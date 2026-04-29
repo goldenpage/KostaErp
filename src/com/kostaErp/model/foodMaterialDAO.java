@@ -13,60 +13,58 @@ public class foodMaterialDAO {
 	
 	public foodMaterialDAO(){}
 
-	public boolean addFoodMaterial(String foodMaterialName, String foodCategory_Id, int foodMaterialCount, 
-			int foodMaterialCountAll, int foodMaterialPrice, String vender, String foodMaterialType, 
-			String incomeDate, String expirationDate, String bId){
-
-		boolean flag = false;
-
+	public int addFoodMaterial(List<foodMaterialVO> list, String bId) {
+		int successCount = 0;
 		String sql = "INSERT INTO FOODM(foodMaterialName, foodCategory_Id, foodMaterialCount, foodMaterialCountAll, "
 				+ "foodMaterialPrice, foodMaterialType, vender, incomeDate, expirationDate, bId) "
 				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-		try{
+		try {
 			Connection conn = DBCP.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(sql);
-
-			stmt.setString(1, foodMaterialName);
-			stmt.setString(2, foodCategory_Id);
-			stmt.setInt(3, foodMaterialCount);
-			stmt.setInt(4, foodMaterialCountAll);
-			stmt.setInt(5, foodMaterialPrice);
-			stmt.setString(6, foodMaterialType);
-			stmt.setString(7, vender);
-			stmt.setDate(8, Date.valueOf(incomeDate));
-			stmt.setDate(9, Date.valueOf(expirationDate));
-			stmt.setString(10, bId);
-
-			flag = (stmt.executeUpdate()==1);
+			for (foodMaterialVO vo : list) {
+				stmt.setString(1, vo.getFoodMaterialName());
+				stmt.setString(2, vo.getFoodCategory());
+				stmt.setInt(3, vo.getFoodMaterialCount());
+				stmt.setInt(4, vo.getFoodMaterialCountAll());
+				stmt.setInt(5, vo.getFoodMaterialPrice());
+				stmt.setString(6, vo.getFoodMaterialType());
+				stmt.setString(7, vo.getVender());
+				stmt.setDate(8, vo.getIncomeDate());
+				stmt.setDate(9, vo.getExpirationDate());
+				stmt.setString(10, bId);
+				successCount += stmt.executeUpdate();
+			}
 			stmt.close();
 			conn.close();
-
-		}catch(Exception e){
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return flag;
+		return successCount;
 	}
+
 	
 	
 	 // 2. 카테고리 추가
-    public int addFoodCategory(String foodCategoryId, String foodCategory){
-        int result = 0;
-        String sql = "INSERT INTO FOODC(foodCategory_Id, foodCategory) VALUES(?, ?)";
+    public boolean addFoodCategory(String foodCategory){
+
+    	boolean flag = false;
+    	
+        String sql = "INSERT INTO FOODC(foodCategory) VALUES(?)";
 
         try{
         	Connection conn = DBCP.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql);
             
-            stmt.setString(1, foodCategoryId);
-            stmt.setString(2, foodCategory);
+            stmt.setString(1, foodCategory);
             
-            result = stmt.executeUpdate();
+            flag = (stmt.executeUpdate()==1);
+			stmt.close();
+			conn.close();
 
         }catch(Exception e){
             e.printStackTrace();
         }
-        return result;
+        return flag;
     }
 
 	public int deleteFoodCategory(String foodCategory) {
@@ -400,6 +398,50 @@ public class foodMaterialDAO {
 
 	    return list;
 	}
-
+	
+	// 카테고리 전체 검색
+	public List<foodMaterialCategoryVO> getFoodCategoryList() {
+		List<foodMaterialCategoryVO> list = new ArrayList<>();
+		String sql = "SELECT foodCategory_Id, foodCategory FROM FOODC";
+		try {
+			Connection conn = DBCP.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				foodMaterialCategoryVO vo = new foodMaterialCategoryVO();
+				vo.setFoodCategoryId(rs.getString("foodCategory_Id"));
+				vo.setFoodCategory(rs.getString("foodCategory"));
+				list.add(vo);
+			}
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	//카테고리 삭제시, 이용하고 있는 식자재가 있는지 검색
+	public boolean hasFoodMaterialByCategory(String foodCategory) {
+		int count = 0;
+		String sql = "SELECT COUNT(*) FROM FOODM f JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id "
+				+ "WHERE c.foodCategory = ?";
+		try {
+			Connection conn = DBCP.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, foodCategory);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				count = rs.getInt(1);
+			}
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return count > 0;
+	}
 }
 

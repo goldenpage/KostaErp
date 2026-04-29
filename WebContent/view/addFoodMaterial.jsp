@@ -1,4 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html lang="kr">
 <head>
@@ -169,9 +170,7 @@
 <body>
     <div class="container">
         <section class="sideMenu">
-
           <jsp:include page="common/sideMenu.jsp" />
-
         </section>
 
         <div class="main">
@@ -179,41 +178,55 @@
                 <jsp:include page="common/userName.jsp" />
             </div>
             <h1>식자재 입력</h1>
+            <c:if test="${not empty errorMessage}">
+                <div style="color:red; margin: 0 10px;">${errorMessage}</div>
+            </c:if>
+            <c:if test="${not empty successMessage}">
+                <div style="color:green; margin: 0 10px;">${successMessage}</div>
+            </c:if>
             <div class="content_item">
 
                 <div class="content_left">
                     <div class="input_section">
 
                         <div class="input_row">
-                            <label>식자재명 입력 *</label>
-                            <input name="foodMaterialName" placeholder="단무지">
-                        </div>
-
-                        <div class="input_row">
+                            <form method="post" action="${pageContext.request.contextPath}/controller?cmd=addFoodCategoryAction">
                             <div class="category_buttons">
                                 <label>카테고리 추가</label>
-                                <input name="categoryName" placeholder="카테고리 입력">
-                                <button onclick="addCategory()">추가하기</button>
+                                <input type="text" name="foodCategory" placeholder="카테고리 입력">
+                                <button type="submit">추가하기</button>
                             </div>
+                            </form>
                         </div>
 
                         <div class="input_row">
                             <div class="category_buttons" id="categoryArea">
-                                <button name = "M" onclick="selectCategory(this)">유제품</button>
-                                <button name = "B" onclick="selectCategory(this)">정육</button>
-                                <button name = "V" onclick="selectCategory(this)">채소</button>
-                                <button name = "F" onclick="selectCategory(this)">과일</button>
-                                <button name = "PP" onclick="selectCategory(this)" class="selected">가공식품</button>
-                                <button name = "ETC" onclick="selectCategory(this)">기타</button>
+                                <c:forEach var="category" items="${categoryList}">
+                                    <span style="display:inline-flex; align-items:center; gap:2px;">
+                                        <form method="post" action="${pageContext.request.contextPath}/controller?cmd=deleteFoodCategoryAction" style="display:inline;">
+                                            <input type="hidden" name="foodCategory" value="${category.foodCategory}">
+                                            <button type="button" onclick="selectCategory(this)" data-category-id="${category.foodCategoryId}">${category.foodCategory}</button>
+                                            <button type="submit" class="remove_btn" onclick="return confirm('${category.foodCategory} 카테고리를 삭제하시겠습니까?')">&#10005;</button>
+                                        </form>
+                                    </span>
+                                </c:forEach>
                             </div>
+                        </div>
+
+                        <form method="post" action="${pageContext.request.contextPath}/controller?cmd=addFoodMaterialAction" class="addFood">
+                        <input type="hidden" id="selectedCategoryId" value="">
+
+                        <div class="input_row">
+                            <label>식자재명 입력 *</label>
+                            <input id="foodMaterialName" placeholder="단무지">
                         </div>
 
                         <div class="input_fields">
                             <label>전체수량 *</label>
-                            <input type="number" name="foodMaterialCount" placeholder="5" min="0">
+                            <input type="number" id="foodMaterialCount" placeholder="5" min="0">
 
                             <label>전체수량(단위:g) *</label>
-                            <input type="text" name="foodMaterialCountAll" placeholder="1.5">
+                            <input type="number" id="foodMaterialCountAll" placeholder="1500" min="0">
                             <select id="inputUnit">
                                 <option value="g">g</option>
                                 <option value="kg">kg</option>
@@ -224,22 +237,22 @@
 
                         <div class="input_fields">
                             <label>가격 *</label>
-                            <input type="number" name="foodMaterialPrice" placeholder="10000" min="0">
-							
-							<label>타입 *</label>
-                            <input type="text" name="foodMaterialType" placeholder="고체">
-                            
+                            <input type="number" id="foodMaterialPrice" placeholder="10000" min="0">
+
+                            <label>타입 *</label>
+                            <input type="text" id="foodMaterialType" placeholder="고체">
+
                             <label>구입처 *</label>
-                            <input type="text" name="vender" placeholder="하나로마트">
+                            <input type="text" id="vender" placeholder="하나로마트">
                         </div>
 
                         <div class="input_fields">
                             <label>매입일자</label>
                             <input type="date" id="incomeDate">
                             <span class="auto_date_hint">※ 미입력 시 오늘 날짜 자동 설정</span>
-                            
+
                             <label>유통기한 *</label>
-                            <input type="date" name="expirationDate">
+                            <input type="date" id="expirationDate">
                             <span>&#10003;</span>
                         </div>
 
@@ -294,92 +307,154 @@
                             <tr><td colspan="6" class="empty_msg">추가된 식자재가 없습니다</td></tr>
                         </tbody>
                     </table>
+                    <div id="hiddenFields"></div>
                     <div class="register_final_btn">
-                        <button type="submit" name="" onclick="registerAll()">식자재 등록</button>
+                        <button type="submit" class="submitbutton" onclick="return registerAll()">식자재 등록</button>
                     </div>
                 </div>
 
             </div>
+            </form>
         </div>
     </div>
 
     <script>
-
         function today() {
             return new Date().toISOString().substring(0, 10);
         }
 
-        document.getElementById('inputExpiry').value = today();
+        document.getElementById('incomeDate').value = today();
 
         function selectCategory(btn) {
             document.querySelectorAll('#categoryArea button').forEach(function(b) {
                 b.classList.remove('selected');
             });
             btn.classList.add('selected');
+            document.getElementById('selectedCategoryId').value = btn.getAttribute('data-category-id');
         }
 
-        function getSelectedCategory() {
+        function getSelectedCategoryName() {
             var sel = document.querySelector('#categoryArea button.selected');
             return sel ? sel.textContent.trim() : '';
         }
 
         function addCategory() {
-            var name = document.getElementById('inputCategoryName').value.trim();
-            if (!name) { alert('카테고리명을 입력해주세요.'); return; }
+            var categoryName = document.getElementById('inputCategoryName').value.trim();
+            if (!categoryName) { alert('카테고리명을 입력해주세요.'); return; }
 
             var existing = Array.from(document.querySelectorAll('#categoryArea button'))
                 .map(function(b) { return b.textContent.trim(); });
-            if (existing.indexOf(name) !== -1) { alert('이미 존재하는 카테고리입니다.'); return; }
+            if (existing.indexOf(categoryName) !== -1) { alert('이미 존재하는 카테고리입니다.'); return; }
 
             var btn = document.createElement('button');
             btn.type = 'button';
-            btn.textContent = name;
+            btn.textContent = categoryName;
+            btn.setAttribute('data-category-id', categoryName);
             btn.onclick = function() { selectCategory(this); };
             document.getElementById('categoryArea').appendChild(btn);
             document.getElementById('inputCategoryName').value = '';
             selectCategory(btn);
         }
 
+        var pendingList = [];
+
         function addToList() {
-            var name     = document.getElementById('foodMaterialName').value.trim();
-            var category = getSelectedCategory();
-            var quantity = document.getElementById('foodMaterialCount').value;
-            var weight   = document.getElementById('foodMaterialCountAll').value;
-            var unit     = document.getElementById('inputUnit').value;
-            var price    = document.getElementById('foodMaterialPrice').value;
-            var type     = document.getElementById('foodMaterialType').value;
-            var vender   = document.getElementById('vender').value.trim();
-            var purchase = document.getElementById('incomeDate').value;
-            var expiry   = document.getElementById('expirationDate').value;
-            if (!purchase) purchase = today();
+            var foodMaterialName     = document.getElementById('foodMaterialName').value.trim();
+            var foodCategory_Id      = document.getElementById('selectedCategoryId').value;
+            var foodCategoryName     = getSelectedCategoryName();
+            var foodMaterialCount    = document.getElementById('foodMaterialCount').value;
+            var foodMaterialCountAll = document.getElementById('foodMaterialCountAll').value;
+            var unit                 = document.getElementById('inputUnit').value;
+            var foodMaterialPrice    = document.getElementById('foodMaterialPrice').value;
+            var foodMaterialType     = document.getElementById('foodMaterialType').value.trim();
+            var vender               = document.getElementById('vender').value.trim();
+            var incomeDate           = document.getElementById('incomeDate').value;
+            var expirationDate       = document.getElementById('expirationDate').value;
 
-            if (!name)                             { alert('식자재명을 입력해주세요.'); return; }
-            if (!category)                         { alert('카테고리를 선택해주세요.'); return; }
-            if (!quantity || Number(quantity) < 0) { alert('전체수량을 올바르게 입력해주세요.'); return; }
-            if (!weight  || Number(weight) < 0)    { alert('식자재 용량을 올바르게 입력해주세요.'); return; }
-            if (!price   || Number(price) < 0)     { alert('가격을 올바르게 입력해주세요.'); return; }
-            if (!expiry)                           { alert('유통기한을 입력해주세요.'); return; }
-            if (!vender)                           { alert('구입처를 입력해주세요.'); return; }
+            if (!incomeDate) incomeDate = today();
 
-            if (expiry < purchase) {
-                alert('유통기한이 매입일자보다 이전입니다. 확인해주세요.');
+            if (!foodMaterialName)                                    { alert('식자재명을 입력해주세요.'); return; }
+            if (!foodCategory_Id)                                     { alert('카테고리를 선택해주세요.'); return; }
+            if (!foodMaterialCount    || Number(foodMaterialCount) < 0)    { alert('전체수량을 올바르게 입력해주세요.'); return; }
+            if (!foodMaterialCountAll || Number(foodMaterialCountAll) < 0) { alert('식자재 용량을 올바르게 입력해주세요.'); return; }
+            if (!foodMaterialPrice    || Number(foodMaterialPrice) < 0)    { alert('가격을 올바르게 입력해주세요.'); return; }
+            if (!foodMaterialType)                                    { alert('타입을 입력해주세요.'); return; }
+            if (!vender)                                              { alert('구입처를 입력해주세요.'); return; }
+            if (!expirationDate)                                      { alert('유통기한을 입력해주세요.'); return; }
+            if (expirationDate < incomeDate)                          { alert('유통기한이 매입일자보다 이전입니다.'); return; }
+
+            pendingList.push({
+                foodMaterialName:     foodMaterialName,
+                foodCategory_Id:      foodCategory_Id,
+                foodCategoryName:     foodCategoryName,
+                foodMaterialCount:    foodMaterialCount,
+                foodMaterialCountAll: foodMaterialCountAll,
+                unit:                 unit,
+                foodMaterialPrice:    foodMaterialPrice,
+                foodMaterialType:     foodMaterialType,
+                vender:               vender,
+                incomeDate:           incomeDate,
+                expirationDate:       expirationDate
+            });
+
+            renderPendingList();
+            clearInputs();
+        }
+
+        function renderPendingList() {
+            var body = document.getElementById('registerBody');
+            body.innerHTML = '';
+
+            if (pendingList.length === 0) {
+                body.innerHTML = '<tr><td colspan="6" class="empty_msg">추가된 식자재가 없습니다</td></tr>';
                 return;
             }
 
-            var body = document.getElementById('registerBody');
-            var emptyRow = body.querySelector('td[colspan]');
-            if (emptyRow) emptyRow.closest('tr').remove();
+            pendingList.forEach(function(item, idx) {
+                var tr = document.createElement('tr');
+                tr.innerHTML =
+                    '<td>' + item.foodMaterialName + '</td>' +
+                    '<td>' + item.foodCategoryName + '</td>' +
+                    '<td>' + item.foodMaterialCount + '</td>' +
+                    '<td>' + item.foodMaterialCountAll + item.unit + '</td>' +
+                    '<td>' + Number(item.foodMaterialPrice).toLocaleString() + '원</td>' +
+                    '<td><span class="remove_btn" data-index="' + idx + '" onclick="removeRow(this)">&#10005;</span></td>';
+                body.appendChild(tr);
+            });
+        }
 
-            var tr = document.createElement('tr');
-            tr.innerHTML =
-                '<td>' + name + '</td>' +
-                '<td>' + category + '</td>' +
-                '<td>' + quantity + '</td>' +
-                '<td>' + weight + unit + '</td>' +
-                '<td>' + Number(price).toLocaleString() + '원</td>' +
-                '<td><span class="remove_btn" onclick="removeRow(this)">&#10005;</span></td>';
-            body.appendChild(tr);
+        function removeRow(el) {
+            var idx = Number(el.getAttribute('data-index'));
+            pendingList.splice(idx, 1);
+            renderPendingList();
+        }
 
+        function rebuildHiddenFields() {
+            var container = document.getElementById('hiddenFields');
+            container.innerHTML = '';
+            pendingList.forEach(function(item) {
+                var fields = [
+                    ['foodMaterialName',     item.foodMaterialName],
+                    ['foodCategory_Id',      item.foodCategory_Id],
+                    ['foodMaterialCount',    item.foodMaterialCount],
+                    ['foodMaterialCountAll', item.foodMaterialCountAll],
+                    ['foodMaterialPrice',    item.foodMaterialPrice],
+                    ['foodMaterialType',     item.foodMaterialType],
+                    ['vender',               item.vender],
+                    ['incomeDate',           item.incomeDate],
+                    ['expirationDate',       item.expirationDate]
+                ];
+                fields.forEach(function(f) {
+                    var input = document.createElement('input');
+                    input.type = 'hidden';
+                    input.name = f[0];
+                    input.value = f[1];
+                    container.appendChild(input);
+                });
+            });
+        }
+
+        function clearInputs() {
             document.getElementById('foodMaterialName').value = '';
             document.getElementById('foodMaterialCount').value = '';
             document.getElementById('foodMaterialCountAll').value = '';
@@ -387,16 +462,12 @@
             document.getElementById('foodMaterialPrice').value = '';
             document.getElementById('foodMaterialType').value = '';
             document.getElementById('vender').value = '';
-            document.getElementById('incomeDate').value = '';
-            document.getElementById('expirationDate').value = today();
-        }
-
-        function removeRow(el) {
-            var body = document.getElementById('registerBody');
-            el.closest('tr').remove();
-            if (body.querySelectorAll('tr').length === 0) {
-                body.innerHTML = '<tr><td colspan="6" class="empty_msg">추가된 식자재가 없습니다</td></tr>';
-            }
+            document.getElementById('expirationDate').value = '';
+            document.getElementById('incomeDate').value = today();
+            document.getElementById('selectedCategoryId').value = '';
+            document.querySelectorAll('#categoryArea button').forEach(function(b) {
+                b.classList.remove('selected');
+            });
         }
 
         function searchMaterial() {
@@ -408,15 +479,15 @@
                 return;
             }
 
-            if (results.length === 0) {
+            if (typeof results === 'undefined' || results.length === 0) {
                 body.innerHTML = '<tr><td colspan="4" class="empty_msg">검색 결과가 없습니다</td></tr>';
                 return;
             }
 
             body.innerHTML = results.map(function(m) {
                 return '<tr>' +
-                    '<td>' + m.name + '</td>' +
-                    '<td>' + m.category + '</td>' +
+                    '<td>' + m.foodMaterialName + '</td>' +
+                    '<td>' + m.foodCategory + '</td>' +
                     '<td>' + m.vender + '</td>' +
                     '<td><button type="button" onclick=\'fillFromSearch(' + JSON.stringify(m) + ')\'>&#8853;</button></td>' +
                     '</tr>';
@@ -424,48 +495,38 @@
         }
 
         function fillFromSearch(data) {
-            document.getElementById('inputName').value     = data.name;
-            document.getElementById('inputQuantity').value = data.quantity;
-            document.getElementById('inputWeight').value   = data.weight;
-            document.getElementById('inputVender').value   = data.vender;
-            document.getElementById('inputPrice').value    = data.price;
-
-            var unitSelect = document.getElementById('inputUnit');
-            Array.from(unitSelect.options).forEach(function(opt, i) {
-                if (opt.value === data.unit) unitSelect.selectedIndex = i;
-            });
+            document.getElementById('foodMaterialName').value = data.foodMaterialName;
+            document.getElementById('foodMaterialCount').value = data.foodMaterialCount;
+            document.getElementById('foodMaterialCountAll').value = data.foodMaterialCountAll;
+            document.getElementById('vender').value = data.vender;
+            document.getElementById('foodMaterialPrice').value = data.foodMaterialPrice;
 
             var catBtns = document.querySelectorAll('#categoryArea button');
             var matched = false;
             catBtns.forEach(function(btn) {
                 btn.classList.remove('selected');
-                if (btn.textContent.trim() === data.category) {
+                if (btn.getAttribute('data-category-id') === data.foodCategory_Id) {
                     btn.classList.add('selected');
+                    document.getElementById('selectedCategoryId').value = data.foodCategory_Id;
                     matched = true;
                 }
             });
 
             if (!matched) {
-                document.getElementById('inputCategoryName').value = data.category;
+                document.getElementById('inputCategoryName').value = data.foodCategory;
                 addCategory();
             }
 
-            alert('"' + data.name + '" 정보를 불러왔습니다. 날짜를 확인 후 추가해주세요.');
+            alert('"' + data.foodMaterialName + '" 정보를 불러왔습니다. 날짜를 확인 후 추가해주세요.');
         }
 
         function registerAll() {
-            var rows = Array.from(document.querySelectorAll('#registerBody tr'))
-                .filter(function(r) { return !r.querySelector('td[colspan]'); });
-
-            if (rows.length === 0) {
+            if (pendingList.length === 0) {
                 alert('등록할 식자재가 없습니다.');
-                return;
+                return false;
             }
-
-            alert(rows.length + '개의 식자재가 등록되었습니다.');
-
-            document.getElementById('registerBody').innerHTML =
-                '<tr><td colspan="6" class="empty_msg">추가된 식자재가 없습니다</td></tr>';
+            rebuildHiddenFields();
+            return true;
         }
     </script>
 </body>
