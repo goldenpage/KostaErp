@@ -229,7 +229,9 @@
 <body>
     <div class="container">
         <section class="sideMenu">
+
             <jsp:include page="common/sideMenu.jsp" />
+
         </section>
 
         <div class="main">
