@@ -46,7 +46,14 @@ public class ActionFactory {
             case "disposalAction":
                 a = new disposalAction();
                 break;
+            case "disposalUIAction":
+            	a = new disposalUIAction();
+            	break;
 
+            case "disposalStatisticUIAction":
+            	a = new disposalStatisticsUIAction();
+            	break;
+            	
             case "salesAction":
                 a = new salesAction();
                 break;

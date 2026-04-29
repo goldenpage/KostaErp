@@ -11,8 +11,8 @@ public class loginAction implements Action {
         String bId = request.getParameter("bId");
         String pw = request.getParameter("pw");
 
-        System.out.println("�α��� �õ� bId : " + bId);
-        System.out.println("�α��� �õ� pw : " + pw);
+        System.out.println("bId : " + bId);
+        System.out.println("pw : " + pw);
 
         request.setAttribute("loginMessage", "�α��� ��û Ȯ�� �Ϸ�");
 
