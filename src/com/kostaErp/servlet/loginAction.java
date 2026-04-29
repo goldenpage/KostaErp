@@ -8,7 +8,7 @@ public class loginAction implements Action {
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
 		String url="login.jsp";
-		return null;
+		return url;
 	}
 
 }
