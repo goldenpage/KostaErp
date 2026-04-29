@@ -302,40 +302,39 @@ public class DAOTest {
 		System.out.println("expDesc : " + expDescList.size());
 	}
 
+	
+
+
+	
+	//------------------------------
+	
 	@Test
-	public void updateFoodMaterialAfterSaleTest() {
-		menuDAO dao = new menuDAO();
+	   public void updateFoodMaterialAfterSaleTest() {
+	       menuDAO dao = new menuDAO();
 
-		List<menuVO> menuList = dao.getMenuList(bId);
+	       String menuId = "MI001";
+	       int saleCount = 1;
 
-		assertNotNull(menuList);
-		assertTrue("메뉴 데이터가 없습니다.", menuList.size() > 0);
+	       boolean result = dao.updateFoodMaterialAfterSale(menuId, saleCount, bId);
 
-		String menuId = null;
-		for (menuVO menu : menuList) {
-			List<menuVO> detailList = dao.getMenuDetail(menu.getMenuId());
+	       System.out.println("판매 수량 : " + saleCount);
+	       System.out.println("자동 차감 메뉴ID : " + menuId);
+	       System.out.println("사업자 ID : " + bId);
+	       System.out.println("자동 차감 결과 : " + result);
 
-			if (detailList != null && detailList.size() > 0) {
-				menuId = menu.getMenuId();
-				break;
-			}
-		}
-		assertNotNull("USED에 연결된 메뉴가 없습니다.", menuId);
+	       assertTrue("식자재 자동 차감 실패", result);
+	   }
+	   @Test
+	   public void updateFoodMaterialAfterSaleFailTest() {
+	       menuDAO dao = new menuDAO();
 
-		boolean result = dao.updateFoodMaterialAfterSale(menuId, 1, bId);
-		System.out.println("자동 차감 메뉴ID : " + menuId);
-		System.out.println("자동 차감 결과 : " + result);
-		assertTrue("식자재 자동 차감 실패", result);
-	}
+	       boolean result = dao.updateFoodMaterialAfterSale("NO_MENU", 1, bId);
 
-	@Test
-	public void updateFoodMaterialAfterSaleFailTest() {
-		menuDAO dao = new menuDAO();
+	       System.out.println("없는 메뉴 자동 차감 결과 : " + result);
 
-		boolean result = dao.updateFoodMaterialAfterSale("NO_MENU", 1, bId);
+	       assertFalse("없는 메뉴, 자동 차감성공 X.", result);
+	   }
 
-		System.out.println("없는 메뉴 자동 차감 결과 : " + result);
-
-		assertFalse(result);
-	}
+	
+	
 }

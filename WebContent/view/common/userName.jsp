@@ -15,7 +15,7 @@
 <body>
 
 	<ul class="profile">
-		<li><span>${loginUser.name}´Ô</span></li>
+		<li><span>${info.name}´Ô</span></li>
 		<li><span>¾Ë¸²</span></li>
 	</ul>
 
