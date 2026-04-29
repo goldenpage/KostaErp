@@ -9,7 +9,7 @@ public class salesAction implements Action {
 
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
-		// TODO Auto-generated method stub
+	
 		return null;
 	}
 

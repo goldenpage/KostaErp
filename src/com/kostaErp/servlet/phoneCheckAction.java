@@ -7,15 +7,18 @@ import javax.servlet.http.HttpServletRequest;
 
 import com.kostaErp.model.userDAO;
 
-public class IdCheckAction implements Action {
+public class phoneCheckAction implements Action {
 
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
-		String bId = request.getParameter("bId");
+		boolean flag = false;
+		
+		String phone = request.getParameter("phone");
 		
 		userDAO dao = new userDAO();
-		boolean flag = dao.getBid(bId);
-
+		
+		flag = dao.getPhoneCheck(phone);
+		
 		if(flag) {
 			System.out.println("인증");
 			request.setAttribute("sucess", "인증에 성공했습니다.");
@@ -25,7 +28,8 @@ public class IdCheckAction implements Action {
 			request.setAttribute("errorMessage", "다시 인증해주세요");
 		}
 		
-		return null;
+		return "인증됐습니다.";
+		
 	}
 
 }

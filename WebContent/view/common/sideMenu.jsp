@@ -15,7 +15,7 @@
 </head>
 <body>
            <ul>
-                <li>메뉴조회</li>
+                <li>식자재관리</li>
                 <li><a href="${pageContext.request.contextPath}/controller?cmd=addFoodMaterialUIAction">식자재입력</a></li>
                 <li><a href="${pageContext.request.contextPath}/controller?cmd=addMenuUIAction'">메뉴입력</a></li>
                 <li><a href="${pageContext.request.contextPath}/controller?cmd=foodMaterialUIAction">식자재조회</a></li>

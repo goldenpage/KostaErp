@@ -39,8 +39,12 @@ public class userDAO {
 			stmt.setString(8, pw);
 			stmt.setDate(9, Date.valueOf(signDate));
 			stmt.setDate(10, Date.valueOf(agreementDate));
-			stmt.setDate(11, Date.valueOf(marketingDate));
-
+			if(marketingDate != null) {
+				stmt.setDate(11, Date.valueOf(marketingDate));
+			} else {
+				stmt.setDate(11, null);
+			}
+			
 			result = stmt.executeUpdate();
 
 		}catch(Exception e){
@@ -164,6 +168,70 @@ public class userDAO {
 		
 		
 		return tmp;
+	}
+	
+	//휴대폰인증
+	public boolean getPhoneCheck(String phone) {
+		boolean flag = false;
+		String sql = "SELECT bId, name, phone FROM USERINFO" 
+				+ " WHERE phone = ? ";
+		
+		Connection conn;
+		try {
+			conn = DBCP.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, phone );
+		
+			ResultSet rs = stmt.executeQuery();
+			
+			if(!rs.next()){
+				flag = true;
+			}
+		
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (ClassNotFoundException e) {
+			
+			e.printStackTrace();
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+		return flag;
+		
+	}
+	
+	public boolean getBid(String bId) {
+		boolean flag = false;
+		String sql = "SELECT bId FROM USERINFO WHERE bId = ?";
+		
+		Connection conn;
+		try {
+			conn = DBCP.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, bId );
+		
+			ResultSet rs = stmt.executeQuery();
+			
+			if(!rs.next()){
+				flag = true;
+			}
+		
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (ClassNotFoundException e) {
+			
+			e.printStackTrace();
+		} catch (SQLException e) {
+			
+			e.printStackTrace();
+		}
+		
+		return flag;
+		
 	}
 
 }

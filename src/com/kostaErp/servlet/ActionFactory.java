@@ -85,7 +85,9 @@ public class ActionFactory {
             case "idCheck":
                 a = new IdCheckAction();
                 break;
-
+            case "phoneCheckAction":
+            	a = new phoneCheckAction();
+            	break;
             default:
                 a = new loginUIAction();
         }
