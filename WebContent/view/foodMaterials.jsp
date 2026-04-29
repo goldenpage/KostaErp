@@ -85,21 +85,21 @@
     <div class="container">
         <section class="sideMenu">
             <ul>
-                <li><a href="${pageContext.request.contextPath}/controller?cmd=menuUIAction">메뉴조회</a></li>
-                <li>식자재입력</li>
-                <li>메뉴입력</li>
+                <li>메뉴조회</li>
+                <li><button type="button" onclick="location.href='controller?cmd=addFoodMaterialUI'">식자재입력</button></li>
+                <li><button type="button" onclick="location.href='controller?cmd=addMenuUI'">메뉴입력</button></li>
                 <li><a href="${pageContext.request.contextPath}/controller?cmd=foodMaterialUIAction">식자재조회</a></li>
-                <li>메뉴상세조회</li>
+                <li><a href="${pageContext.request.contextPath}/controller?cmd=menuUIAction">메뉴상세조회</a></li>
             </ul>
             <ul>
                 <li>폐기관리</li>
-                <li>폐기품목확인</li>
+                <li><button type="button" onclick="location.href='controller?cmd=disposalItemsUI'">폐기품목확인</button></li>
             </ul>
             <ul>
                 <li>통계</li>
-                <li>매출통계</li>
-                <li>지출통계</li>
-                <li>폐기통계</li>
+                <li><button type="button" onclick="location.href='controller?cmd=revenueStatisticsUI'">매출통계</button></li>
+                <li><button type="button" onclick="location.href='controller?cmd=expendStatisticsUI'">지출통계</button></li>
+                <li><button type="button" onclick="location.href='controller?cmd=disposalStatisticsUI'">폐기통계</button></li>
             </ul>
         </section>
         <div class="main">
