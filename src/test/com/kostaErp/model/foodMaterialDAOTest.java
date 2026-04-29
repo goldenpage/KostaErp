@@ -38,6 +38,7 @@ public class foodMaterialDAOTest {
 
 			    assertTrue(result > 0);
 	}
+	//월별 지출랭킹
 	@Test
 	public void getFoodMaterialSpendingRank() {
 		  List<foodMaterialVO> list = dao.getFoodMaterialSpendingRank("0000000000","2026-04-01","2026-05-01"	    );
