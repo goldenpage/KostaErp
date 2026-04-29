@@ -3,135 +3,155 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+
 <!DOCTYPE html>
-<html lang="kr">
+<html lang="ko">
 <head>
 <meta charset="UTF-8">
 <title>폐기품목 관리</title>
+
 <style>
-ul { list-style: none; }
-
-.container {
-    display: flex;
-    gap: 30px;
-    border: 5px solid;
-    height: 100vh;
+ul{
+    list-style:none;
+    margin:0;
+    padding:0;
 }
 
-.sideMenu {
-    height: 100vh;
-    border: 1px solid;
-    width: 300px;
+body{
+    margin:0;
+    padding:0;
 }
 
-.main {
-    border: 1px solid;
-    width: 100%;
+.container{
+    display:flex;
+    min-height:100vh;
+    border:3px solid #000;
 }
 
-.profile {
-    display: flex;
-    justify-content: end;
+.sideMenu{
+    width:260px;
+    border-right:1px solid #000;
+    padding:20px;
 }
 
-.content_item {
-    border: 3px solid blue;
-    height: calc(100vh - 150px);
-    overflow: hidden;
+.sideMenu ul{
+    margin-bottom:25px;
 }
 
-.content_item .category {
-    display: flex;
-    width: 75%;
-    gap: 16px;
-    align-items: center;
-    border: 3px solid;
+.sideMenu li{
+    margin-bottom:8px;
 }
 
-.content_item .list_container {
-    width: 100%;
-    max-height: 100%;
-    overflow-y: auto;
-    border: 3px solid red;
-    font-size: 14px;
+.main{
+    flex:1;
+    padding:20px;
 }
 
-.content_item table {
-    width: 100%;
-    border-spacing: 20px;
+.profile{
+    display:flex;
+    justify-content:flex-end;
+    gap:10px;
+    margin-bottom:20px;
 }
 
-.page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 16px;
+.content_item{
+    border:2px solid #2f49ff;
+    padding:15px;
 }
 
-.center {
-  text-align: center;
+.category{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    border:2px solid #000;
+    padding:10px;
+    margin-bottom:20px;
 }
 
-.center select,
-.center button {
-  display: inline-block;
+.list_container{
+    width:100%;
+    border-collapse:collapse;
+    border:2px solid red;
+}
+
+.list_container th,
+.list_container td{
+    border-bottom:1px solid #ddd;
+    padding:10px 8px;
+}
+
+.list_container th{
+    background:#f7f7f7;
+}
+
+.center{
+    text-align:center;
+}
+
+.right{
+    text-align:right;
+}
+
+/* select + button 중앙정렬 */
+.actionCell{
+    text-align:center;
+}
+
+.actionCell select,
+.actionCell button{
+    display:inline-block;
+    vertical-align:middle;
+}
+
+button{
+    cursor:pointer;
 }
 </style>
+
 <script>
-//필터
-function filterData() {
+function filterData(){
     var keyword = document.getElementById("searchInput").value.toLowerCase();
     var category = document.getElementById("categoryFilter").value;
-    var reasonFilter = document.getElementById("reasonFilter").value;
-    var rows = document.querySelectorAll(".list_container tbody tr");
-    for (var i = 0; i < rows.length; i++) {
+    var reason = document.getElementById("reasonFilter").value;
+
+    var rows = document.querySelectorAll("tbody tr");
+
+    for(var i=0; i<rows.length; i++){
         var row = rows[i];
+
         var name = row.cells[1].innerText.toLowerCase();
         var cat = row.cells[2].innerText;
-        var reason = row.querySelector("select").value;
+        var rsn = row.querySelector("select").value;
+
         var show = true;
-        if (keyword && name.indexOf(keyword) === -1) show = false;
-        if (category !== "전체" && cat !== category) show = false;
-        if (reasonFilter !== "전체" && reason !== reasonFilter) show = false;
+
+        if(keyword && name.indexOf(keyword) === -1) show = false;
+        if(category !== "전체" && cat !== category) show = false;
+        if(reason !== "전체" && rsn !== reason) show = false;
+
         row.style.display = show ? "" : "none";
     }
 }
 
-//필터링 초기화
-function resetFilter() {
+function resetFilter(){
     document.getElementById("searchInput").value = "";
     document.getElementById("categoryFilter").value = "전체";
     document.getElementById("reasonFilter").value = "전체";
-    var rows = document.querySelectorAll(".list_container tbody tr");
-    for (var i = 0; i < rows.length; i++) {
-        rows[i].style.display = "";
-    }
+    filterData();
 }
 
-//알림 이동
-function goNotification() {
-    location.href = "controller?cmd=notificationUI";
-}
-
-//확인 버튼
-function confirmDisposal(button) {
-    var row = button.parentNode.parentNode;
-    var data = {
-        name: row.cells[1].innerText,
-        category: row.cells[2].innerText,
-        totalAmount: row.cells[4].innerText,
-        reason: row.querySelector("select").value,
-        date: row.cells[10].innerText
-    };
-    var list = JSON.parse(sessionStorage.getItem("noticeList")) || [];
-    list.push(data);
-    sessionStorage.setItem("noticeList", JSON.stringify(list));
+function confirmDisposal(btn){
+    var row = btn.parentNode.parentNode;
     row.remove();
 }
 </script>
 </head>
+
 <body>
+
 <div class="container">
+
+    <!-- 사이드 메뉴 -->
     <section class="sideMenu">
         <ul>
             <li><button onclick="location.href='controller?cmd=foodMaterialInputUI'">식자재입력</button></li>
@@ -139,82 +159,129 @@ function confirmDisposal(button) {
             <li><button onclick="location.href='controller?cmd=foodMaterialUI'">식자재조회</button></li>
             <li><button onclick="location.href='controller?cmd=menuDetailUI'">메뉴상세조회</button></li>
         </ul>
+
         <ul>
             <li><button onclick="location.href='controller?cmd=disposalUI'">폐기품목확인</button></li>
         </ul>
+
         <ul>
             <li><button onclick="location.href='controller?cmd=revenueStatisticsUI'">매출통계</button></li>
             <li><button onclick="location.href='controller?cmd=expendStatisticsUI'">지출통계</button></li>
             <li><button onclick="location.href='controller?cmd=disposalStatisticsUI'">폐기통계</button></li>
         </ul>
     </section>
+
+    <!-- 메인 -->
     <div class="main">
+
         <ul class="profile">
             <li>김상혁님</li>
             <li><button onclick="location.href='controller?cmd=notificationUI'">알림</button></li>
         </ul>
+
         <h2>폐기품목 확인</h2>
+
         <div class="content_item">
+
+            <!-- 검색 -->
             <ul class="category">
                 <li>
                     <input type="text" id="searchInput" onkeyup="filterData()" placeholder="검색">
                 </li>
+
                 <li>카테고리</li>
-                <select id="categoryFilter" onchange="filterData()">
-                    <option>전체</option>
-                    <option>채소</option>
-                    <option>정육</option>
-                    <option>가공품</option>
-                </select>
+                <li>
+                    <select id="categoryFilter" onchange="filterData()">
+                        <option>전체</option>
+                        <option>채소</option>
+                        <option>정육</option>
+                        <option>가공품</option>
+                        <option>유제품</option>
+                        <option>양념</option>
+                    </select>
+                </li>
+
                 <li>사유</li>
-                <select id="reasonFilter" onchange="filterData()">
-                    <option>전체</option>
-                    <option>변질</option>
-                    <option>파손</option>
-                    <option>유통기한지남</option>
-                </select>
-                <button onclick="resetFilter()">초기화</button>
+                <li>
+                    <select id="reasonFilter" onchange="filterData()">
+                        <option>전체</option>
+                        <option>변질</option>
+                        <option>파손</option>
+                        <option>유통기한지남</option>
+                        <option>기타</option>
+                    </select>
+                </li>
+
+                <li>
+                    <button onclick="resetFilter()">초기화</button>
+                </li>
             </ul>
+
+            <!-- 목록 -->
             <table class="list_container">
                 <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>식자재명</th>
-                    <th>카테고리</th>
-                    <th>총폐기용량(g)</th>
-                    <th>총폐기가격(원)</th>
-                    <th>폐기일</th>
-                    <th>사유</th>
-                    <th>확인</th>
-                </tr>
-                </thead>
-                <tbody>
-                <c:forEach var="d" items="${list}">
                     <tr>
-                        <td style="text-align:center;">${fn:substring(d.disposalId, 3,6)}</td>
-                        <td style="text-align:center;">${d.foodMaterialName}</td>
-                        <td style="text-align:center;">${d.foodCategory}</td>
-                        <td style="text-align:right;">${d.disposalCountAll}</td>
-                        <td style="text-align:right;"><fmt:formatNumber value="${d.disposalPrice}" /></td>
-                        <td style="text-align:center;">${d.disposalDate}</td>
-                        <td class="center">
-                            <select>
-                                <option selected>${d.reason}</option>
-                                <option>변질</option>
-                                <option>파손</option>
-                                <option>유통기한지남</option>
-                                <option>기타</option>
-                            </select>
-                        </td>
-                        <td class="center">
-                            <button onclick="confirmDisposal(this)">확인</button>
-                        </td>
+                        <th>번호</th>
+                        <th>식자재명</th>
+                        <th>카테고리</th>
+                        <th>총폐기용량(g)</th>
+                        <th>총폐기가격(원)</th>
+                        <th>폐기일</th>
+                        <th>사유</th>
+                        <th>확인</th>
                     </tr>
-                </c:forEach>
+                </thead>
+
+                <tbody>
+                    <c:forEach var="d" items="${list}">
+                        <tr>
+                            <td class="center">
+                                ${fn:substring(d.disposalId,3,6)}
+                            </td>
+
+                            <td class="center">
+                                ${d.foodMaterialName}
+                            </td>
+
+                            <td class="center">
+                                ${d.foodCategory}
+                            </td>
+
+                            <td class="right">
+                                ${d.disposalCountAll}
+                            </td>
+
+                            <td class="right">
+                                <fmt:formatNumber value="${d.disposalPrice}" />
+                            </td>
+
+                            <td class="center">
+                                ${d.disposalDate}
+                            </td>
+
+                            <td class="actionCell">
+                                <select>
+                                    <option selected>${d.reason}</option>
+                                    <option>변질</option>
+                                    <option>파손</option>
+                                    <option>유통기한지남</option>
+                                    <option>기타</option>
+                                </select>
+                            </td>
+
+                            <td class="actionCell">
+                                <button onclick="confirmDisposal(this)">확인</button>
+                            </td>
+                        </tr>
+                    </c:forEach>
                 </tbody>
             </table>
+
         </div>
+
     </div>
+
 </div>
+
 </body>
-</html>	
+</html>

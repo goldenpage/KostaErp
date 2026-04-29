@@ -15,7 +15,6 @@ public class userInfoVO {
 	private String storeType;
 	private String storeCategory;
 
-
 	public userInfoVO(){}
 
 	public userInfoVO(String bId, String name, String phone, String email, String storeName, 

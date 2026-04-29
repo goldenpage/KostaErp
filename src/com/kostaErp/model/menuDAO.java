@@ -204,31 +204,49 @@ public class menuDAO {
         String sql =
             "UPDATE FOODM f " +
             "SET f.foodMaterialCountAll = f.foodMaterialCountAll - ( " +
-            "    SELECT u.usedCount * ? " +
+            "    SELECT SUM(u.usedCount) * ? " +
             "    FROM USED u " +
             "    WHERE u.foodMaterial_Id = f.foodMaterial_Id " +
             "      AND u.menu_Id = ? " +
             ") " +
-            "WHERE EXISTS ( " +
+            "WHERE f.bId = ? " +
+            "AND EXISTS ( " +
             "    SELECT 1 " +
             "    FROM USED u " +
             "    WHERE u.foodMaterial_Id = f.foodMaterial_Id " +
             "      AND u.menu_Id = ? " +
             ") " +
-            "AND f.bId = ?";
+            "AND NOT EXISTS ( " +
+            "    SELECT 1 " +
+            "    FROM FOODM f2, ( " +
+            "        SELECT foodMaterial_Id, SUM(usedCount) * ? AS needCount " +
+            "        FROM USED " +
+            "        WHERE menu_Id = ? " +
+            "        GROUP BY foodMaterial_Id " +
+            "    ) need " +
+            "    WHERE f2.foodMaterial_Id = need.foodMaterial_Id " +
+            "      AND f2.bId = ? " +
+            "      AND f2.foodMaterialCountAll < need.needCount " +
+            ")";
 
         try {
-        	Connection conn = DBCP.getConnection();
+            Connection conn = DBCP.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql);
 
             stmt.setInt(1, saleCount);
             stmt.setString(2, menuId);
-            stmt.setString(3, menuId);
-            stmt.setString(4, bId);
+
+            stmt.setString(3, bId);
+            stmt.setString(4, menuId);
+
+            stmt.setInt(5, saleCount);
+            stmt.setString(6, menuId);
+            stmt.setString(7, bId);
 
             flag = stmt.executeUpdate() > 0;
 
             stmt.close();
+            conn.close();
 
         } catch (Exception e) {
             e.printStackTrace();

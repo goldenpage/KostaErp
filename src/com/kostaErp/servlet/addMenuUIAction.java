@@ -5,12 +5,12 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
+public class addMenuUIAction implements Action {
 
-public class disposalUIAction implements Action{
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
-		return "disposalItems.jsp";
-	}
 
+		return "addMenu.jsp";
+	}
 
 }

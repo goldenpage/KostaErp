@@ -153,7 +153,7 @@ var solidTotal = 0;
 var liquidTotal = 0;
 var maxOverDay = 0;
 
-list.forEach(item => {
+list.forEach(function(item){
 
     var tr = document.createElement("tr");
 
