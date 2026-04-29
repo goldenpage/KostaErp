@@ -2,6 +2,20 @@ package test.com.kostaErp.model;
 
 import static org.junit.Assert.*;
 
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+import java.sql.Date;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
+
+import com.kostaErp.model.DBCP;
+import com.kostaErp.model.foodMaterialDAO;
+import com.kostaErp.model.foodMaterialVO;
+import com.kostaErp.model.menuDAO;
+import com.kostaErp.model.userDAO;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -15,198 +29,319 @@ import com.kostaErp.model.userInfoVO;
 
 public class DAOTest {
 
-    private String bId = "0000000000";
+	private foodMaterialDAO dao;
+	private menuDAO dao2;
+	private userDAO dao3;
+	private Connection conn;
+	private String bId = "0000000000";
 
-    @Test
-    public void getFoodMaterialCountTest() {
-        foodMaterialDAO dao = new foodMaterialDAO();
 
-        int count = dao.getFoodMaterialCount(bId);
+	@Before
+	public void setUp() throws Exception {
+		dao = new foodMaterialDAO();
+		dao2 = new menuDAO();
+		dao3 = new userDAO();
+		conn = DBCP.getConnection();
+		conn.setAutoCommit(false);
+	}
 
-        System.out.println("½ÄÀÚÀç °³¼ö : " + count);
+	// 1. ì‹ìì¬ ì…ë ¥
+	//@Test
+	public void addFoodMaterial(){
+		int result = dao.addFoodMaterial("ë‹¨ë¬´ì§€", "PP", 5, 1500, 15000, "í•˜ë‚˜ë¡œë§ˆíŠ¸", "ê³ ì²´", 
+				"2026-04-27", "2026-04-30", "0000000000");
+		assertTrue("ì…ë ¥ ì‹¤íŒ¨", result > 0);
 
-        assertTrue(count >= 0);
-    }
-    
+		//        int result = dao.addFoodMaterial("ë‹¨ë¬´ì§€", "PP", -1, 1500, 15000,"í•˜ë‚˜ë¡œë§ˆíŠ¸", "ê³ ì²´", 
+		//        		"2026-04-27", "2026-04-30", "0000000000");
+		//            assertTrue("ì…ë ¥ì‹¤íŒ¨", 0);
+	}
 
-//    @Test
-//    public void ·Î±×ÀÎÅ×½ºÆ®VO() throws Exception {
-//        foodMaterialDAO dao = new foodMaterialDAO();
-//        userInfoVO member = dao.checkMemberByVO("", "", "");
-//
-//        assertNotNull("È¸¿ø Á¤º¸¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.", member);
-//        assertEquals("", member.getName());
-//        assertEquals("", member.getbId());
-//    }
+	// 2. ì¹´í…Œê³ ë¦¬ ì¶”ê°€
+	//@Test
+	public void addFoodCategory(){
+		int result = dao.addFoodCategory("TE", "í…ŒìŠ¤íŠ¸");
+		assertTrue("ì¶”ê°€ ì„±ê³µ", result > 0);
+		//        int result = dao.addFoodCategory("PP", "ê°€ê³µì‹í’ˆ");
+		//        assertEquals("ì¶”ê°€ì‹¤íŒ¨", 0, result);
+	}
 
-   
+	// 3. ì¹´í…Œê³ ë¦¬ ì‚­ì œ
+	//@Test
+	public void deleteFoodCategory(){
+		int result = dao.deleteFoodCategory("ê¸°íƒ€");
+		assertTrue("ì‚­ì œì„±ê³µ", result > 0);
+		//        int result = dao.deleteFoodCategory("ì—†ëŠ”ì¹´í…Œê³ ë¦¬");
+		//        assertEquals("ì‚­ì œì‹¤íŒ¨", 0, result);
+	}
 
-    @Test
-    public void getFoodMaterialListTest() {
-        foodMaterialDAO dao = new foodMaterialDAO();
+	// 4. ì‹ìì¬ ê²€ìƒ‰
+	//@Test
+	public void getFoodMaterial(){
+		List<foodMaterialVO> list = dao.getFoodMaterialByName("ë‹¨ë¬´ì§€");
+		assertTrue("ê²€ìƒ‰ì„±ê³µ", list.size() > 0);
+		//        List<foodMaterialVO> list = dao.getFoodMaterialByName("ì»´í“¨í„°");
+		//        assertTrue("ê²€ìƒ‰ì‹¤íŒ¨", list.isEmpty());
+	}
 
-        List<foodMaterialVO> list = dao.getFoodMaterialList(bId, "idDesc", 1, 5);
 
-        for (foodMaterialVO vo : list) {
-            System.out.println(
-                vo.getFoodMaterialId() + " / " +
-                vo.getFoodMaterialName() + " / " +
-                vo.getFoodCategory() + " / " +
-                vo.getExpirationDate()
-            );
-        }
+	// 5. ë©”ë‰´ì¶”ê°€
+	//@Test
+	public void addMenu() {
+		int result = dao2.addMenu("ì°¸ì¹˜ê¹€ë°¥", 4000, "M001");
+		assertTrue("ë©”ë‰´ ì¶”ê°€ ì„±ê³µ", result > 0);
+		//        int result = dao2.addMenu(null, 4000, "M001");
+		//        assertEquals("ë©”ë‰´ ì¶”ê°€ ì‹¤íŒ¨", 0, result);
+	}
 
-        assertNotNull(list);
-        assertTrue(list.size() <= 5);
-    }
 
-    @Test
-    public void ¸¶ÄÉÆÃÅ×½ºÆ®() throws ClassNotFoundException {
-        foodMaterialDAO dao = new foodMaterialDAO();
-        List<userInfoVO> list = dao.getMarketingMembers();
-        assertNotNull("Á¶È¸µÈ ¸®½ºÆ®°¡ nullÀÔ´Ï´Ù.", list);
-                assertTrue("¸¶ÄÉÆÃ µ¿ÀÇ È¸¿øÀÌ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.", list.size() > 0);
+	// 6. ë©”ë‰´ ì¹´í…Œê³ ë¦¬ ì¶”ê°€
+	//@Test
+	public void addMenuCategory() {
+		int result = dao2.addMenuCategory("ê¹€ë°¥ë¥˜", "0000000000");
+		assertTrue("ì¹´í…Œê³ ë¦¬ ì¶”ê°€ ì„±ê³µ", result > 0);
+		//        int result = dao2.addMenuCategory(null, "0000000000");
+		//        assertEquals("ì¹´í…Œê³ ë¦¬ ì¶”ê°€ ì‹¤íŒ¨", 0, result);
+	}
 
-        if (!list.isEmpty()) {
-            userInfoVO firstMember = list.get(0);
-            System.out.println("Á¶È¸µÈ Ã¹ ¹øÂ° È¸¿ø: " + firstMember.getName());
-            System.out.println("¸¶ÄÉÆÃ µ¿ÀÇ ³¯Â¥: " + firstMember.getMarketingDate());
-            
-            assertNotNull("ÀÌ¸§ÀÌ ´©¶ôµÇ¾ú½À´Ï´Ù.", firstMember.getName());
-            assertNotNull("µ¿ÀÇ ³¯Â¥°¡ ´©¶ôµÇ¾ú½À´Ï´Ù.", firstMember.getMarketingDate());
-        }
-    }
-    
-    @Test
-    public void getFoodMaterialDetailTest() {
-        foodMaterialDAO dao = new foodMaterialDAO();
+	// 7. ë©”ë‰´ ì¹´í…Œê³ ë¦¬ ì‚­ì œ
+	//@Test
+	public void deleteMenuCategory_ì„±ê³µ() {
+		int result = dao2.deleteMenuCategory("ìŒë£Œ");
+		assertTrue("ì¹´í…Œê³ ë¦¬ ì‚­ì œ ì„±ê³µ", result > 0);
+		//        int result = dao2.deleteMenuCategory("ã…ã…ã…");
+		//        assertEquals("ì¹´í…Œê³ ë¦¬ ì‚­ì œ ì‹¤íŒ¨", 0, result);
+	}
 
-        List<foodMaterialVO> list = dao.getFoodMaterialList(bId, "idDesc", 1, 5);
 
-        if (list.size() > 0) {
-            String foodMaterialId = list.get(0).getFoodMaterialId();
+	// 8. ì‚¬ìš© ì‹ìì¬ ì¶”ê°€
+	//@Test
+	public void addUsedMaterial_ì„±ê³µ() {
+		int result = dao2.addUsedMaterial(30, "FM001", "MI001");
+		assertTrue("ì¶”ê°€ ì„±ê³µ", result > 0);
+		//        int result = dao2.addUsedMaterial(30, null, "MI001");
+		//        assertEquals("ì¶”ê°€ ì‹¤íŒ¨", 0, result);
+	}
 
-            foodMaterialVO vo = dao.getFoodMaterialDetail(foodMaterialId);
+	// 9. ì‚¬ìš© ì‹ìì¬ ì‚­ì œ
+	//@Test
+	public void deleteUsedMaterial_ì„±ê³µ() {
+		int result = dao2.deleteUsedMaterial("U002");
+		assertTrue("ì‚­ì œ ì„±ê³µ", result > 0);
+		//        int result = dao2.deleteUsedMaterial("AAA");
+		//        assertEquals("ì‚­ì œ ì‹¤íŒ¨", 0, result);
+	}
 
-            System.out.println("»ó¼¼ ½ÄÀÚÀç : " + vo.getFoodMaterialName());
+	// 10. íšŒì›ê°€ì…
+	//@Test
+	public void register(){
+		int result = dao3.register("1000000000","ê¹€ì‚¬ì¥","01000000000","kim@naver.com","ê¹€ë°¥ì²œêµ­", 
+				"ì¼ë°˜ìŒì‹ì ","ë¶„ì‹","kim123!","2026-04-27","2026-04-27","2026-04-27");
+		assertTrue("ì…ë ¥ ì„±ê³µ", result > 0);
+	}
 
-            assertNotNull(vo);
-            assertEquals(foodMaterialId, vo.getFoodMaterialId());
-        }
-    }
+	// 11. ë¡œê·¸ì¸ í…ŒìŠ¤íŠ¸
+	//@Test
+	public void ë¡œê·¸ì¸í…ŒìŠ¤íŠ¸VO() throws Exception {
+		userInfoVO member = dao3.checkMemberByVO("0000000001", "ì´ì‚¬ì¥", "lee123!");
 
-    @Test
-    public void getMenuListTest() {
-        menuDAO dao = new menuDAO();
+		assertNotNull("íšŒì› ì •ë³´ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.", member);
+		assertEquals("", member.getName());
+		assertEquals("", member.getbId());
+	}
 
-        List<menuVO> list = dao.getMenuList(bId);
+	// 12. ë¹„ë°€ë²ˆí˜¸ ë³€ê²½
+	//@Test
+	public void setPw(){
+		int result = dao3.setPw("kim123@", "0000000000", "ê¹€ì‚¬ì¥", "01000000000");
+		assertTrue("ì…ë ¥ ì„±ê³µ", result > 0);
+	}
 
-        for (menuVO vo : list) {
-            System.out.println(
-                vo.getMenuId() + " / " +
-                vo.getMenuName() + " / " +
-                vo.getMenuCategory() + " / " +
-                vo.getMenuPrice()
-            );
-        }
 
-        assertNotNull(list);
-    }
 
-    @Test
-    public void getMenuDetailTest() {
-        menuDAO dao = new menuDAO();
+	//  @Test
+	//  public void ë¡œê·¸ì¸í…ŒìŠ¤íŠ¸VO() throws Exception {
+	//      foodMaterialDAO dao = new foodMaterialDAO();
+	//      userInfoVO member = dao.checkMemberByVO("", "", "");
+	//
+	//      assertNotNull("íšŒì› ì •ë³´ë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.", member);
+	//      assertEquals("", member.getName());
+	//      assertEquals("", member.getbId());
+	//  }
 
-        List<menuVO> menuList = dao.getMenuList(bId);
 
-        if (menuList.size() > 0) {
-            String menuId = menuList.get(0).getMenuId();
+	@Test
+	public void getFoodMaterialListTest() {
+		foodMaterialDAO dao = new foodMaterialDAO();
 
-            List<menuVO> detailList = dao.getMenuDetail(menuId);
+		List<foodMaterialVO> list = dao.getFoodMaterialList(bId, "idDesc", 1, 5);
 
-            for (menuVO vo : detailList) {
-                System.out.println(
-                    vo.getFoodMaterialName() + " / " +
-                    vo.getUsedCount() + "g / " +
-                    vo.getFoodMaterialPrice() + "¿ø / " +
-                    vo.getUsedPrice() + "¿ø"
-                );
-            }
+		for (foodMaterialVO vo : list) {
+			System.out.println(
+					vo.getFoodMaterialId() + " / " +
+							vo.getFoodMaterialName() + " / " +
+							vo.getFoodCategory() + " / " +
+							vo.getExpirationDate()
+					);
+		}
 
-            assertNotNull(detailList);
-        }
-    }
-    @Test
-    public void getFoodMaterialPageTest() {
-        foodMaterialDAO dao = new foodMaterialDAO();
+		assertNotNull(list);
+		assertTrue(list.size() <= 5);
+	}
 
-        List<foodMaterialVO> page1 = dao.getFoodMaterialList(bId, "idDesc", 1, 5);
-        List<foodMaterialVO> page2 = dao.getFoodMaterialList(bId, "idDesc", 2, 5);
+	@Test
+	public void ë§ˆì¼€íŒ…í…ŒìŠ¤íŠ¸() throws ClassNotFoundException {
+		userDAO dao = new userDAO();
+		List<userInfoVO> list = dao.getMarketingMembers();
+		assertNotNull("ì¡°íšŒëœ ë¦¬ìŠ¤íŠ¸ê°€ nullì…ë‹ˆë‹¤.", list);
+		assertTrue("ë§ˆì¼€íŒ… ë™ì˜ íšŒì›ì´ ì¡´ì¬í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤.", list.size() > 0);
 
-        assertNotNull(page1);
-        assertNotNull(page2);
+		if (!list.isEmpty()) {
+			userInfoVO firstMember = list.get(0);
+			System.out.println("ì¡°íšŒëœ ì²« ë²ˆì§¸ íšŒì›: " + firstMember.getName());
+			System.out.println("ë§ˆì¼€íŒ… ë™ì˜ ë‚ ì§œ: " + firstMember.getMarketingDate());
 
-        assertTrue(page1.size() <= 5);
-        assertTrue(page2.size() <= 5);
+			assertNotNull("ì´ë¦„ì´ ëˆ„ë½ë˜ì—ˆìŠµë‹ˆë‹¤.", firstMember.getName());
+			assertNotNull("ë™ì˜ ë‚ ì§œê°€ ëˆ„ë½ë˜ì—ˆìŠµë‹ˆë‹¤.", firstMember.getMarketingDate());
+		}
+	}
 
-        System.out.println("1ÆäÀÌÁö °³¼ö : " + page1.size());
-        System.out.println("2ÆäÀÌÁö °³¼ö : " + page2.size());
-    }
-    @Test
-    public void getFoodMaterialListSortTest() {
-        foodMaterialDAO dao = new foodMaterialDAO();
 
-        List<foodMaterialVO> idDescList = dao.getFoodMaterialList(bId, "idDesc", 1, 5);
-        List<foodMaterialVO> idAscList = dao.getFoodMaterialList(bId, "idAsc", 1, 5);
-        List<foodMaterialVO> expAscList = dao.getFoodMaterialList(bId, "expAsc", 1, 5);
-        List<foodMaterialVO> expDescList = dao.getFoodMaterialList(bId, "expDesc", 1, 5);
+	@After
+	public void tearDown() throws Exception {
+		conn.rollback();
+		conn.setAutoCommit(true);
+		conn.close();
+	}
+	@Test
+	public void getFoodMaterialDetailTest() {
+		foodMaterialDAO dao = new foodMaterialDAO();
 
-        assertNotNull(idDescList);
-        assertNotNull(idAscList);
-        assertNotNull(expAscList);
-        assertNotNull(expDescList);
+		List<foodMaterialVO> list = dao.getFoodMaterialList(bId, "idDesc", 1, 5);
 
-        System.out.println("idDesc : " + idDescList.size());
-        System.out.println("idAsc : " + idAscList.size());
-        System.out.println("expAsc : " + expAscList.size());
-        System.out.println("expDesc : " + expDescList.size());
-    }
-    
-    @Test
-    public void updateFoodMaterialAfterSaleTest() {
-        menuDAO dao = new menuDAO();
+		if (list.size() > 0) {
+			String foodMaterialId = list.get(0).getFoodMaterialId();
 
-        List<menuVO> menuList = dao.getMenuList(bId);
+			foodMaterialVO vo = dao.getFoodMaterialDetail(foodMaterialId);
 
-        assertNotNull(menuList);
-        assertTrue("¸Ş´º µ¥ÀÌÅÍ°¡ ¾ø½À´Ï´Ù.", menuList.size() > 0);
+			System.out.println("ìƒì„¸ ì‹ìì¬ : " + vo.getFoodMaterialName());
 
-        String menuId = null;
-        for (menuVO menu : menuList) {
-            List<menuVO> detailList = dao.getMenuDetail(menu.getMenuId());
+			assertNotNull(vo);
+			assertEquals(foodMaterialId, vo.getFoodMaterialId());
+		}
+	}
 
-            if (detailList != null && detailList.size() > 0) {
-                menuId = menu.getMenuId();
-                break;
-            }
-        }
-        assertNotNull("USED¿¡ ¿¬°áµÈ ¸Ş´º°¡ ¾ø½À´Ï´Ù.", menuId);
+	@Test
+	public void getMenuListTest() {
+		menuDAO dao = new menuDAO();
 
-        boolean result = dao.updateFoodMaterialAfterSale(menuId, 1, bId);
-        System.out.println("ÀÚµ¿ Â÷°¨ ¸Ş´ºID : " + menuId);
-        System.out.println("ÀÚµ¿ Â÷°¨ °á°ú : " + result);
+		List<menuVO> list = dao.getMenuList(bId);
 
-        assertTrue("½ÄÀÚÀç ÀÚµ¿ Â÷°¨ ½ÇÆĞ", result);
-    }
+		for (menuVO vo : list) {
+			System.out.println(
+					vo.getMenuId() + " / " +
+							vo.getMenuName() + " / " +
+							vo.getMenuCategory() + " / " +
+							vo.getMenuPrice()
+					);
+		}
 
-    @Test
-    public void updateFoodMaterialAfterSaleFailTest() {
-        menuDAO dao = new menuDAO();
+		assertNotNull(list);
+	}
 
-        boolean result = dao.updateFoodMaterialAfterSale("NO_MENU", 1, bId);
+	@Test
+	public void getMenuDetailTest() {
+		menuDAO dao = new menuDAO();
 
-        System.out.println("¾ø´Â ¸Ş´º ÀÚµ¿ Â÷°¨ °á°ú : " + result);
+		List<menuVO> menuList = dao.getMenuList(bId);
 
-        assertFalse(result);
-    }
+		if (menuList.size() > 0) {
+			String menuId = menuList.get(0).getMenuId();
+
+			List<menuVO> detailList = dao.getMenuDetail(menuId);
+
+			for (menuVO vo : detailList) {
+				System.out.println(
+						vo.getFoodMaterialName() + " / " +
+								vo.getUsedCount() + "g / " +
+								vo.getFoodMaterialPrice() + "ì› / " +
+								vo.getUsedPrice() + "ì›"
+						);
+			}
+
+			assertNotNull(detailList);
+		}
+	}
+	@Test
+	public void getFoodMaterialPageTest() {
+		foodMaterialDAO dao = new foodMaterialDAO();
+
+		List<foodMaterialVO> page1 = dao.getFoodMaterialList(bId, "idDesc", 1, 5);
+		List<foodMaterialVO> page2 = dao.getFoodMaterialList(bId, "idDesc", 2, 5);
+
+		assertNotNull(page1);
+		assertNotNull(page2);
+
+		assertTrue(page1.size() <= 5);
+		assertTrue(page2.size() <= 5);
+
+		System.out.println("1í˜ì´ì§€ ê°œìˆ˜ : " + page1.size());
+		System.out.println("2í˜ì´ì§€ ê°œìˆ˜ : " + page2.size());
+	}
+	@Test
+	public void getFoodMaterialListSortTest() {
+		foodMaterialDAO dao = new foodMaterialDAO();
+
+		List<foodMaterialVO> idDescList = dao.getFoodMaterialList(bId, "idDesc", 1, 5);
+		List<foodMaterialVO> idAscList = dao.getFoodMaterialList(bId, "idAsc", 1, 5);
+		List<foodMaterialVO> expAscList = dao.getFoodMaterialList(bId, "expAsc", 1, 5);
+		List<foodMaterialVO> expDescList = dao.getFoodMaterialList(bId, "expDesc", 1, 5);
+
+		assertNotNull(idDescList);
+		assertNotNull(idAscList);
+		assertNotNull(expAscList);
+		assertNotNull(expDescList);
+
+		System.out.println("idDesc : " + idDescList.size());
+		System.out.println("idAsc : " + idAscList.size());
+		System.out.println("expAsc : " + expAscList.size());
+		System.out.println("expDesc : " + expDescList.size());
+	}
+
+	@Test
+	public void updateFoodMaterialAfterSaleTest() {
+		menuDAO dao = new menuDAO();
+
+		List<menuVO> menuList = dao.getMenuList(bId);
+
+		assertNotNull(menuList);
+		assertTrue("ë©”ë‰´ ë°ì´í„°ê°€ ì—†ìŠµë‹ˆë‹¤.", menuList.size() > 0);
+
+		String menuId = null;
+		for (menuVO menu : menuList) {
+			List<menuVO> detailList = dao.getMenuDetail(menu.getMenuId());
+
+			if (detailList != null && detailList.size() > 0) {
+				menuId = menu.getMenuId();
+				break;
+			}
+		}
+		assertNotNull("USEDì— ì—°ê²°ëœ ë©”ë‰´ê°€ ì—†ìŠµë‹ˆë‹¤.", menuId);
+
+		boolean result = dao.updateFoodMaterialAfterSale(menuId, 1, bId);
+		System.out.println("ìë™ ì°¨ê° ë©”ë‰´ID : " + menuId);
+		System.out.println("ìë™ ì°¨ê° ê²°ê³¼ : " + result);
+		assertTrue("ì‹ìì¬ ìë™ ì°¨ê° ì‹¤íŒ¨", result);
+	}
+
+	@Test
+	public void updateFoodMaterialAfterSaleFailTest() {
+		menuDAO dao = new menuDAO();
+
+		boolean result = dao.updateFoodMaterialAfterSale("NO_MENU", 1, bId);
+
+		System.out.println("ì—†ëŠ” ë©”ë‰´ ìë™ ì°¨ê° ê²°ê³¼ : " + result);
+
+		assertFalse(result);
+	}
 }

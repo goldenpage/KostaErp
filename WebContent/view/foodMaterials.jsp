@@ -1,3 +1,5 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="kr">
 
@@ -79,13 +81,14 @@
 </head>
 
 <body>
+	<div>${message}</div>
     <div class="container">
         <section class="sideMenu">
             <ul>
-                <li>메뉴조회</li>
+                <li><a href="${pageContext.request.contextPath}/controller?cmd=menuUIAction">메뉴조회</a></li>
                 <li>식자재입력</li>
                 <li>메뉴입력</li>
-                <li>식자재조회</li>
+                <li><a href="${pageContext.request.contextPath}/controller?cmd=foodMaterialUIAction">식자재조회</a></li>
                 <li>메뉴상세조회</li>
             </ul>
             <ul>
@@ -431,6 +434,7 @@
         viewRows.sort(function (a, b) {
             var aNo = parseInt(a.querySelectorAll("td")[0].textContent.trim()) || 0;
             var bNo = parseInt(b.querySelectorAll("td")[1].textContent.trim()) || 0; 
+
             return aNo - bNo;
         });
         renderTable();
