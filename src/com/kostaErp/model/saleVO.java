@@ -18,7 +18,7 @@ public class saleVO {
 	public saleVO(){}
 
 	public saleVO(int saleMenuCount, String menuId, String revenueId){
-		this.saleMenuCount = saleMenuCount; //String 인지 int인지 체크
+		this.saleMenuCount = saleMenuCount;
 		this.menuId = menuId;
 		this.revenueId = revenueId; 
 	}

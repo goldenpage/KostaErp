@@ -11,10 +11,10 @@ public class loginAction implements Action {
         String bId = request.getParameter("bId");
         String pw = request.getParameter("pw");
 
-        System.out.println("·Î±×ÀÎ ½Ãµµ bId : " + bId);
-        System.out.println("·Î±×ÀÎ ½Ãµµ pw : " + pw);
+        System.out.println("ï¿½Î±ï¿½ï¿½ï¿½ ï¿½Ãµï¿½ bId : " + bId);
+        System.out.println("ï¿½Î±ï¿½ï¿½ï¿½ ï¿½Ãµï¿½ pw : " + pw);
 
-        request.setAttribute("loginMessage", "·Î±×ÀÎ ¿äÃ» È®ÀÎ ¿Ï·á");
+        request.setAttribute("loginMessage", "ï¿½Î±ï¿½ï¿½ï¿½ ï¿½ï¿½Ã» È®ï¿½ï¿½ ï¿½Ï·ï¿½");
 
         return "foodMaterials.jsp";
     }

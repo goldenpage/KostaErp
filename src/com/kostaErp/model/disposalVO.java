@@ -17,6 +17,8 @@ public class disposalVO {
     private Date disposalDay;
     private int solidCount;
     private int liquidCount;
+    private String foodMaterialType;
+
 
     private double disposalRate;
 	
@@ -109,6 +111,12 @@ public class disposalVO {
 	}
 	public void setReasonId(String reasonId) {
 		this.reasonId = reasonId;
+	}
+	public String getFoodMaterialType() {
+		return foodMaterialType;
+	}
+	public void setFoodMaterialType(String foodMaterialType) {
+		this.foodMaterialType = foodMaterialType;
 	}
 	
 	
