@@ -27,6 +27,14 @@ public class ActionFactory {
                 a = new addUserAction();
                 break;
             
+            case "addFoodCategoryAction":
+            	a = new addFoodCategoryAction();
+            	break;
+            	
+            case "deleteFoodCategoryAction":
+            	a = new deleteFoodCategoryAction();
+            	break;
+            
             case "addFoodMaterialUIAction":
             	a = new addFoodMaterialUIAction();
             	break;
