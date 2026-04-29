@@ -33,41 +33,6 @@ public class foodMaterialVO {
 	
 	public foodMaterialVO() {}
 	
-	public String getFoodMaterialId(){ return foodMaterialId; }
-	public String getFoodMaterialName(){ return foodMaterialName;}
-	public String getFoodCategory(){ return foodCategory; }
-	public int getFoodMaterialCount(){ return foodMaterialCount; }
-	public int getFoodMaterialCountAll(){ return foodMaterialCountAll; }
-	public int getFoodMaterialPrice(){ return foodMaterialPrice; }
-	public String getVender(){ return vender; }
-	public Date getIncomeDate(){ return incomeDate; }
-	public Date getExpirationDate(){ return expirationDate; }
-	public String getFoodMaterialType(){ return foodMaterialType; }
-	public String getBid(){ return bid; }
-	
-	public void setFoodMaterialName(String foodMaterialName) {
-	    this.foodMaterialName = foodMaterialName;
-	}
-	public void setFoodCategory(String foodCategory) {
-	    this.foodCategory = foodCategory;
-	}
-	public void setVender(String vender) {
-	    this.vender = vender;
-	}
-}
-
-    private String foodMaterialId;
-    private String foodMaterialName;
-    private String foodCategory;
-    private int foodMaterialCount;
-    private int foodMaterialCountAll;
-    private int foodMaterialPrice;
-    private String vender;
-    private Date incomeDate;
-    private Date expirationDate;
-    private String foodMaterialType;
-    private String bId;
-
     public String getFoodMaterialId() {
         return foodMaterialId;
     }
@@ -149,11 +114,11 @@ public class foodMaterialVO {
     }
 
     public String getbId() {
-        return bId;
+        return bid;
     }
 
     public void setbId(String bId) {
-        this.bId = bId;
+        this.bid = bId;
     }
 }
 

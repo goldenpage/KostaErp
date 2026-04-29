@@ -11,10 +11,6 @@ public class foodMaterialCategoryVO {
         this.foodCategoryId = foodCategoryId;
         this.foodCategory = foodCategory;
     }
-    
-
-    private String foodCategoryId;
-    private String foodCategory;
 
     public String getFoodCategoryId() {
         return foodCategoryId;
