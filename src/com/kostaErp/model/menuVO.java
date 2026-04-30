@@ -19,7 +19,10 @@ public class menuVO {
 		this.menuPrice = menuPrice;
 		this.menuCategoryId = menuCategoryId;
 	}
-
+	
+	public menuVO(String menuName) {
+		this.menuName = menuName;
+	}
 	
 	public String getMenuName(){ return menuName; }
 	public int getMenuPrice(){ return menuPrice; }

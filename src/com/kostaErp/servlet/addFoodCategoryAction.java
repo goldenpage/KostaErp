@@ -13,23 +13,25 @@ public class addFoodCategoryAction implements Action {
 
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
-
+		String foodCategory = request.getParameter("foodCategory");
+		
+		if(foodCategory == null || foodCategory.trim().isEmpty()){
+            request.setAttribute("ajaxResponse", "fail|카테고리명을 입력해주세요.");
+            return null;
+        }
+		
+		foodCategory = foodCategory.trim();
 		foodMaterialDAO dao = new foodMaterialDAO();
-		 
-		try {
-			if (dao.addFoodCategory(request.getParameter("foodCategory")))
-				System.out.println("등록성공");
-			else
-				System.out.println("등록실패");
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("정보 못가져옴");
-		}
- 
-		List<foodMaterialCategoryVO> categoryList = dao.getFoodCategoryList();
-		request.setAttribute("categoryList", categoryList);
- 
-		return "addFoodMaterial.jsp";
+		int result = dao.addFoodCategory(foodCategory);
+		
+		if(result == 1){
+            request.setAttribute("ajaxResponse", "success|" + foodCategory);
+        }else if(result == 0){
+        	request.setAttribute("ajaxResponse", "fail|이미 존재하는 카테고리입니다.");
+        }
+		else{
+            request.setAttribute("ajaxResponse", "fail|카테고리 추가에 실패했습니다.");
+        }
+		return null;
 	}
-
 }

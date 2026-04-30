@@ -18,37 +18,26 @@ public class deleteMenuCategoryAction implements Action {
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		String bId = (session != null) ? (String) session.getAttribute("loginOK") : null;
- 
-		if(bId == null){
-			return "login.jsp";
+
+		if (bId == null) {
+			request.setAttribute("ajaxResponse", "fail|로그인이 필요합니다.");
+			return null;
 		}
- 
+
 		menuDAO mDao = new menuDAO();
 		String menuCategory = request.getParameter("menuCategory");
- 
-		if(mDao.hasMenuByCategory(menuCategory)){
-			request.setAttribute("errorMessage", "'" + menuCategory + 
-					"'카테고리에 등록된 메뉴가 있어 삭제할 수 없습니다.");
-		} 
-		else{
+
+		if (mDao.hasMenuByCategory(menuCategory)) {
+			request.setAttribute("ajaxResponse", "fail|'" + menuCategory + "' 카테고리에 등록된 메뉴가 있어 삭제할 수 없습니다.");
+		} else {
 			int result = mDao.deleteMenuCategory(menuCategory);
-			if(result > 0){
-				request.setAttribute("successMessage", "'" + menuCategory + "' 카테고리가 삭제되었습니다.");
-				System.out.println("삭제성공");
-			} 
-			else{
-				request.setAttribute("errorMessage", "카테고리 삭제에 실패했습니다.");
-				System.out.println("삭제실패");
+			if (result > 0) {
+				request.setAttribute("ajaxResponse", "success|'" + menuCategory + "' 카테고리가 삭제되었습니다.");
+			} else {
+				request.setAttribute("ajaxResponse", "fail|카테고리 삭제에 실패했습니다.");
 			}
 		}
- 
-		List<menuCategoryVO> categoryList = mDao.getMenuCategoryList(bId);
-		List<foodMaterialVO> foodMaterialList = new foodMaterialDAO().getFoodMaterialListAll(bId);
- 
-		request.setAttribute("categoryList", categoryList);
-		request.setAttribute("foodMaterialList", foodMaterialList);
- 
-		return "addMenu.jsp";
+		return null;
 	}
 
 }
