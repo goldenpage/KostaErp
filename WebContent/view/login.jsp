@@ -110,8 +110,8 @@
         <button type="submit" value="로그인" class="submitbutton">로그인</button>
 
         <div class="auth-links">
-            <a href="${pageContext.request.contextPath}/controller?cmd=addUserUIAction"">회원가입</a> | 
-            <a href="#">비밀번호 찾기</a>
+            <a href="${pageContext.request.contextPath}/controller?cmd=addUserUIAction">회원가입</a> | 
+            <a href="${pageContext.request.contextPath}/controller?cmd=pwFindUIAction">비밀번호 찾기</a>
         </div>
     </form>
     
