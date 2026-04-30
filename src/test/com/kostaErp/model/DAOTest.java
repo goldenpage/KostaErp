@@ -14,6 +14,7 @@ import org.junit.Test;
 import com.kostaErp.model.DBCP;
 import com.kostaErp.model.foodMaterialDAO;
 import com.kostaErp.model.foodMaterialVO;
+import com.kostaErp.model.menuCategoryVO;
 import com.kostaErp.model.menuDAO;
 import com.kostaErp.model.userDAO;
 
@@ -93,10 +94,10 @@ public class DAOTest {
 
 
 	// 5. 메뉴추가
-	//@Test
+	@Test
 	public void addMenu() {
-		int result = dao2.addMenu("참치김밥", 4000, "M001");
-		assertTrue("메뉴 추가 성공", result > 0);
+		String result = dao2.addMenu("참치김밥", 4000, "M001");
+		assertTrue("메뉴 추가 성공", result != null);
 		//        int result = dao2.addMenu(null, 4000, "M001");
 		//        assertEquals("메뉴 추가 실패", 0, result);
 	}
@@ -343,6 +344,32 @@ public class DAOTest {
 	       assertFalse("없는 메뉴, 자동 차감성공 X.", result);
 	   }
 
+	   //
+	   @Test
+		public void getMenuCategoryList() {
+			List<menuCategoryVO> list = dao2.getMenuCategoryList(bId);
+			System.out.println("카테고리 수: " + list.size());
+			assertNotNull(list);
+			assertTrue("카테고리가 1개 이상 있어야 합니다", list.size() > 0);
+			for (menuCategoryVO vo : list) {
+				System.out.println(vo.getMenuCategoryId() + " / " + vo.getMenuCategory());
+				assertNotNull("menuCategoryId가 null이면 안됩니다", vo.getMenuCategoryId());
+				assertNotNull("menuCategory가 null이면 안됩니다", vo.getMenuCategory());
+			}
+		}
 	
-	
+	   //
+	   @Test
+		public void getFoodMaterialListAll() {
+			foodMaterialDAO fDao = new foodMaterialDAO();
+			List<foodMaterialVO> list = fDao.getFoodMaterialListAll(bId);
+			System.out.println("전체 식자재 수: " + list.size());
+			assertNotNull(list);
+			assertTrue("식자재가 1개 이상 있어야 합니다", list.size() > 0);
+			for (foodMaterialVO vo : list) {
+				System.out.println(vo.getFoodMaterialId() + " / " + vo.getFoodMaterialName() + " / " + vo.getFoodCategory());
+				assertNotNull("foodMaterialId가 null이면 안됩니다", vo.getFoodMaterialId());
+				assertNotNull("foodMaterialName이 null이면 안됩니다", vo.getFoodMaterialName());
+			}
+		}
 }

@@ -399,7 +399,7 @@ public class foodMaterialDAO {
 	    return list;
 	}
 	
-	// 카테고리 전체 검색
+	// 카테고리 전체 검색(추가)
 	public List<foodMaterialCategoryVO> getFoodCategoryList() {
 		List<foodMaterialCategoryVO> list = new ArrayList<>();
 		String sql = "SELECT foodCategory_Id, foodCategory FROM FOODC";
@@ -422,7 +422,7 @@ public class foodMaterialDAO {
 		return list;
 	}
 	
-	//카테고리 삭제시, 이용하고 있는 식자재가 있는지 검색
+	//카테고리 삭제시, 이용하고 있는 식자재가 있는지 검색(추가)
 	public boolean hasFoodMaterialByCategory(String foodCategory) {
 		int count = 0;
 		String sql = "SELECT COUNT(*) FROM FOODM f JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id "
@@ -442,6 +442,33 @@ public class foodMaterialDAO {
 			e.printStackTrace();
 		}
 		return count > 0;
+	}
+	
+	//식재료 선택 시, 사용할 전체 식자재 목록 불러오기(추가)
+	public List<foodMaterialVO> getFoodMaterialListAll(String bId) {
+		List<foodMaterialVO> list = new ArrayList<>();
+		String sql = "SELECT f.foodMaterial_Id, f.foodMaterialName, c.foodCategory " +
+					 "FROM FOODM f JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id " +
+					 "WHERE f.bId = ? ORDER BY f.foodMaterialName ASC";
+		try {
+			Connection conn = DBCP.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, bId);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				foodMaterialVO vo = new foodMaterialVO();
+				vo.setFoodMaterialId(rs.getString("foodMaterial_Id"));
+				vo.setFoodMaterialName(rs.getString("foodMaterialName"));
+				vo.setFoodCategory(rs.getString("foodCategory"));
+				list.add(vo);
+			}
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
 	}
 }
 

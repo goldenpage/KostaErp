@@ -359,42 +359,42 @@
         var pendingList = [];
 
         function addToList() {
-            var foodMaterialName     = document.getElementById('foodMaterialName').value.trim();
-            var foodCategory_Id      = document.getElementById('selectedCategoryId').value;
-            var foodCategoryName     = getSelectedCategoryName();
-            var foodMaterialCount    = document.getElementById('foodMaterialCount').value;
+            var foodMaterialName = document.getElementById('foodMaterialName').value.trim();
+            var foodCategory_Id = document.getElementById('selectedCategoryId').value;
+            var foodCategoryName = getSelectedCategoryName();
+            var foodMaterialCount = document.getElementById('foodMaterialCount').value;
             var foodMaterialCountAll = document.getElementById('foodMaterialCountAll').value;
-            var unit                 = document.getElementById('inputUnit').value;
-            var foodMaterialPrice    = document.getElementById('foodMaterialPrice').value;
-            var foodMaterialType     = document.getElementById('foodMaterialType').value.trim();
-            var vender               = document.getElementById('vender').value.trim();
-            var incomeDate           = document.getElementById('incomeDate').value;
-            var expirationDate       = document.getElementById('expirationDate').value;
+            var unit = document.getElementById('inputUnit').value;
+            var foodMaterialPrice = document.getElementById('foodMaterialPrice').value;
+            var foodMaterialType = document.getElementById('foodMaterialType').value.trim();
+            var vender = document.getElementById('vender').value.trim();
+            var incomeDate = document.getElementById('incomeDate').value;
+            var expirationDate = document.getElementById('expirationDate').value;
 
             if (!incomeDate) incomeDate = today();
 
-            if (!foodMaterialName)                                    { alert('식자재명을 입력해주세요.'); return; }
-            if (!foodCategory_Id)                                     { alert('카테고리를 선택해주세요.'); return; }
-            if (!foodMaterialCount    || Number(foodMaterialCount) < 0)    { alert('전체수량을 올바르게 입력해주세요.'); return; }
+            if (!foodMaterialName) { alert('식자재명을 입력해주세요.'); return; }
+            if (!foodCategory_Id) { alert('카테고리를 선택해주세요.'); return; }
+            if (!foodMaterialCount || Number(foodMaterialCount) < 0) { alert('전체수량을 올바르게 입력해주세요.'); return; }
             if (!foodMaterialCountAll || Number(foodMaterialCountAll) < 0) { alert('식자재 용량을 올바르게 입력해주세요.'); return; }
-            if (!foodMaterialPrice    || Number(foodMaterialPrice) < 0)    { alert('가격을 올바르게 입력해주세요.'); return; }
-            if (!foodMaterialType)                                    { alert('타입을 입력해주세요.'); return; }
-            if (!vender)                                              { alert('구입처를 입력해주세요.'); return; }
-            if (!expirationDate)                                      { alert('유통기한을 입력해주세요.'); return; }
-            if (expirationDate < incomeDate)                          { alert('유통기한이 매입일자보다 이전입니다.'); return; }
+            if (!foodMaterialPrice || Number(foodMaterialPrice) < 0) { alert('가격을 올바르게 입력해주세요.'); return; }
+            if (!foodMaterialType) { alert('타입을 입력해주세요.'); return; }
+            if (!vender) { alert('구입처를 입력해주세요.'); return; }
+            if (!expirationDate) { alert('유통기한을 입력해주세요.'); return; }
+            if (expirationDate < incomeDate) { alert('유통기한이 매입일자보다 이전입니다.'); return; }
 
             pendingList.push({
-                foodMaterialName:     foodMaterialName,
-                foodCategory_Id:      foodCategory_Id,
-                foodCategoryName:     foodCategoryName,
-                foodMaterialCount:    foodMaterialCount,
+                foodMaterialName: foodMaterialName,
+                foodCategory_Id: foodCategory_Id,
+                foodCategoryName: foodCategoryName,
+                foodMaterialCount: foodMaterialCount,
                 foodMaterialCountAll: foodMaterialCountAll,
-                unit:                 unit,
-                foodMaterialPrice:    foodMaterialPrice,
-                foodMaterialType:     foodMaterialType,
-                vender:               vender,
-                incomeDate:           incomeDate,
-                expirationDate:       expirationDate
+                unit: unit,
+                foodMaterialPrice: foodMaterialPrice,
+                foodMaterialType: foodMaterialType,
+                vender: vender,
+                incomeDate: incomeDate,
+                expirationDate: expirationDate
             });
 
             renderPendingList();
@@ -434,15 +434,15 @@
             container.innerHTML = '';
             pendingList.forEach(function(item) {
                 var fields = [
-                    ['foodMaterialName',     item.foodMaterialName],
-                    ['foodCategory_Id',      item.foodCategory_Id],
-                    ['foodMaterialCount',    item.foodMaterialCount],
+                    ['foodMaterialName', item.foodMaterialName],
+                    ['foodCategory_Id', item.foodCategory_Id],
+                    ['foodMaterialCount', item.foodMaterialCount],
                     ['foodMaterialCountAll', item.foodMaterialCountAll],
-                    ['foodMaterialPrice',    item.foodMaterialPrice],
-                    ['foodMaterialType',     item.foodMaterialType],
-                    ['vender',               item.vender],
-                    ['incomeDate',           item.incomeDate],
-                    ['expirationDate',       item.expirationDate]
+                    ['foodMaterialPrice', item.foodMaterialPrice],
+                    ['foodMaterialType', item.foodMaterialType],
+                    ['vender', item.vender],
+                    ['incomeDate', item.incomeDate],
+                    ['expirationDate', item.expirationDate]
                 ];
                 fields.forEach(function(f) {
                     var input = document.createElement('input');
