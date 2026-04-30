@@ -344,7 +344,7 @@ public class DAOTest {
 	       assertFalse("없는 메뉴, 자동 차감성공 X.", result);
 	   }
 
-	   //
+	   // 사용자의 메뉴 카테고리 조회
 	   @Test
 		public void getMenuCategoryList() {
 			List<menuCategoryVO> list = dao2.getMenuCategoryList(bId);
@@ -358,7 +358,7 @@ public class DAOTest {
 			}
 		}
 	
-	   //
+	   // 식자재 조회
 	   @Test
 		public void getFoodMaterialListAll() {
 			foodMaterialDAO fDao = new foodMaterialDAO();
@@ -372,4 +372,11 @@ public class DAOTest {
 				assertNotNull("foodMaterialName이 null이면 안됩니다", vo.getFoodMaterialName());
 			}
 		}
+	   
+	   @Test
+	   public void getMenuName(){
+		   boolean result = dao2.hasMenuCheck("참치김밥");
+		   assertTrue(result);
+		   
+	   }
 }
