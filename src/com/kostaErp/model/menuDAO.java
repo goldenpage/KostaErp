@@ -12,10 +12,11 @@ public class menuDAO {
 	public menuDAO(){}
 
 	// 1. 메뉴 추가
-	public int addMenu(String menuName, int menuPrice, String menuCategoryId){
-		int result = 0;
+	public String addMenu(String menuName, int menuPrice, String menuCategoryId){
+		String menuId = null;
 		String sql = "INSERT INTO MENUS(menuName, menuPrice, menuCategory_Id) VALUES(?, ?, ?)";
-
+		String sql2 = "SELECT menu_Id FROM MENUS WHERE menuName = ? AND menuCategory_Id = ? "
+				+ "ORDER BY menu_Id DESC";
 		try{
 			Connection conn = DBCP.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -24,12 +25,25 @@ public class menuDAO {
 			stmt.setInt(2, menuPrice);
 			stmt.setString(3, menuCategoryId);
 
-			result = stmt.executeUpdate();
+			stmt.executeUpdate();
+			stmt.close();
+			
+			
+			PreparedStatement Stmt2 = conn.prepareStatement(sql2);
+				Stmt2.setString(1, menuName);
+				Stmt2.setString(2, menuCategoryId);
+				ResultSet rs = Stmt2.executeQuery();
+				if (rs.next()) {
+					menuId = rs.getString("menu_Id");
+				}
+				rs.close();
+				Stmt2.close();
+				conn.close();
 
 		}catch (Exception e){
 			e.printStackTrace();
 		}
-		return result;
+		return menuId;
 	}
 
 	// 2. 메뉴 카테고리 추가
@@ -254,4 +268,52 @@ public class menuDAO {
 
         return flag;
     }
+
+	//사용자의 메뉴 카테고리 조회(추가)
+	public List<menuCategoryVO> getMenuCategoryList(String bId) {
+		List<menuCategoryVO> list = new ArrayList<>();
+		String sql = "SELECT menuCategory_Id, menuCategory FROM MENUC WHERE bId = ?";
+		try {
+			Connection conn = DBCP.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, bId);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				menuCategoryVO vo = new menuCategoryVO();
+				vo.setMenuCategoryId(rs.getString("menuCategory_Id"));
+				vo.setMenuCategory(rs.getString("menuCategory"));
+				list.add(vo);
+			}
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+
+	//카테고리 삭제 전에 메뉴가 있는지 확인하는 작업(추가)
+	public boolean hasMenuByCategory(String menuCategory) {
+		int count = 0;
+		String sql = "SELECT COUNT(*) FROM MENUS m "
+				+ "JOIN MENUC mc ON m.menuCategory_Id = mc.menuCategory_Id "
+				+ "WHERE mc.menuCategory = ?";
+		try {
+			Connection conn = DBCP.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, menuCategory);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				count = rs.getInt(1);
+			}
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return count > 0;
+	}
+	
 }
