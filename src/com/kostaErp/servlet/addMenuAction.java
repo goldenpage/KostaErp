@@ -21,7 +21,7 @@ public class addMenuAction implements Action {
 		HttpSession session = request.getSession(false);
 		String bId = (session != null) ? (String) session.getAttribute("loginOK") : null;
  
-		if (bId == null) {
+		if (bId == null){
 			return "login.jsp";
 		}
  
@@ -35,19 +35,30 @@ public class addMenuAction implements Action {
 		String[] foodMaterialIds = request.getParameterValues("foodMaterial_Id");
 		String[] usedCounts = request.getParameterValues("usedCount");
  
-		if (menuNames != null && menuNames.length > 0) {
+		if(menuNames != null && menuNames.length > 0){
+			for(int i = 0; i < menuNames.length; i++){
+				if(mDao.hasMenuCheck(menuNames[i])){
+					request.setAttribute("errorMessage", "'" + menuNames[i] + "' 메뉴가 이미 존재합니다. 등록을 취소합니다.");
+					List<menuCategoryVO> categoryList = mDao.getMenuCategoryList(bId);
+					List<foodMaterialVO> foodMaterialList = fDao.getFoodMaterialListAll(bId);
+					request.setAttribute("categoryList", categoryList);
+					request.setAttribute("foodMaterialList", foodMaterialList);
+					return url;
+				}
+			}
+
 			int ingredientOffset = 0;
- 
-			for (int i = 0; i < menuNames.length; i++) {
+
+			for(int i = 0; i < menuNames.length; i++){
 				String menuId = mDao.addMenu(
 					menuNames[i],
 					Integer.parseInt(menuPrices[i]),
 					menuCategoryIds[i]
 				);
- 
-				if (menuId != null) {
+
+				if(menuId != null){
 					int ingredientCount = Integer.parseInt(menuIngredientCounts[i]);
-					for (int j = 0; j < ingredientCount; j++) {
+					for (int j = 0; j < ingredientCount; j++){
 						mDao.addUsedMaterial(
 							Integer.parseInt(usedCounts[ingredientOffset + j]),
 							foodMaterialIds[ingredientOffset + j],

@@ -18,23 +18,30 @@ public class addMenuCategoryAction implements Action {
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
 		HttpSession session = request.getSession(false);
 		String bId = (session != null) ? (String) session.getAttribute("loginOK") : null;
- 
+
 		if (bId == null) {
-			return "login.jsp";
+			request.setAttribute("ajaxResponse", "fail|로그인이 필요합니다.");
+			return null;
 		}
- 
+
+		String menuCategory = request.getParameter("menuCategory");
+		if (menuCategory == null || menuCategory.trim().isEmpty()) {
+			request.setAttribute("ajaxResponse", "fail|카테고리명을 입력해주세요.");
+			return null;
+		}
+		menuCategory = menuCategory.trim();
+
 		menuDAO mDao = new menuDAO();
- 
-		int result = mDao.addMenuCategory(request.getParameter("menuCategory"), bId);
-		System.out.println(result > 0 ? "등록성공" : "등록실패");
- 
-		List<menuCategoryVO> categoryList = mDao.getMenuCategoryList(bId);
-		List<foodMaterialVO> foodMaterialList = new foodMaterialDAO().getFoodMaterialListAll(bId);
- 
-		request.setAttribute("categoryList", categoryList);
-		request.setAttribute("foodMaterialList", foodMaterialList);
- 
-		return "addMenu.jsp";
+		int result = mDao.addMenuCategory(menuCategory, bId);
+
+		if (result == 1) {
+			request.setAttribute("ajaxResponse", "success|" + menuCategory);
+		} else if (result == 0) {
+			request.setAttribute("ajaxResponse", "fail|이미 존재하는 카테고리입니다.");
+		} else {
+			request.setAttribute("ajaxResponse", "fail|카테고리 추가에 실패했습니다.");
+		}
+		return null;
 	}
 
 }

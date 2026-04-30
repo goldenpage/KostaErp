@@ -250,28 +250,24 @@
 
                     <div class="input_section">
                         <div class="input_row">
-                            <form method="post" action="${pageContext.request.contextPath}/controller?cmd=addMenuCategoryAction">
-                                <div class="category_buttons">
-                                    <label>메뉴 카테고리 추가</label>
-                                    <input type="text" name="menuCategory" placeholder="카테고리 입력">
-                                    <button type="submit">추가</button>
-                                </div>
-                            </form>
+                            <div class="category_buttons">
+                                <label>메뉴 카테고리 추가</label>
+                                <input type="text" id="getMenuCategory" placeholder="카테고리 입력">
+                                <button type="button" onclick="addCategoryAjax()">추가</button>
+                            </div>
                         </div>
 
                         <div class="input_row">
                             <div class="category_buttons" id="categoryArea">
                                 <c:forEach var="category" items="${categoryList}">
                                     <span style="display:inline-flex; align-items:center; gap:2px;">
-                                        <form method="post" action="${pageContext.request.contextPath}/controller?cmd=deleteMenuCategoryAction" style="display:inline;">
-                                            <input type="hidden" name="menuCategory" value="${category.menuCategory}">
-                                            <button type="button" onclick="selectCategory(this)" data-category-id="${category.menuCategoryId}">${category.menuCategory}</button>
-                                            <button type="submit" class="remove_btn" onclick="return confirm('${category.menuCategory} 카테고리를 삭제하시겠습니까?')">&#10005;</button>
-                                        </form>
+                                        <button type="button" onclick="selectCategory(this)" data-category-id="${category.menuCategoryId}">${category.menuCategory}</button>
+                                        <button type="button" class="remove_btn" onclick="deleteCategoryAjax('${category.menuCategory}', this)">&#10005;</button>
                                     </span>
                                 </c:forEach>
                             </div>
                         </div>
+                        <div id="categoryMsg" style="font-size:13px; margin-bottom:8px;"></div>
                     </div>
 
                     <form method="post" action="${pageContext.request.contextPath}/controller?cmd=addMenuAction" class="addMenu">
@@ -377,6 +373,94 @@
     <script>
         var menuDataStore = [];
 
+        function addCategoryAjax() {
+            var input = document.getElementById('getMenuCategory');
+            var categoryName = input.value.trim();
+            var msg = document.getElementById('categoryMsg');
+
+            if (!categoryName) {
+                alert('카테고리명을 입력해주세요.');
+                return;
+            }
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "${pageContext.request.contextPath}/controller?cmd=addMenuCategoryAction", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var parts = xhr.responseText.split("|");
+                    var result = parts[0];
+                    var value = parts[1];
+
+                    if (result === "success") {
+                        msg.style.color = 'green';
+                        msg.innerText = '카테고리가 추가되었습니다.';
+                        var span = document.createElement('span');
+                        span.style.cssText = 'display:inline-flex; align-items:center; gap:2px;';
+                        var selectBtn = document.createElement('button');
+                        selectBtn.type = 'button';
+                        selectBtn.textContent = value;
+                        selectBtn.onclick = function() { selectCategory(this); };
+                        var delBtn = document.createElement('button');
+                        delBtn.type = 'button';
+                        delBtn.className = 'remove_btn';
+                        delBtn.innerHTML = '&#10005;';
+                        delBtn.onclick = function() { deleteCategoryAjax(value, this); };
+                        span.appendChild(selectBtn);
+                        span.appendChild(delBtn);
+                        document.getElementById('categoryArea').appendChild(span);
+                        input.value = '';
+                    } else {
+                        msg.style.color = 'red';
+                        msg.innerText = value;
+                    }
+                } else if (xhr.readyState === 4) {
+                    msg.style.color = 'red';
+                    msg.innerText = '카테고리 추가 중 오류가 발생했습니다.';
+                }
+            };
+
+            xhr.send("menuCategory=" + encodeURIComponent(categoryName));
+        }
+        
+        function deleteCategoryAjax(menuCategory, delBtn) {
+            if (!confirm(menuCategory + ' 카테고리를 삭제하시겠습니까?')) return;
+
+            var msg = document.getElementById('categoryMsg');
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "${pageContext.request.contextPath}/controller?cmd=deleteMenuCategoryAction", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var parts = xhr.responseText.split("|");
+                    var result = parts[0];
+                    var value = parts[1];
+
+                    if (result === "success") {
+                        msg.style.color = 'green';
+                        msg.innerText = value;
+                        var span = delBtn.closest('span');
+                        var selectedId = document.getElementById('selectedCategoryId').value;
+                        var selectBtn = span.querySelector('button:not(.remove_btn)');
+                        if (selectBtn && selectBtn.getAttribute('data-category-id') === selectedId) {
+                            document.getElementById('selectedCategoryId').value = '';
+                        }
+                        span.remove();
+                    } else {
+                        msg.style.color = 'red';
+                        msg.innerText = value;
+                    }
+                } else if (xhr.readyState === 4) {
+                    msg.style.color = 'red';
+                    msg.innerText = '카테고리 삭제 중 오류가 발생했습니다.';
+                }
+            };
+
+            xhr.send("menuCategory=" + encodeURIComponent(menuCategory));
+        }
+        
         function selectCategory(btn) {
             document.querySelectorAll('#categoryArea button[data-category-id]').forEach(function(b) {
                 b.classList.remove('selected');
