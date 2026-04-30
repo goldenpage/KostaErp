@@ -74,7 +74,7 @@ public class disposalDAOTest {
 	//5. 폐기 품목 페이징 테스트
 	//@Test 
 	public void getDisposalsPagingTest() { 
-		List<disposalVO> list = dao.getDisposalsPaging(1, 4); 
+		List<disposalVO> list = dao.getDisposalsPaging("0000000000", 1, 4); 
 		assertNotNull(list); 
 		assertTrue(list.size() > 0); 
 		for (disposalVO vo : list) { 

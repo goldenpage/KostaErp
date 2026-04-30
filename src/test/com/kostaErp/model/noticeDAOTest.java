@@ -12,7 +12,7 @@ import com.kostaErp.model.noticeDAO;
 import com.kostaErp.model.noticeVO;
 
 public class noticeDAOTest {
-
+	private String bId;
     private noticeDAO dao;
 
     @Before
@@ -38,7 +38,7 @@ public class noticeDAOTest {
     //@Test
     public void getnotificationListTest() {
         noticeDAO dao = new noticeDAO();
-        ArrayList<noticeVO> list = dao.getNoticeList();
+        ArrayList<noticeVO> list = dao.getNoticeList(bId);
         for (noticeVO vo : list) {
             System.out.println(
                 vo.getNoticeId() + " / " +
@@ -62,7 +62,7 @@ public class noticeDAOTest {
     //@Test
     public void deleteAllTest() {
         // 기존 데이터 백업
-        ArrayList<noticeVO> backupList = dao.getNoticeList();
+        ArrayList<noticeVO> backupList = dao.getNoticeList(bId);
         // 전체 삭제 실행
         boolean result = dao.deleteAll();
         System.out.println("전체 삭제 결과 : " + result);
@@ -80,7 +80,7 @@ public class noticeDAOTest {
     //5. 알림 존재 여부 확인 테스트
     @Test
     public void noticeCountTest() {
-        ArrayList<noticeVO> list = dao.getNoticeList();
+        ArrayList<noticeVO> list = dao.getNoticeList(bId);
         System.out.println("현재 알림 개수 : " + list.size());
         assertNotNull(list);
     }

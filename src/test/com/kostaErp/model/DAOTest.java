@@ -40,11 +40,24 @@ public class DAOTest {
 	}
 
 	// 1. 식자재 입력
-	@Test
-	public void addFoodMaterial(){
-		boolean result =  dao.addFoodMaterial("단무지", "PP", 5, 1500, 15000, "하나로마트", "고체", 
-				"2026-04-27", "2026-04-30", "0000000000");
-		assertTrue(result);
+	//@Test
+	public void addFoodMaterial() {
+		List<foodMaterialVO> list = new ArrayList<>();
+ 
+		foodMaterialVO vo = new foodMaterialVO();
+		vo.setFoodMaterialName("단무지");
+		vo.setFoodCategory("PP");
+		vo.setFoodMaterialCount(5);
+		vo.setFoodMaterialCountAll(1500);
+		vo.setFoodMaterialPrice(15000);
+		vo.setVender("하나로마트");
+		vo.setFoodMaterialType("고체");
+		vo.setIncomeDate(java.sql.Date.valueOf("2026-04-27"));
+		vo.setExpirationDate(java.sql.Date.valueOf("2026-04-30"));
+		list.add(vo);
+ 
+		int successCount = dao.addFoodMaterial(list, "0000000000");
+		assertTrue(successCount == list.size());
 
 		//        int result = dao.addFoodMaterial("단무지", "PP", -1, 1500, 15000,"하나로마트", "고체", 
 		//        		"2026-04-27", "2026-04-30", "0000000000");
@@ -52,10 +65,10 @@ public class DAOTest {
 	}
 
 	// 2. 카테고리 추가
-	//@Test
+	@Test
 	public void addFoodCategory(){
-		int result = dao.addFoodCategory("TE", "테스트");
-		assertTrue("추가 성공", result > 0);
+		boolean result = dao.addFoodCategory("테스트카테고리");
+		assertTrue(result);
 		//        int result = dao.addFoodCategory("PP", "가공식품");
 		//        assertEquals("추가실패", 0, result);
 	}

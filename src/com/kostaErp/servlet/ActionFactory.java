@@ -27,6 +27,14 @@ public class ActionFactory {
                 a = new addUserAction();
                 break;
             
+            case "addFoodCategoryAction":
+            	a = new addFoodCategoryAction();
+            	break;
+            	
+            case "deleteFoodCategoryAction":
+            	a = new deleteFoodCategoryAction();
+            	break;
+            
             case "addFoodMaterialUIAction":
             	a = new addFoodMaterialUIAction();
             	break;
@@ -64,7 +72,7 @@ public class ActionFactory {
                 break;
                 
             case "disposalUIAction":
-            	a = new disposalUIAction();
+            	a = new disposalAction();
             	break;
                 
             case "notificationUI":
@@ -91,8 +99,32 @@ public class ActionFactory {
                 a = new revenueAction();
                 break;
 
-            case "idCheck":
+            case "idCheckAction":
                 a = new IdCheckAction();
+                break;
+
+            case "phoneSendAction":
+                a = new phoneSendAction();
+                break;
+
+            case "phoneVerifyAction":
+                a = new phoneVerifyAction();
+                break;
+
+            case "pwFindUIAction":
+                a = new pwFindUIAction();
+                break;
+
+            case "pwUpdateAction":
+                a = new pwUpdateAction();
+                break;
+
+            case "pwPhoneSendAction":
+                a = new pwPhoneSendAction();
+                break;
+
+            case "pwPhoneVerifyAction":
+                a = new pwPhoneVerifyAction();
                 break;
 
             default:

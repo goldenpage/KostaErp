@@ -5,12 +5,12 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-public class salesAction implements Action {
+public class pwFindUIAction implements Action {
 
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
-	
-		return null;
+		
+		return "pwUdate.jsp";
 	}
 
 }

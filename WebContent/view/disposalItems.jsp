@@ -11,8 +11,16 @@
 <title>폐기품목 관리</title>
 
 <style>
-ul{list-style:none;margin:0;padding:0;}
-body{margin:0;padding:0;}
+ul{
+    list-style:none;
+    margin:0;
+    padding:0;
+}
+
+body{
+    margin:0;
+    padding:0;
+}
 
 .container{
     display:flex;
@@ -26,8 +34,13 @@ body{margin:0;padding:0;}
     padding:20px;
 }
 
-.sideMenu ul{margin-bottom:25px;}
-.sideMenu li{margin-bottom:8px;}
+.sideMenu ul{
+    margin-bottom:25px;
+}
+
+.sideMenu li{
+    margin-bottom:8px;
+}
 
 .main{
     flex:1;
@@ -71,165 +84,249 @@ body{margin:0;padding:0;}
     background:#f7f7f7;
 }
 
-.center{text-align:center;}
-.right{text-align:right;}
+.center{
+    text-align:center;
+}
 
-.actionCell{text-align:center;}
+.right{
+    text-align:right;
+}
+
+.actionCell{
+    text-align:center;
+}
+
+.actionCell select,
+.actionCell button{
+    display:inline-block;
+    vertical-align:middle;
+}
+
+button{
+    cursor:pointer;
+}
 
 .page{
     margin-top:20px;
-    display:flex;
-    justify-content:center;
-    gap:8px;
+    text-align:center;
 }
 
 .page a{
-    padding:6px 12px;
-    border:1px solid #999;
+    margin:0 5px;
     text-decoration:none;
-    color:#000;
+    padding:5px 10px;
+    border:1px solid #ddd;
 }
-
-.page strong{
-    padding:6px 12px;
-    border:1px solid #000;
-    background:#eee;
-}
-
-button{cursor:pointer;}
 </style>
+
+<script>
+var originalRows = [];
+window.onload = function() {
+    originalRows = Array.from(document.querySelectorAll("tbody tr"));
+}
+
+function filterData(){
+
+    var keyword = document.getElementById("searchInput").value.toLowerCase();
+    var category = document.getElementById("categoryFilter").value;
+    var reason = document.getElementById("reasonFilter").value;
+
+    var rows = document.querySelectorAll("tbody tr");
+
+    for(var i=0; i<rows.length; i++){
+        rows[i].style.display = "";
+    }
+
+    for(var i=0; i<rows.length; i++){
+
+        var row = rows[i];
+
+        var name = row.cells[1].innerText.toLowerCase();
+        var cat = row.cells[2].innerText;
+        var rsn = row.querySelector("select").value;
+
+        var show = true;
+
+        if(keyword && name.indexOf(keyword) === -1) show = false;
+        if(category !== "전체" && cat !== category) show = false;
+        if(reason !== "전체" && rsn !== reason) show = false;
+
+        row.style.display = show ? "" : "none";
+    }
+}
+
+function resetFilter(){
+    document.getElementById("searchInput").value = "";
+    document.getElementById("categoryFilter").value = "전체";
+    document.getElementById("reasonFilter").value = "전체";
+    filterData();
+}
+
+var sortDirectionMap = {};
+function sortTable(n, btn) {
+    var table = document.querySelector(".list_container tbody");
+    var rows = Array.from(table.querySelectorAll("tr"));
+    if (sortDirectionMap[n] === undefined) {
+        sortDirectionMap[n] = true; 
+    } else {
+        sortDirectionMap[n] = !sortDirectionMap[n];
+    }
+    var asc = sortDirectionMap[n];
+    rows.sort(function(a, b) {
+        var A = a.cells[n].innerText.trim();
+        var B = b.cells[n].innerText.trim();
+        if (!isNaN(A) && !isNaN(B)) {
+            A = Number(A.replace(/,/g, ""));
+            B = Number(B.replace(/,/g, ""));
+        }
+        if (!isNaN(Date.parse(A)) && !isNaN(Date.parse(B))) {
+            A = new Date(A);
+            B = new Date(B);
+        }
+        if (A < B) return asc ? -1 : 1;
+        if (A > B) return asc ? 1 : -1;
+        return 0;
+    });
+    rows.forEach(function(row){
+        table.appendChild(row);
+    });
+    updateIcons(btn, asc);
+}
+
+function updateIcons(activeBtn, asc) {
+    var buttons = document.querySelectorAll(".list_container th button");
+    for (var i = 0; i < buttons.length; i++) {
+        buttons[i].innerText = "▼";
+    }
+    activeBtn.innerText = asc ? "▲" : "▼";
+}
+</script>
 </head>
 
 <body>
 
-<c:set var="pageSize" value="5"/>
-<c:set var="currentPage" value="${empty param.page ? 1 : param.page}" />
-<c:set var="startRow" value="${(currentPage-1) * pageSize}" />
-<c:set var="endRow" value="${startRow + pageSize}" />
-<c:set var="totalCount" value="${fn:length(list)}" />
-<c:set var="pageCount" value="${(totalCount + pageSize - 1) / pageSize}" />
-
 <div class="container">
+    <section class="sideMenu">
+          <jsp:include page="common/sideMenu.jsp" />
+        </section>
 
-<section class="sideMenu">
-    <ul>
-        <li><button onclick="location.href='controller?cmd=foodMaterialInputUI'">식자재입력</button></li>
-        <li><button onclick="location.href='controller?cmd=menuInputUI'">메뉴입력</button></li>
-        <li><button onclick="location.href='controller?cmd=foodMaterialUI'">식자재조회</button></li>
-        <li><button onclick="location.href='controller?cmd=menuDetailUI'">메뉴상세조회</button></li>
-    </ul>
+        <div class="main">
+            <div>
+                <jsp:include page="common/userName.jsp" />
+            </div>
 
-    <ul>
-        <li><button onclick="location.href='controller?cmd=disposalUI'">폐기품목확인</button></li>
-    </ul>
+        <h2>폐기품목 확인</h2>
 
-    <ul>
-        <li><button onclick="location.href='controller?cmd=revenueStatisticsUI'">매출통계</button></li>
-        <li><button onclick="location.href='controller?cmd=expendStatisticsUI'">지출통계</button></li>
-        <li><button onclick="location.href='controller?cmd=disposalStatisticsUI'">폐기통계</button></li>
-    </ul>
-</section>
+        <div class="content_item">
+            <ul class="category">
+                <li>
+                    <input type="text" id="searchInput" onkeyup="filterData()" placeholder="검색">
+                </li>
 
-<div class="main">
+                <li>카테고리</li>
+                <li>
+                    <select id="categoryFilter" onchange="filterData()">
+                        <option>전체</option>
+                        <option>채소</option>
+                        <option>정육</option>
+                        <option>가공품</option>
+                        <option>유제품</option>
+                        <option>양념</option>
+                    </select>
+                </li>
 
-    <ul class="profile">
-        <li>김상혁님</li>
-        <li><button onclick="location.href='controller?cmd=notificationUI'">알림</button></li>
-    </ul>
+                <li>사유</li>
+                <li>
+                    <select id="reasonFilter" onchange="filterData()">
+                        <option>전체</option>
+                        <option>변질</option>
+                        <option>파손</option>
+                        <option>유통기한만료</option>
+                        <option>기타</option>
+                    </select>
+                </li>
 
-    <h2>폐기품목 확인</h2>
+                <li>
+                    <button onclick="resetFilter()">초기화</button>
+                </li>
+            </ul>
 
-    <div class="content_item">
-
-        <table class="list_container">
-            <thead>
-                <tr>
-                    <th>번호</th>
-                    <th>식자재명</th>
-                    <th>카테고리</th>
-                    <th>총폐기용량(g)</th>
-                    <th>총폐기가격(원)</th>
-                    <th>폐기일</th>
-                    <th>사유</th>
-                    <th>확인</th>
-                </tr>
-            </thead>
-
-            <tbody>
-
-            <c:forEach var="d" items="${list}" varStatus="st">
-
-                <c:if test="${st.index >= startRow && st.index < endRow}">
+            <table class="list_container">
+                <thead>
                     <tr>
-                        <td class="center">
-                            ${fn:substring(d.disposalId,3,6)}
-                        </td>
-
-                        <td class="center">
-                            ${d.foodMaterialName}
-                        </td>
-
-                        <td class="center">
-                            ${d.foodCategory}
-                        </td>
-
-                        <td class="right">
-                            ${d.disposalCountAll}
-                        </td>
-
-                        <td class="right">
-                            <fmt:formatNumber value="${d.disposalPrice}" />
-                        </td>
-
-                        <td class="center">
-                            ${d.disposalDate}
-                        </td>
-
-                        <td class="actionCell">
-                            <select>
-                                <option selected>${d.reason}</option>
-                                <option>변질</option>
-                                <option>파손</option>
-                                <option>유통기한지남</option>
-                                <option>기타</option>
-                            </select>
-                        </td>
-
-                        <td class="actionCell">
-                            <button>확인</button>
-                        </td>
+                        <th>번호<button type="button" onclick="sortTable(0, this)">▼</button></th>
+						<th>식자재명<button type="button" onclick="sortTable(1, this)">▼</button></th>
+						<th>카테고리<button type="button" onclick="sortTable(2, this)">▼</button></th>
+						<th>유형<button type="button" onclick="sortTable(3, this)">▼</button></th>
+						<th>총폐기용량(g)<button type="button" onclick="sortTable(4, this)">▼</button></th>
+						<th>총폐기가격(원)<button type="button" onclick="sortTable(5, this)">▼</button></th>
+						<th>폐기일<button type="button" onclick="sortTable(6, this)">▼</button></th>
+                        <th>사유</th>
                     </tr>
-                </c:if>
+                </thead>
 
-            </c:forEach>
+                <tbody>
+                    <c:forEach var="d" items="${list}">
+                        <tr>
+                            <td class="center">
+                                ${fn:substring(d.disposalId,3,6)}
+                            </td>
 
-            </tbody>
-        </table>
+                            <td class="center">
+                                ${d.foodMaterialName}
+                            </td>
 
-        <!-- 페이지 번호 -->
-        <div class="page">
+                            <td class="center">
+                                ${d.foodCategory}
+                            </td>
+                            <td class="center">
+                                ${d.foodMaterialType}
+                            </td>
 
-            <c:forEach begin="1" end="${pageCount}" var="p">
+                            <td class="right">
+                                ${d.disposalCountAll}
+                            </td>
 
-                <c:choose>
-                    <c:when test="${p == currentPage}">
-                        <strong>${p}</strong>
-                    </c:when>
+                            <td class="right">
+                                <fmt:formatNumber value="${d.disposalPrice}" />
+                            </td>
 
-                    <c:otherwise>
-                        <a href="controller?cmd=disposalUI&page=${p}">
-                            ${p}
-                        </a>
-                    </c:otherwise>
-                </c:choose>
+                            <td class="center">
+                                ${d.disposalDate}
+                            </td>
 
-            </c:forEach>
+                            <td class="actionCell">
+                                <select>
+                                    <option selected>${d.reason}</option>
+                                    <option>변질</option>
+                                    <option>파손</option>
+                                    <option>유통기한지남</option>
+                                    <option>기타</option>
+                                </select>
+                            </td>
+                        </tr>
+                    </c:forEach>
+                </tbody>
+            </table>
+            <div class="page">
+
+    <c:set var="page" value="${currentPage}" />
+
+    <c:if test="${page > 1}">
+        <a href="controller?cmd=disposalUI&page=${page-1}">이전</a>
+    </c:if>
+
+    <c:forEach begin="1" end="5" var="i">
+        <a href="controller?cmd=disposalUI&page=${i}">${i}</a>
+    </c:forEach>
+
+    <a href="controller?cmd=disposalUI&page=${page+1}">다음</a>
+
+</div>
 
         </div>
 
     </div>
-
-</div>
 
 </div>
 

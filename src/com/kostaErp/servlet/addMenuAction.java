@@ -9,9 +9,6 @@ public class addMenuAction implements Action {
 
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
-		System.out.println("addMenuAction");
-		
-		request.setAttribute("message", "addmenu");
 		
 		return "addMenu.jsp";
 	}

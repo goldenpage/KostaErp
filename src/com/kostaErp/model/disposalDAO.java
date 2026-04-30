@@ -10,9 +10,7 @@ import java.sql.SQLException;
 public class disposalDAO {	
 	// 1. 폐기 품목 조회 
 	public List<disposalVO> getDisposals() {
-
 	    List<disposalVO> list = new ArrayList<>();
-
 	    String sql =
 	        "SELECT " +
 	        " d.disposal_Id, " +
@@ -28,17 +26,14 @@ public class disposalDAO {
 	        "JOIN FOODC fc ON f.foodCategory_Id = fc.foodCategory_Id " +
 	        "JOIN REASON r ON d.reason_Id = r.reason_Id " +
 	        "ORDER BY d.disposal_Id DESC";
-
 	    try (
 	        Connection conn = DBCP.getConnection();
 	        PreparedStatement pstmt = conn.prepareStatement(sql);
 	        ResultSet rs = pstmt.executeQuery();
+	    		
 	    ) {
-
 	        while (rs.next()) {
-
 	            disposalVO vo = new disposalVO();
-
 	            vo.setDisposalId(rs.getString("disposal_Id"));
 	            vo.setFoodMaterialName(rs.getString("foodMaterialName"));
 	            vo.setFoodCategory(rs.getString("foodCategory"));
@@ -50,11 +45,9 @@ public class disposalDAO {
 
 	            list.add(vo);
 	        }
-
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
-
 	    return list;
 	}
 
@@ -108,32 +101,60 @@ public class disposalDAO {
 	}
 
 	//5. 폐기품목 페이지 이동 (페이징)
-	public List<disposalVO> getDisposalsPaging(int start, int end) {
-		List<disposalVO> list = new ArrayList<>();
-		String sql = "SELECT disposal_Id, disposalCountAll, disposalPrice, disposalDate, reason_Id, foodMaterial_id FROM (" +
-				" SELECT d.disposal_Id, d.disposalCountAll, d.disposalPrice, d.disposalDate, d.reason_Id, d.foodMaterial_id," +
-				" ROW_NUMBER() OVER (ORDER BY d.disposal_Id DESC) AS rn" +
-				" FROM DISPOSALS d" +
-				") WHERE rn BETWEEN ? AND ?";
-		try (Connection conn = DBCP.getConnection();
-				PreparedStatement pstmt = conn.prepareStatement(sql)) {
-			pstmt.setInt(1, start);
-			pstmt.setInt(2, end);
-			ResultSet rs = pstmt.executeQuery();
-			while (rs.next()) {
-				disposalVO vo = new disposalVO();
-				vo.setDisposalId(rs.getString("disposal_Id"));
-				vo.setDisposalCountAll(rs.getInt("disposalCountAll"));
-				vo.setDisposalPrice(rs.getInt("disposalPrice"));
-				vo.setDisposalDate(rs.getDate("disposalDate"));
-				vo.setReasonId(rs.getString("reason_Id"));
-				vo.setFoodMaterialId(rs.getString("foodMaterial_id"));
-				list.add(vo);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return list;
+	public List<disposalVO> getDisposalsPaging(String bId, int start, int end) {
+
+	    List<disposalVO> list = new ArrayList<>();
+
+	    String sql =
+	        "SELECT * FROM ( " +
+	        "    SELECT " +
+	        "        d.disposal_Id, " +
+	        "        f.foodMaterialName, " +
+	        "        fc.foodCategory, " +
+	        "        d.disposalCountAll, " +
+	        "        f.foodMaterialType, " +
+	        "        d.disposalPrice, " +
+	        "        d.disposalDate, " +
+	        "        r.reason_Id, " +
+	        "        r.reason, " +
+	        "        ROW_NUMBER() OVER (ORDER BY d.disposal_Id DESC) AS rn " +
+	        "    FROM DISPOSALS d " +
+	        "    JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id " +
+	        "    JOIN FOODC fc ON f.foodCategory_Id = fc.foodCategory_Id " +
+	        "    JOIN REASON r ON d.reason_Id = r.reason_Id " +
+	        "    WHERE f.bId = ? " +
+	        ") WHERE rn BETWEEN ? AND ?";
+
+	    try (Connection conn = DBCP.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+	        pstmt.setString(1, bId);
+	        pstmt.setInt(2, start);
+	        pstmt.setInt(3, end);
+
+	        ResultSet rs = pstmt.executeQuery();
+
+	        while (rs.next()) {
+	            disposalVO vo = new disposalVO();
+
+	            vo.setDisposalId(rs.getString("disposal_Id"));
+	            vo.setFoodMaterialName(rs.getString("foodMaterialName"));
+	            vo.setFoodCategory(rs.getString("foodCategory"));
+	            vo.setFoodMaterialType(rs.getString("foodMaterialType"));
+	            vo.setDisposalCountAll(rs.getInt("disposalCountAll"));
+	            vo.setDisposalPrice(rs.getInt("disposalPrice"));
+	            vo.setDisposalDate(rs.getDate("disposalDate"));
+	            vo.setReasonId(rs.getString("reason_Id"));
+	            vo.setReason(rs.getString("reason"));
+
+	            list.add(vo);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return list;
 	}
 
 	//6. 폐기사유 수정
@@ -148,6 +169,36 @@ public class disposalDAO {
 			e.printStackTrace();
 		}
 		return false;
+	}
+	
+	public List<String> getExpiredDisposalIds(String bId) {
+
+	    List<String> list = new ArrayList<>();
+
+	    String sql =
+	        "SELECT d.disposal_Id " +
+	        "FROM DISPOSALS d " +
+	        "JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id " +
+	        "WHERE f.bId = ? " +
+	        "AND f.expirationDate < SYSDATE";
+
+	    try (
+	        Connection conn = DBCP.getConnection();
+	        PreparedStatement pstmt = conn.prepareStatement(sql)
+	    ) {
+	        pstmt.setString(1, bId);
+
+	        ResultSet rs = pstmt.executeQuery();
+
+	        while (rs.next()) {
+	            list.add(rs.getString("disposal_Id"));
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return list;
 	}
 
 	// 7. 월별 폐기율

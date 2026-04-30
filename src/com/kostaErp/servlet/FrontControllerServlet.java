@@ -18,10 +18,17 @@ public class FrontControllerServlet extends HttpServlet {
 
         String cmd = request.getParameter("cmd");
         System.out.println("cmd : " + cmd);
-
         Action action = ActionFactory.getAction(cmd);
 
         String url = action.execute(request);
+        
+        String ajaxResponse = (String) request.getAttribute("ajaxResponse");
+
+        if (ajaxResponse != null) {
+            response.setContentType("text/plain; charset=UTF-8");
+            response.getWriter().write(ajaxResponse);
+            return;
+        }
 
         if (url == null) {
             url = "login.jsp";

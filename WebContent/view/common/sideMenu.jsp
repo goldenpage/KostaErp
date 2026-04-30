@@ -15,15 +15,15 @@
 </head>
 <body>
            <ul>
-                <li>메뉴조회</li>
+                <li>식자재관리</li>
                 <li><a href="${pageContext.request.contextPath}/controller?cmd=addFoodMaterialUIAction">식자재입력</a></li>
-                <li><a href="${pageContext.request.contextPath}/controller?cmd=addMenuUIAction'">메뉴입력</a></li>
+                <li><a href="${pageContext.request.contextPath}/controller?cmd=addMenuUIAction">메뉴입력</a></li>
                 <li><a href="${pageContext.request.contextPath}/controller?cmd=foodMaterialUIAction">식자재조회</a></li>
                 <li><a href="${pageContext.request.contextPath}/controller?cmd=menuUIAction">메뉴상세조회</a></li>
             </ul>
             <ul>
                 <li>폐기관리</li>
-                <li><a href="${pageContext.request.contextPath}/controller?cmd=disposalItemsUIAction'">폐기품목확인</a></li>
+                <li><a href="${pageContext.request.contextPath}/controller?cmd=disposalUIAction">폐기품목확인</a></li>
             </ul>
             <ul>
                 <li>통계</li>
