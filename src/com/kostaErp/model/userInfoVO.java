@@ -71,6 +71,8 @@ public class userInfoVO {
 	public String getMarketingDate() {
 		return marketingDate;
 	}
+	
+
 
 
 	public String getSignDate() {return signDate;}

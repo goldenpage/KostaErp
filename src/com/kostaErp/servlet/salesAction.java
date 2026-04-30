@@ -12,6 +12,7 @@ public class salesAction implements Action {
 
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
+
 		String url = "menuList.jsp";
 
 		String menuId = request.getParameter("menuId");
@@ -33,7 +34,7 @@ public class salesAction implements Action {
 			}
 
 			if (menuId == null || menuId.equals("")) {
-				request.setAttribute("errorMessage", "ÆÇ¸ÅÇÒ ¸Þ´º°¡ ¼±ÅÃµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
+				request.setAttribute("errorMessage", "ï¿½Ç¸ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½Ãµï¿½ï¿½ï¿½ ï¿½Ê¾Ò½ï¿½ï¿½Ï´ï¿½.");
 				return url;
 			}
 
@@ -42,9 +43,9 @@ public class salesAction implements Action {
 			boolean result = dao.updateFoodMaterialAfterSale(menuId, saleCount, bId);
 
 			if (result) {
-				request.setAttribute("message", "ÆÇ¸Å Ã³¸® ¼º°ø");
+				request.setAttribute("message", "ï¿½Ç¸ï¿½ Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 			} else {
-				request.setAttribute("errorMessage", "Àç°í°¡ ºÎÁ·ÇÏ¿© ÆÇ¸Å Ã³¸®¸¦ ÇÒ ¼ö ¾ø½À´Ï´Ù.");
+				request.setAttribute("errorMessage", "ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¿ï¿½ ï¿½Ç¸ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
 			}
 
 			request.setAttribute("selectedMenuId", menuId);
@@ -54,7 +55,7 @@ public class salesAction implements Action {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			request.setAttribute("errorMessage", "ÆÇ¸Å Ã³¸® ½ÇÆÐ");
+			request.setAttribute("errorMessage", "ï¿½Ç¸ï¿½ Ã³ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½");
 		}
 
 		return url;

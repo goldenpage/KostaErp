@@ -45,19 +45,21 @@ ul {
 	gap: 16px;
 }
 
+.content_left {
+	flex: 1;
+}
+
 .menu_list {
 	border: 3px solid;
-	display: flex;
-	width: 600px;
-	flex-direction: column;
+	padding: 10px;
 	margin: 10px;
 }
 
 .content_right {
-	width: 400px;
+	width: 300px;
 	border: 3px solid green;
-	margin: 10px;
 	padding: 10px;
+	margin: 10px;
 }
 
 table {
@@ -78,6 +80,10 @@ a {
 	color: red;
 	font-weight: bold;
 }
+
+button {
+	cursor: pointer;
+}
 </style>
 </head>
 
@@ -92,14 +98,18 @@ a {
 				<li>식자재입력</li>
 				<li>메뉴입력</li>
 				<li><a
-					href="${pageContext.request.contextPath}/controller?cmd=foodMaterialAction">식자재조회</a></li>
+					href="${pageContext.request.contextPath}/controller?cmd=foodMaterialAction">
+						식자재조회 </a></li>
 				<li><a
-					href="${pageContext.request.contextPath}/controller?cmd=menuAction">메뉴상세조회</a></li>
+					href="${pageContext.request.contextPath}/controller?cmd=menuAction">
+						메뉴상세조회 </a></li>
 			</ul>
+
 			<ul>
 				<li>폐기관리</li>
 				<li>폐기품목확인</li>
 			</ul>
+
 			<ul>
 				<li>통계</li>
 				<li>매출통계</li>
@@ -119,37 +129,41 @@ a {
 			<h1>메뉴 조회</h1>
 
 			<div class="content_item">
-				<div class="menu_list">
-					<table>
-						<tr>
-							<th></th>
-							<th>판매가능 메뉴</th>
-							<th>가격(원)</th>
-						</tr>
-
-						<c:forEach items="${menuList}" var="menu">
+				<div class="content_left">
+					<div class="menu_list">
+						<table>
 							<tr>
-								<td><c:choose>
-										<c:when test="${menu.menuId == selectedMenuId}">
-											<input type="radio" name="menuSelect" checked="checked">
-										</c:when>
-										<c:otherwise>
-											<input type="radio" name="menuSelect">
-										</c:otherwise>
-									</c:choose></td>
-								<td><a
-									href="${pageContext.request.contextPath}/controller?cmd=menuAction&menuId=${menu.menuId}">
-										${menu.menuName} </a></td>
-								<td>${menu.menuPrice}</td>
+								<th></th>
+								<th>판매가능 메뉴</th>
+								<th>가격(원)</th>
 							</tr>
-						</c:forEach>
 
-						<c:if test="${empty menuList}">
-							<tr>
-								<td colspan="3">조회된 메뉴가 없습니다.</td>
-							</tr>
-						</c:if>
-					</table>
+							<c:forEach items="${menuList}" var="menu">
+								<tr>
+									<td><c:choose>
+											<c:when test="${menu.menuId == selectedMenuId}">
+												<input type="radio" name="menuSelect" checked="checked">
+											</c:when>
+											<c:otherwise>
+												<input type="radio" name="menuSelect">
+											</c:otherwise>
+										</c:choose></td>
+
+									<td><a
+										href="${pageContext.request.contextPath}/controller?cmd=menuAction&menuId=${menu.menuId}">
+											${menu.menuName} </a></td>
+
+									<td>${menu.menuPrice}</td>
+								</tr>
+							</c:forEach>
+
+							<c:if test="${empty menuList}">
+								<tr>
+									<td colspan="3">조회된 메뉴가 없습니다.</td>
+								</tr>
+							</c:if>
+						</table>
+					</div>
 				</div>
 
 				<div class="content_right">
@@ -159,18 +173,22 @@ a {
 						<tr>
 							<th>이름</th>
 							<th>수량</th>
+							<th>가격</th>
+							<th>사용원가</th>
 						</tr>
 
 						<c:forEach items="${detailList}" var="detail">
 							<tr>
 								<td>${detail.foodMaterialName}</td>
 								<td>${detail.usedCount}</td>
+								<td>${detail.foodMaterialPrice}</td>
+								<td>${detail.usedPrice}</td>
 							</tr>
 						</c:forEach>
 
 						<c:if test="${empty detailList}">
 							<tr>
-								<td colspan="2">선택된 메뉴의 식자재 정보가 없습니다.</td>
+								<td colspan="4">선택된 메뉴의 식자재 정보가 없습니다.</td>
 							</tr>
 						</c:if>
 					</table>
@@ -188,47 +206,48 @@ a {
 		</div>
 	</div>
 	<script>
-    function selectMenu(rowEl, menuName, ingredients) {
-        var rows = document.querySelectorAll(".menu_list tr");
+		function selectMenu(rowEl, menuName, ingredients) {
+			var rows = document.querySelectorAll(".menu_list tr");
 
-        rows.forEach(function (tr) {
-            tr.classList.remove("active");
-        });
+			rows.forEach(function(tr) {
+				tr.classList.remove("active");
+			});
 
-        rowEl.classList.add("active");
+			rowEl.classList.add("active");
 
-        var checkboxes = document.querySelectorAll(".menu_list input[type='checkbox']");
+			var checkboxes = document
+					.querySelectorAll(".menu_list input[type='checkbox']");
 
-        checkboxes.forEach(function (checkbox) {
-            checkbox.checked = false;
-        });
+			checkboxes.forEach(function(checkbox) {
+				checkbox.checked = false;
+			});
 
-        var currentCheckbox = rowEl.querySelector("input[type='checkbox']");
+			var currentCheckbox = rowEl.querySelector("input[type='checkbox']");
 
-        if (currentCheckbox !== null) {
-            currentCheckbox.checked = true;
-        }
+			if (currentCheckbox !== null) {
+				currentCheckbox.checked = true;
+			}
 
-        drawIngredientTable(ingredients);
-    }
+			drawIngredientTable(ingredients);
+		}
 
-    function drawIngredientTable(ingredients) {
-        var table = document.getElementById("ingredientDetail");
+		function drawIngredientTable(ingredients) {
+			var table = document.getElementById("ingredientDetail");
 
-        while (table.rows.length > 1) {
-            table.deleteRow(1);
-        }
+			while (table.rows.length > 1) {
+				table.deleteRow(1);
+			}
 
-        ingredients.forEach(function (item) {
-            var newRow = document.createElement("tr");
+			ingredients.forEach(function(item) {
+				var newRow = document.createElement("tr");
 
-            newRow.innerHTML =
-                "<td>" + item[0] + "</td>" +
-                "<td>" + item[1] + "</td>";
+				newRow.innerHTML = "<td>" + item[0] + "</td>" + "<td>"
+						+ item[1] + "</td>";
 
-            table.appendChild(newRow);
-        });
-    }
-</script>
+				table.appendChild(newRow);
+			});
+		}
+	</script>
 </body>
 </html>
+

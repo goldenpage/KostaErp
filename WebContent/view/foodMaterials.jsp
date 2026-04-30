@@ -293,7 +293,7 @@ button {
 			/* 			document.getElementById("resetBtn").onclick = function() {
 			 location.href = "${pageContext.request.contextPath}/controller?cmd=foodMaterialAction&sortType=idDesc&page=1";
 			 }; */
-			document.getElementById("categorySelect").onclick = function() {
+			document.getElementById("categorySelect").onchange = function() {
 				categoryAjax();
 			};
 
@@ -350,7 +350,7 @@ button {
 		 }  */
 		function categoryAjax() {
 			var xhr = new XMLHttpRequest();
-			xhr.open("GET", "${pageContext.request.contextPath}/controller?cmd=foodMaterialAction&sortType=${sortType}&page=${currentPage}", true);
+			xhr.open("GET","${pageContext.request.contextPath}/controller?cmd=foodMaterialAction&sortType=${sortType}&page=${currentPage}",true);
 			xhr.send();
 
 			xhr.onreadystatechange = function() {

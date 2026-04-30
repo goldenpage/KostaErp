@@ -10,141 +10,63 @@ import java.util.List;
 import java.sql.Date;
 
 public class foodMaterialDAO {
-
-	public int getFoodMaterialTotalAmount(String bId) {
-		String sql = "SELECT SUM(foodMaterialPrice) FROM FOODM WHERE bId = ?;";
-		int totalAmount = 0;
-
-		Connection conn;
-		try {
-			conn = DBCP.getConnection();
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setString(1, bId);
-
-			ResultSet rs = stmt.executeQuery();
-			if(rs.next()){
-				return rs.getInt(1);
-			}
-
-			rs.close();
-			stmt.close();
-			conn.close();
-
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		} catch (SQLException e) {
-
-			e.printStackTrace();
-		}
-
-		return totalAmount;
-
-	}
-
-	public List<foodMaterialVO> getFoodMaterialSpendingRank(String bId, String startDate, String endDate) {
-		String sql = "SELECT foodMaterial_Id, foodMaterialName, foodMaterialPrice * foodMaterialCount AS totalExpense FROM FOODM WHERE bId = ? AND incomeDate >= TO_DATE(?, 'YYYY-MM-DD') AND incomeDate < TO_DATE(?, 'YYYY-MM-DD') ORDER BY totalExpense DESC;";
-		List<foodMaterialVO> list = new ArrayList<>();
-		Connection conn;
-		try {
-			conn = DBCP.getConnection();
-			PreparedStatement stmt = conn.prepareStatement(sql);
-			stmt.setString(1, bId);
-			stmt.setString(2, startDate);
-			stmt.setString(3, endDate);
-
-			ResultSet rs = stmt.executeQuery();
-			while(rs.next()) {
-				foodMaterialVO vo = new foodMaterialVO();
-				vo.setRanking(rs.getInt("ranking"));
-				vo.setFoodMaterialId(rs.getString("foodMaterial_Id"));
-				vo.setFoodMaterialName(rs.getString("foodMaterialName"));
-				vo.setFoodMaterialPrice(rs.getInt("foodMaterialPrice"));
-				vo.setFoodMaterialCount(rs.getInt("foodMaterialCount"));
-				vo.setTotalExpense(rs.getInt("totalExpense"));
-				vo.setIncomeDate(rs.getDate("incomeDate"));
-				vo.setbId(rs.getString("bId"));
-
-				list.add(vo);
-
-			}
-
-			rs.close();
-			stmt.close();
-			conn.close();
-
-		} catch (ClassNotFoundException e) {
-
-			e.printStackTrace();
-		} catch (SQLException e) {
-
-			e.printStackTrace();
-		}
-
-
-		return list;
-	}
-
-
-
-
+	
 	public foodMaterialDAO(){}
 
-	// 1. 쩍횆�횣�챌 �횚쨌횂
-	public int addFoodMaterial(String foodMaterialName, String foodCategory_Id, int foodMaterialCount, 
-			int foodMaterialCountAll, int foodMaterialPrice, String vender, String foodMaterialType, 
-			String incomeDate, String expirationDate, String bId){
-
-		int result = 0;
-
+	public int addFoodMaterial(List<foodMaterialVO> list, String bId) {
+		int successCount = 0;
 		String sql = "INSERT INTO FOODM(foodMaterialName, foodCategory_Id, foodMaterialCount, foodMaterialCountAll, "
 				+ "foodMaterialPrice, foodMaterialType, vender, incomeDate, expirationDate, bId) "
 				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-		try{
+		try {
 			Connection conn = DBCP.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(sql);
-
-			stmt.setString(1, foodMaterialName);
-			stmt.setString(2, foodCategory_Id);
-			stmt.setInt(3, foodMaterialCount);
-			stmt.setInt(4, foodMaterialCountAll);
-			stmt.setInt(5, foodMaterialPrice);
-			stmt.setString(6, foodMaterialType);
-			stmt.setString(7, vender);
-			stmt.setDate(8, Date.valueOf(incomeDate));
-			stmt.setDate(9, Date.valueOf(expirationDate));
-			stmt.setString(10, bId);
-
-			result = stmt.executeUpdate();
-
-		}catch(Exception e){
+			for (foodMaterialVO vo : list) {
+				stmt.setString(1, vo.getFoodMaterialName());
+				stmt.setString(2, vo.getFoodCategory());
+				stmt.setInt(3, vo.getFoodMaterialCount());
+				stmt.setInt(4, vo.getFoodMaterialCountAll());
+				stmt.setInt(5, vo.getFoodMaterialPrice());
+				stmt.setString(6, vo.getFoodMaterialType());
+				stmt.setString(7, vo.getVender());
+				stmt.setDate(8, vo.getIncomeDate());
+				stmt.setDate(9, vo.getExpirationDate());
+				stmt.setString(10, bId);
+				successCount += stmt.executeUpdate();
+			}
+			stmt.close();
+			conn.close();
+		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return result;
+		return successCount;
 	}
 
+	
+	
+	 // 2. 카테고리 추가
+    public boolean addFoodCategory(String foodCategory){
 
-	// 2. 횆짬횇횞째챠쨍짰 횄횩째징
-	public int addFoodCategory(String foodCategoryId, String foodCategory){
-		int result = 0;
-		String sql = "INSERT INTO FOODC(foodCategory_Id, foodCategory) VALUES(?, ?)";
+    	boolean flag = false;
+    	
+        String sql = "INSERT INTO FOODC(foodCategory) VALUES(?)";
 
-		try{
-			Connection conn = DBCP.getConnection();
-			PreparedStatement stmt = conn.prepareStatement(sql);
+        try{
+        	Connection conn = DBCP.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            
+            stmt.setString(1, foodCategory);
+            
+            flag = (stmt.executeUpdate()==1);
+			stmt.close();
+			conn.close();
 
-			stmt.setString(1, foodCategoryId);
-			stmt.setString(2, foodCategory);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return flag;
+    }
 
-			result = stmt.executeUpdate();
-
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return result;
-	}
-
-	// 3. 횆짬횇횞째챠쨍짰 쨩챔횁짝
 	public int deleteFoodCategory(String foodCategory) {
 		int result = 0;
 		String sql = "DELETE FROM FOODC WHERE foodCategory = ?";
@@ -163,7 +85,6 @@ public class foodMaterialDAO {
 		return result;
 	}
 
-	// 4. 쩍횆�횣�챌쨍챠�쨍쨌횓 째횏쨩철
 	public List<foodMaterialVO> getFoodMaterialByName(String foodMaterialName) {
 		List<foodMaterialVO> list = new ArrayList<>();
 		String sql = "SELECT foodMaterialName, foodCategory_Id, vender FROM FOODM "
@@ -431,6 +352,164 @@ public class foodMaterialDAO {
 
 		 return result;
 		}
+	
 
+	// 월별 총지출액
+	public int getFoodMaterialTotalAmount(String bId, String startDate, String endDate) {
+	    String sql =
+	        "SELECT NVL(SUM(foodMaterialPrice), 0) AS totalAmount " +
+	        "FROM FOODM " +
+	        "WHERE bId = ? " +
+	        "AND incomeDate >= TO_DATE(?, 'YYYY-MM-DD') " +
+	        "AND incomeDate < TO_DATE(?, 'YYYY-MM-DD')";
+
+	    try (
+	        Connection conn = DBCP.getConnection();
+	        PreparedStatement stmt = conn.prepareStatement(sql)
+	    ) {
+	        stmt.setString(1, bId);
+	        stmt.setString(2, startDate);
+	        stmt.setString(3, endDate);
+
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            if (rs.next()) {
+	                return rs.getInt("totalAmount");
+	            }
+	        }
+
+	    } catch (ClassNotFoundException e) {
+	        e.printStackTrace();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return 0;
+	}
+	
+	// 월별 지출 식자재 순위
+	public List<foodMaterialVO> getFoodMaterialSpendingRank(String bId, String startDate, String endDate) {
+	    String sql =
+	        "SELECT " +
+	        "    RANK() OVER (ORDER BY foodMaterialPrice * foodMaterialCount DESC) AS ranking, " +
+	        "    foodMaterial_Id, " +
+	        "    foodMaterialName, " +
+	        "    foodMaterialPrice, " +
+	        "    foodMaterialCount, " +
+	        "    foodMaterialPrice * foodMaterialCount AS totalExpense, " +
+	        "    incomeDate, " +
+	        "    bId " +
+	        "FROM FOODM " +
+	        "WHERE bId = ? " +
+	        "AND incomeDate >= TO_DATE(?, 'YYYY-MM-DD') " +
+	        "AND incomeDate < TO_DATE(?, 'YYYY-MM-DD') " +
+	        "ORDER BY totalExpense DESC";
+
+	    List<foodMaterialVO> list = new ArrayList<>();
+
+	    try (
+	        Connection conn = DBCP.getConnection();
+	        PreparedStatement stmt = conn.prepareStatement(sql)
+	    ) {
+	        stmt.setString(1, bId);
+	        stmt.setString(2, startDate);
+	        stmt.setString(3, endDate);
+
+	        try (ResultSet rs = stmt.executeQuery()) {
+	            while (rs.next()) {
+	                foodMaterialVO vo = new foodMaterialVO();
+
+	                vo.setRanking(rs.getInt("ranking"));
+	                vo.setFoodMaterialId(rs.getString("foodMaterial_Id"));
+	                vo.setFoodMaterialName(rs.getString("foodMaterialName"));
+	                vo.setFoodMaterialPrice(rs.getInt("foodMaterialPrice"));
+	                vo.setFoodMaterialCount(rs.getInt("foodMaterialCount"));
+	                vo.setTotalExpense(rs.getInt("totalExpense"));
+	                vo.setIncomeDate(rs.getDate("incomeDate"));
+	                vo.setbId(rs.getString("bId"));
+
+	                list.add(vo);
+	            }
+	        }
+
+	    } catch (ClassNotFoundException e) {
+	        e.printStackTrace();
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+
+	    return list;
+	}
+	
+	// 카테고리 전체 검색(추가)
+	public List<foodMaterialCategoryVO> getFoodCategoryList() {
+		List<foodMaterialCategoryVO> list = new ArrayList<>();
+		String sql = "SELECT foodCategory_Id, foodCategory FROM FOODC";
+		try {
+			Connection conn = DBCP.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				foodMaterialCategoryVO vo = new foodMaterialCategoryVO();
+				vo.setFoodCategoryId(rs.getString("foodCategory_Id"));
+				vo.setFoodCategory(rs.getString("foodCategory"));
+				list.add(vo);
+			}
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
+	
+	//카테고리 삭제시, 이용하고 있는 식자재가 있는지 검색(추가)
+	public boolean hasFoodMaterialByCategory(String foodCategory) {
+		int count = 0;
+		String sql = "SELECT COUNT(*) FROM FOODM f JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id "
+				+ "WHERE c.foodCategory = ?";
+		try {
+			Connection conn = DBCP.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, foodCategory);
+			ResultSet rs = stmt.executeQuery();
+			if (rs.next()) {
+				count = rs.getInt(1);
+			}
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return count > 0;
+	}
+	
+	//식재료 선택 시, 사용할 전체 식자재 목록 불러오기(추가)
+	public List<foodMaterialVO> getFoodMaterialListAll(String bId) {
+		List<foodMaterialVO> list = new ArrayList<>();
+		String sql = "SELECT f.foodMaterial_Id, f.foodMaterialName, c.foodCategory " +
+					 "FROM FOODM f JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id " +
+					 "WHERE f.bId = ? ORDER BY f.foodMaterialName ASC";
+		try {
+			Connection conn = DBCP.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			stmt.setString(1, bId);
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				foodMaterialVO vo = new foodMaterialVO();
+				vo.setFoodMaterialId(rs.getString("foodMaterial_Id"));
+				vo.setFoodMaterialName(rs.getString("foodMaterialName"));
+				vo.setFoodCategory(rs.getString("foodCategory"));
+				list.add(vo);
+			}
+			rs.close();
+			stmt.close();
+			conn.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return list;
+	}
 }
 
