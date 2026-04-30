@@ -54,8 +54,8 @@ public class menuAction implements Action {
 				detailList = dao.getMenuDetail(menuId);
 			}
 
-			System.out.println("¼±ÅÃµÈ ¸Ş´ºID : " + menuId);
-			System.out.println("»ç¿ë ½ÄÀÚÀç °³¼ö : " + (detailList == null ? 0 : detailList.size()));
+			System.out.println("ì„ íƒëœ ë©”ë‰´ID : " + menuId);
+			System.out.println("ì‚¬ìš© ì‹ìì¬ ê°œìˆ˜  : " + (detailList == null ? 0 : detailList.size()));
 
 			request.setAttribute("menuList", menuList);
 			request.setAttribute("detailList", detailList);
@@ -63,7 +63,7 @@ public class menuAction implements Action {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			request.setAttribute("errorMessage", "¸Ş´º Á¶È¸ ½ÇÆĞ");
+			request.setAttribute("errorMessage", "ë©”ë‰´ ì¡°íšŒ ì‹¤íŒ¨");
 		}
 
 		return url;

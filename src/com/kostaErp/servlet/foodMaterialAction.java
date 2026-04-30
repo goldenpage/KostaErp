@@ -59,7 +59,7 @@ public class foodMaterialAction implements Action {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			request.setAttribute("errorMessage", "½ÄÀÚÀç Á¶È¸ ½ÇÆĞ");
+			request.setAttribute("errorMessage", "ì‹ìì¬ ì¡°íšŒ ì‹¤íŒ¨");
 		}
 
 		return url;

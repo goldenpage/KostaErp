@@ -34,7 +34,7 @@ public class salesAction implements Action {
 			}
 
 			if (menuId == null || menuId.equals("")) {
-				request.setAttribute("errorMessage", "�Ǹ��� �޴��� ���õ��� �ʾҽ��ϴ�.");
+				request.setAttribute("errorMessage", "판매할 메뉴가 선택되지 않았습니다.");
 				return url;
 			}
 
@@ -43,9 +43,9 @@ public class salesAction implements Action {
 			boolean result = dao.updateFoodMaterialAfterSale(menuId, saleCount, bId);
 
 			if (result) {
-				request.setAttribute("message", "�Ǹ� ó�� ����");
+				request.setAttribute("message", "판매 처리 성공");
 			} else {
-				request.setAttribute("errorMessage", "��� �����Ͽ� �Ǹ� ó���� �� �� �����ϴ�.");
+				request.setAttribute("errorMessage", "재고가 부족하여 판매 처리를 할 수 없습니다.");
 			}
 
 			request.setAttribute("selectedMenuId", menuId);
@@ -55,7 +55,7 @@ public class salesAction implements Action {
 
 		} catch (Exception e) {
 			e.printStackTrace();
-			request.setAttribute("errorMessage", "�Ǹ� ó�� ����");
+			request.setAttribute("errorMessage", "판매 처리 실패");
 		}
 
 		return url;
