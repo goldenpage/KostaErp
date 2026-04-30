@@ -34,6 +34,9 @@ public class ActionFactory {
             case "foodMaterialAction":
                 a = new foodMaterialAction();
                 break;
+            case "deleteFoodMaterialAction":
+                a = new deleteFoodMaterialAction();
+                break;
 
             case "menuUIAction":
                 a = new menuUIAction();
@@ -62,7 +65,6 @@ public class ActionFactory {
             case "idCheck":
                 a = new IdCheckAction();
                 break;
-
             default:
                 a = new loginUIAction();
         }

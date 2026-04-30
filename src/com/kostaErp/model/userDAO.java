@@ -101,7 +101,7 @@ public class userDAO {
    }
 
    // 4. 마케팅 동의
-   public List<userInfoVO> getMarketingMembers1() throws ClassNotFoundException {
+   public List<userInfoVO> getMarketingMembers() throws ClassNotFoundException {
       String sql = "SELECT bid, name, phone, email, marketingDate FROM USERINFO WHERE marketingDate IS NOT NULL";
       List<userInfoVO> list = new ArrayList<>();
 

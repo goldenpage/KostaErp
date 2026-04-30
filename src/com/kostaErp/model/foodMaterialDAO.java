@@ -190,34 +190,6 @@ public class foodMaterialDAO {
 		return list;
 	}
 
-
-	//	public userInfoVO checkMemberByVO(String bId, String name, String pw) throws ClassNotFoundException {
-	//	    String sql = "SELECT bId, name, storeName, storeType, pw FROM USERINFO " +
-	//	                 "WHERE bId = ? AND name = ? AND pw = ?";
-	//	    
-	//	    try (Connection conn = DBCP.getConnection();
-	//	         PreparedStatement stmt = conn.prepareStatement(sql)) {
-	//	        
-	//	        stmt.setString(1, bId);
-	//	        stmt.setString(2, name);
-	//	        stmt.setString(3, pw);
-	//
-	//	        try (ResultSet rs = stmt.executeQuery()) {
-	//	            if (rs.next()) {
-	//	                userInfoVO member = new userInfoVO();
-	//	                member.setbId(rs.getString("bId"));
-	//	                member.setName(rs.getString("name"));
-	//	                member.setPw(rs.getString("pw"));
-	//	                member.setStoreName(rs.getString("storeName"));
-	//	                return member;
-	//	            }
-	//	        }
-	//	    } catch (SQLException e) {
-	//	        System.err.println("쨌횓짹횞�횓 횄쩌횇짤 횁횩 DB 쩔징쨌짱: " + e.getMessage());
-	//	    }
-	//	    return null;
-	//	}
-	//
 	public List<userInfoVO> getMarketingMembers() throws ClassNotFoundException {
 		String sql = "SELECT bid, name, phone, email, marketingDate FROM USERINFO WHERE marketingDate IS NOT NULL";
 		List<userInfoVO> list = new ArrayList<>();
@@ -389,5 +361,76 @@ public class foodMaterialDAO {
 				") " +
 				"WHERE rn BETWEEN ? AND ?";
 	}
+	
+	public int deleteFoodMaterial(String foodMaterialId, String bId) {
+		 int result = 0;
+
+		 Connection conn = null;
+		 PreparedStatement stmt1 = null;
+		 PreparedStatement stmt2 = null;
+		 PreparedStatement stmt3 = null;
+
+		 String sql1 =
+		  "DELETE FROM USED " +
+		  "WHERE foodMaterial_Id = ?";
+
+		 String sql2 =
+		  "DELETE FROM DISPOSALS " +
+		  "WHERE foodMaterial_Id = ?";
+
+		 String sql3 =
+		  "DELETE FROM FOODM " +
+		  "WHERE foodMaterial_Id = ? " +
+		  "AND bId = ?";
+
+		 try {
+		  conn = DBCP.getConnection();
+		  conn.setAutoCommit(false);
+
+		  stmt1 = conn.prepareStatement(sql1);
+		  stmt1.setString(1, foodMaterialId);
+		  stmt1.executeUpdate();
+
+		  stmt2 = conn.prepareStatement(sql2);
+		  stmt2.setString(1, foodMaterialId);
+		  stmt2.executeUpdate();
+
+		  stmt3 = conn.prepareStatement(sql3);
+		  stmt3.setString(1, foodMaterialId);
+		  stmt3.setString(2, bId);
+
+		  result = stmt3.executeUpdate();
+
+		  conn.commit();
+
+		 } catch (Exception e) {
+		  e.printStackTrace();
+
+		  try {
+		   if (conn != null) {
+		    conn.rollback();
+		   }
+		  } catch (Exception e2) {
+		   e2.printStackTrace();
+		  }
+
+		 } finally {
+		  try {
+		   if (stmt3 != null) stmt3.close();
+		   if (stmt2 != null) stmt2.close();
+		   if (stmt1 != null) stmt1.close();
+
+		   if (conn != null) {
+		    conn.setAutoCommit(true);
+		    conn.close();
+		   }
+		  } catch (Exception e) {
+		   e.printStackTrace();
+		  }
+		 }
+
+		 return result;
+		}
+
 }
 
