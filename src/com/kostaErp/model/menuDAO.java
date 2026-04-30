@@ -40,7 +40,7 @@ public class menuDAO {
 				Stmt2.close();
 				conn.close();
 
-		}catch (Exception e){
+		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return menuId;
@@ -48,26 +48,42 @@ public class menuDAO {
 
 	// 2. 메뉴 카테고리 추가
 	public int addMenuCategory(String menuCategory, String bId){
-		int result = 0;
-		String sql = "INSERT INTO MENUC(menuCategory, bId) VALUES(?, ?)";
+		String checkSql = "SELECT COUNT(*) FROM MENUC WHERE menuCategory = ? AND bId = ?";
+		String insertSql = "INSERT INTO MENUC(menuCategory, bId) VALUES(?, ?)";
 
 		try{
 			Connection conn = DBCP.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(sql);
-            
-			stmt.setString(1, menuCategory);
-			stmt.setString(2, bId);
-			
-			result = stmt.executeUpdate();
+			PreparedStatement checkStmt = conn.prepareStatement(checkSql);
 
-		}catch (Exception e){
+			checkStmt.setString(1, menuCategory);
+			checkStmt.setString(2, bId);
+
+			ResultSet rs = checkStmt.executeQuery();
+			if (rs.next() && rs.getInt(1) > 0) {
+				rs.close();
+				checkStmt.close();
+				conn.close();
+				return 0;
+			}
+			rs.close();
+			checkStmt.close();
+
+			PreparedStatement insertStmt = conn.prepareStatement(insertSql);
+			insertStmt.setString(1, menuCategory);
+			insertStmt.setString(2, bId);
+			int result = insertStmt.executeUpdate();
+			insertStmt.close();
+			conn.close();
+			return result;
+
+		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return result;
+		return -1;
 	}
 
 	// 3. 메뉴 카테고리 삭제
-	public int deleteMenuCategory(String menuCategory) {
+	public int deleteMenuCategory(String menuCategory){
 		int result = 0;
 		String sql = "DELETE FROM MENUC WHERE menuCategory = ?";
 
@@ -79,14 +95,14 @@ public class menuDAO {
             
 			result = stmt.executeUpdate();
 
-		}catch (Exception e){
+		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return result;
 	}
 
 	// 4) 식자재 사용량 추가
-	public int addUsedMaterial(int usedCount, String foodMaterialId, String menuId) {
+	public int addUsedMaterial(int usedCount, String foodMaterialId, String menuId){
 		int result = 0;
 		String sql = "INSERT INTO USED(usedCount, foodMaterial_Id, menu_Id) VALUES(?, ?, ?)";
 
@@ -100,14 +116,14 @@ public class menuDAO {
 			
 			result = stmt.executeUpdate();
 
-		}catch (Exception e){
+		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return result;
 	}
 
 	// 5. 식자재 사용량 삭제
-	public int deleteUsedMaterial(String usedMaterialId) {
+	public int deleteUsedMaterial(String usedMaterialId){
 		int result = 0;
 		String sql = "DELETE FROM USED WHERE usedMaterial_Id = ?";
 
@@ -119,7 +135,7 @@ public class menuDAO {
 			
 			result = stmt.executeUpdate();
 
-		}catch (Exception e){
+		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return result;
@@ -269,51 +285,84 @@ public class menuDAO {
         return flag;
     }
 
-	//사용자의 메뉴 카테고리 조회(추가)
-	public List<menuCategoryVO> getMenuCategoryList(String bId) {
+	//사용자의 메뉴 카테고리 조회(추가) - 메뉴 카테고리에 bId가 있음
+	public List<menuCategoryVO> getMenuCategoryList(String bId){
 		List<menuCategoryVO> list = new ArrayList<>();
 		String sql = "SELECT menuCategory_Id, menuCategory FROM MENUC WHERE bId = ?";
 		try {
 			Connection conn = DBCP.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(sql);
+			
 			stmt.setString(1, bId);
+			
 			ResultSet rs = stmt.executeQuery();
-			while (rs.next()) {
+			
+			while (rs.next()){
 				menuCategoryVO vo = new menuCategoryVO();
 				vo.setMenuCategoryId(rs.getString("menuCategory_Id"));
 				vo.setMenuCategory(rs.getString("menuCategory"));
 				list.add(vo);
 			}
+			
 			rs.close();
 			stmt.close();
 			conn.close();
-		} catch (Exception e) {
+			
+		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return list;
 	}
 
-	//카테고리 삭제 전에 메뉴가 있는지 확인하는 작업(추가)
-	public boolean hasMenuByCategory(String menuCategory) {
+	//카테고리 삭제 전에 사용하는 메뉴가 있는지 확인하는 작업 -> null값 들어가면 안됨(추가)
+	public boolean hasMenuByCategory(String menuCategory){
 		int count = 0;
 		String sql = "SELECT COUNT(*) FROM MENUS m "
 				+ "JOIN MENUC mc ON m.menuCategory_Id = mc.menuCategory_Id "
 				+ "WHERE mc.menuCategory = ?";
-		try {
+		try{
 			Connection conn = DBCP.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(sql);
+			
 			stmt.setString(1, menuCategory);
 			ResultSet rs = stmt.executeQuery();
-			if (rs.next()) {
+			
+			if (rs.next()){
 				count = rs.getInt(1);
 			}
+			
 			rs.close();
 			stmt.close();
 			conn.close();
-		} catch (Exception e) {
+			
+		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return count > 0;
 	}
 	
+	//메뉴 중복체크(추가)
+	public boolean hasMenuCheck(String menuName){
+		boolean result = false;
+		String sql = "SELECT menuName FROM MENUS WHERE menuName = ?";
+		try{
+			Connection conn = DBCP.getConnection();
+			PreparedStatement stmt = conn.prepareStatement(sql);
+			
+			stmt.setString(1, menuName);
+			ResultSet rs = stmt.executeQuery();
+			
+			if (rs.next()){
+				result = true;
+			}
+			
+			rs.close();
+			stmt.close();
+			conn.close();
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return result;
+	}
 }

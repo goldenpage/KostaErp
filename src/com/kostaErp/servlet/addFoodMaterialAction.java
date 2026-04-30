@@ -21,7 +21,7 @@ public class addFoodMaterialAction implements Action {
 		HttpSession session = request.getSession(false);
 		String bId = (session != null) ? (String) session.getAttribute("loginOK") : null;
  
-		if (bId == null) {
+		if (bId == null){
 			return "login.jsp";
 		}
  
@@ -29,19 +29,19 @@ public class addFoodMaterialAction implements Action {
  
 		String[] foodMaterialNames = request.getParameterValues("foodMaterialName");
  
-		if (foodMaterialNames != null && foodMaterialNames.length > 0) {
-			String[] foodCategory_Ids      = request.getParameterValues("foodCategory_Id");
-			String[] foodMaterialCounts    = request.getParameterValues("foodMaterialCount");
+		if(foodMaterialNames != null && foodMaterialNames.length > 0){
+			String[] foodCategory_Ids = request.getParameterValues("foodCategory_Id");
+			String[] foodMaterialCounts = request.getParameterValues("foodMaterialCount");
 			String[] foodMaterialCountAlls = request.getParameterValues("foodMaterialCountAll");
-			String[] foodMaterialPrices    = request.getParameterValues("foodMaterialPrice");
-			String[] foodMaterialTypes     = request.getParameterValues("foodMaterialType");
-			String[] venders               = request.getParameterValues("vender");
-			String[] incomeDates           = request.getParameterValues("incomeDate");
-			String[] expirationDates       = request.getParameterValues("expirationDate");
+			String[] foodMaterialPrices = request.getParameterValues("foodMaterialPrice");
+			String[] foodMaterialTypes = request.getParameterValues("foodMaterialType");
+			String[] venders = request.getParameterValues("vender");
+			String[] incomeDates = request.getParameterValues("incomeDate");
+			String[] expirationDates = request.getParameterValues("expirationDate");
  
 			List<foodMaterialVO> list = new ArrayList<>();
  
-			for (int i = 0; i < foodMaterialNames.length; i++) {
+			for(int i = 0; i < foodMaterialNames.length; i++){
 				foodMaterialVO vo = new foodMaterialVO();
 				vo.setFoodMaterialName(foodMaterialNames[i]);
 				vo.setFoodCategory(foodCategory_Ids[i]);
@@ -58,9 +58,6 @@ public class addFoodMaterialAction implements Action {
 			int successCount = dao.addFoodMaterial(list, bId);
 			System.out.println("등록 완료: " + successCount + "/" + foodMaterialNames.length);
 		}
- 
-		List<foodMaterialCategoryVO> categoryList = dao.getFoodCategoryList();
-		request.setAttribute("categoryList", categoryList);
  
 		return url;
 	}
