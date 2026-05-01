@@ -14,6 +14,7 @@ import org.junit.Test;
 import com.kostaErp.model.DBCP;
 import com.kostaErp.model.foodMaterialDAO;
 import com.kostaErp.model.foodMaterialVO;
+import com.kostaErp.model.menuCategoryVO;
 import com.kostaErp.model.menuDAO;
 import com.kostaErp.model.userDAO;
 
@@ -43,7 +44,7 @@ public class DAOTest {
 	//@Test
 	public void addFoodMaterial() {
 		List<foodMaterialVO> list = new ArrayList<>();
- 
+
 		foodMaterialVO vo = new foodMaterialVO();
 		vo.setFoodMaterialName("단무지");
 		vo.setFoodCategory("PP");
@@ -55,7 +56,7 @@ public class DAOTest {
 		vo.setIncomeDate(java.sql.Date.valueOf("2026-04-27"));
 		vo.setExpirationDate(java.sql.Date.valueOf("2026-04-30"));
 		list.add(vo);
- 
+
 		int successCount = dao.addFoodMaterial(list, "0000000000");
 		assertTrue(successCount == list.size());
 
@@ -67,10 +68,10 @@ public class DAOTest {
 	// 2. 카테고리 추가
 	@Test
 	public void addFoodCategory(){
-		boolean result = dao.addFoodCategory("테스트카테고리");
-		assertTrue(result);
+		int result = dao.addFoodCategory("테스트카테고리");
+		//		assertTrue(result);
 		//        int result = dao.addFoodCategory("PP", "가공식품");
-		//        assertEquals("추가실패", 0, result);
+		assertEquals("추가실패", 0, result);
 	}
 
 	// 3. 카테고리 삭제
@@ -93,10 +94,10 @@ public class DAOTest {
 
 
 	// 5. 메뉴추가
-	//@Test
+	@Test
 	public void addMenu() {
-		int result = dao2.addMenu("참치김밥", 4000, "M001");
-		assertTrue("메뉴 추가 성공", result > 0);
+		String result = dao2.addMenu("참치김밥", 4000, "M001");
+		assertTrue("메뉴 추가 성공", result != null);
 		//        int result = dao2.addMenu(null, 4000, "M001");
 		//        assertEquals("메뉴 추가 실패", 0, result);
 	}
@@ -315,34 +316,67 @@ public class DAOTest {
 		System.out.println("expDesc : " + expDescList.size());
 	}
 
-	
+
 	@Test
-	   public void updateFoodMaterialAfterSaleTest() {
-	       menuDAO dao = new menuDAO();
+	public void updateFoodMaterialAfterSaleTest() {
+		menuDAO dao = new menuDAO();
 
-	       String menuId = "MI001";
-	       int saleCount = 1;
+		String menuId = "MI001";
+		int saleCount = 1;
 
-	       boolean result = dao.updateFoodMaterialAfterSale(menuId, saleCount, bId);
+		boolean result = dao.updateFoodMaterialAfterSale(menuId, saleCount, bId);
 
-	       System.out.println("판매 수량 : " + saleCount);
-	       System.out.println("자동 차감 메뉴ID : " + menuId);
-	       System.out.println("사업자 ID : " + bId);
-	       System.out.println("자동 차감 결과 : " + result);
+		System.out.println("판매 수량 : " + saleCount);
+		System.out.println("자동 차감 메뉴ID : " + menuId);
+		System.out.println("사업자 ID : " + bId);
+		System.out.println("자동 차감 결과 : " + result);
 
-	       assertTrue("식자재 자동 차감 실패", result);
-	   }
-	   @Test
-	   public void updateFoodMaterialAfterSaleFailTest() {
-	       menuDAO dao = new menuDAO();
+		assertTrue("식자재 자동 차감 실패", result);
+	}
+	@Test
+	public void updateFoodMaterialAfterSaleFailTest() {
+		menuDAO dao = new menuDAO();
 
-	       boolean result = dao.updateFoodMaterialAfterSale("NO_MENU", 1, bId);
+		boolean result = dao.updateFoodMaterialAfterSale("NO_MENU", 1, bId);
 
-	       System.out.println("없는 메뉴 자동 차감 결과 : " + result);
+		System.out.println("없는 메뉴 자동 차감 결과 : " + result);
 
-	       assertFalse("없는 메뉴, 자동 차감성공 X.", result);
-	   }
+		assertFalse("없는 메뉴, 자동 차감성공 X.", result);
+	}
 
-	
-	
+	// 사용자의 메뉴 카테고리 조회
+	@Test
+	public void getMenuCategoryList() {
+		List<menuCategoryVO> list = dao2.getMenuCategoryList(bId);
+		System.out.println("카테고리 수: " + list.size());
+		assertNotNull(list);
+		assertTrue("카테고리가 1개 이상 있어야 합니다", list.size() > 0);
+		for (menuCategoryVO vo : list) {
+			System.out.println(vo.getMenuCategoryId() + " / " + vo.getMenuCategory());
+			assertNotNull("menuCategoryId가 null이면 안됩니다", vo.getMenuCategoryId());
+			assertNotNull("menuCategory가 null이면 안됩니다", vo.getMenuCategory());
+		}
+	}
+
+	// 식자재 조회
+	@Test
+	public void getFoodMaterialListAll() {
+		foodMaterialDAO fDao = new foodMaterialDAO();
+		List<foodMaterialVO> list = fDao.getFoodMaterialListAll(bId);
+		System.out.println("전체 식자재 수: " + list.size());
+		assertNotNull(list);
+		assertTrue("식자재가 1개 이상 있어야 합니다", list.size() > 0);
+		for (foodMaterialVO vo : list) {
+			System.out.println(vo.getFoodMaterialId() + " / " + vo.getFoodMaterialName() + " / " + vo.getFoodCategory());
+			assertNotNull("foodMaterialId가 null이면 안됩니다", vo.getFoodMaterialId());
+			assertNotNull("foodMaterialName이 null이면 안됩니다", vo.getFoodMaterialName());
+		}
+	}
+
+	@Test
+	public void getMenuName(){
+		boolean result = dao2.hasMenuCheck("참치김밥");
+		assertTrue(result);
+
+	}
 }

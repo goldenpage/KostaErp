@@ -196,7 +196,6 @@
                                 <label>카테고리 추가</label>
                                 <input type="text" id="getfoodCategory" name="foodCategory" placeholder="카테고리 입력">
                                 <button type="button" onclick="addCategoryAjax()">추가하기</button>
-                                <div id="test"></div>
                             </div>
                             
                         </div>
@@ -205,15 +204,15 @@
                             <div class="category_buttons" id="categoryArea">
                                 <c:forEach var="category" items="${categoryList}">
                                     <span style="display:inline-flex; align-items:center; gap:2px;">
-                                        <form method="post" action="${pageContext.request.contextPath}/controller?cmd=deleteFoodCategoryAction" style="display:inline;">
-                                            <input type="hidden" name="foodCategory" value="${category.foodCategory}">
-                                            <button type="button" onclick="selectCategory(this)" data-category-id="${category.foodCategoryId}">${category.foodCategory}</button>
-                                            <button type="submit" class="remove_btn" onclick="return confirm('${category.foodCategory} 카테고리를 삭제하시겠습니까?')">&#10005;</button>
-                                        </form>
+                                        <span style="display:inline-flex; align-items:center; gap:2px;">
+                                        	<button type="button" onclick="selectCategory(this)" data-category-id="${category.foodCategoryId}">${category.foodCategory}</button>
+                                        	<button type="button" class="remove_btn" onclick="deleteCategoryAjax('${category.foodCategory}', this)">&#10005;</button>
+                                    	</span>
                                     </span>
                                 </c:forEach>
                             </div>
                         </div>
+                        <div id="categoryMsg" style="font-size:13px; margin-bottom:8px;"></div>
 
                         
                         <input type="hidden" id="selectedCategoryId" value="">
@@ -321,6 +320,9 @@
     </div>
 
     <script>
+    
+    	var pendingList = [];
+    
         function today() {
             return new Date().toISOString().substring(0, 10);
         }
@@ -332,9 +334,7 @@
                 b.classList.remove('selected');
             });
             btn.classList.add('selected');
-            console.log(btn.getAttribute('data-category-id'))
             document.getElementById('selectedCategoryId').value = btn.getAttribute('data-category-id');
-            
         }
 
         function getSelectedCategoryName() {
@@ -342,26 +342,10 @@
             return sel ? sel.textContent.trim() : '';
         }
 
-        function addCategoryButton(foodCategoryId, foodCategory) {
-            var area = document.getElementById('categoryArea');
-
-            var btn = document.createElement('button');
-            btn.type = 'button';
-           
-            btn.setAttribute('data-category-id', foodCategoryId);
-            btn.textContent = foodCategory;
-            btn.onclick = function () {
-                selectCategory(this);
-            };
-
-            area.appendChild(btn);
-            selectCategory(btn);
-        }
-        
         function addCategoryAjax() {
             var input = document.getElementById('getfoodCategory');
             var categoryName = input.value.trim();
-            var msg = document.getElementById('test');
+            var msg = document.getElementById('categoryMsg');
 
             if (!categoryName) {
                 alert('카테고리명을 입력해주세요.');
@@ -374,29 +358,75 @@
 
             xhr.onreadystatechange = function () {
                 if (xhr.readyState === 4 && xhr.status === 200) {
-                        var res = xhr.responseText;
-                        var parts = res.split("|");
+                    var parts = xhr.responseText.split("|");
+                    var result = parts[0];
+                    var value = parts[1];
 
-                        var result = parts[0];
-                        var value = parts[1];
-
-                        if (result === "success") {
-                            msg.innerText = "카테고리가 추가되었습니다.";
-                            addCategoryButton(value,value);
-                            input.value = '';
-                        } else {
-                            msg.innerText = value;
-                        }
+                    if (result === "success") {
+                        msg.style.color = 'green';
+                        msg.innerText = '카테고리가 추가되었습니다.';
+                        var span = document.createElement('span');
+                        span.style.cssText = 'display:inline-flex; align-items:center; gap:2px;';
+                        var selectBtn = document.createElement('button');
+                        selectBtn.type = 'button';
+                        selectBtn.textContent = value;
+                        selectBtn.onclick = function() { selectCategory(this); };
+                        var delBtn = document.createElement('button');
+                        delBtn.type = 'button';
+                        delBtn.className = 'remove_btn';
+                        delBtn.innerHTML = '&#10005;';
+                        delBtn.onclick = function() { deleteCategoryAjax(value, this); };
+                        span.appendChild(selectBtn);
+                        span.appendChild(delBtn);
+                        document.getElementById('categoryArea').appendChild(span);
+                        input.value = '';
                     } else {
-                        msg.innerText = "카테고리 추가 중 오류가 발생했습니다.";
+                        msg.style.color = 'red';
+                        msg.innerText = value;
                     }
+                } else if (xhr.readyState === 4) {
+                    msg.style.color = 'red';
+                    msg.innerText = '카테고리 추가 중 오류가 발생했습니다.';
+                }
             };
 
             xhr.send("foodCategory=" + encodeURIComponent(categoryName));
         }
-
         
-        var pendingList = [];
+        function deleteCategoryAjax(foodCategory, delBtn) {
+            if (!confirm(foodCategory + ' 카테고리를 삭제하시겠습니까?')) 
+            	return;
+
+            var msg = document.getElementById('categoryMsg');
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "${pageContext.request.contextPath}/controller?cmd=deleteFoodCategoryAction", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var parts = xhr.responseText.split("|");
+                    var result = parts[0];
+                    var value = parts[1];
+
+                    if (result === "success") {
+                        msg.innerText = value;
+                        var span = delBtn.closest('span');
+                        var selectedId = document.getElementById('selectedCategoryId').value;
+                        var selectBtn = span.querySelector('button:not(.remove_btn)');
+                        if (selectBtn && selectBtn.getAttribute('data-category-id') === selectedId) {
+                            document.getElementById('selectedCategoryId').value = '';
+                        }
+                        span.remove();
+                    } else {
+                        msg.innerText = value;
+                    }
+                } else if (xhr.readyState === 4) {
+                    msg.innerText = '카테고리 삭제 중 오류가 발생했습니다.';
+                }
+            };
+
+            xhr.send("foodCategory=" + encodeURIComponent(foodCategory));
+        }
 
         function addToList() {
             var foodMaterialName = document.getElementById('foodMaterialName').value.trim();
@@ -413,15 +443,42 @@
 
             if (!incomeDate) incomeDate = today();
 
-            if (!foodMaterialName) { alert('식자재명을 입력해주세요.'); return; }
-            if (!foodCategory_Id) { alert('카테고리를 선택해주세요.'); return; }
-            if (!foodMaterialCount || Number(foodMaterialCount) < 0) { alert('전체수량을 올바르게 입력해주세요.'); return; }
-            if (!foodMaterialCountAll || Number(foodMaterialCountAll) < 0) { alert('식자재 용량을 올바르게 입력해주세요.'); return; }
-            if (!foodMaterialPrice || Number(foodMaterialPrice) < 0) { alert('가격을 올바르게 입력해주세요.'); return; }
-            if (!foodMaterialType) { alert('타입을 입력해주세요.'); return; }
-            if (!vender) { alert('구입처를 입력해주세요.'); return; }
-            if (!expirationDate) { alert('유통기한을 입력해주세요.'); return; }
-            if (expirationDate < incomeDate) { alert('유통기한이 매입일자보다 이전입니다.'); return; }
+            if (!foodMaterialName) { 
+            	alert('식자재명을 입력해주세요.'); 
+            	return; 
+            }
+            if (!foodCategory_Id) { 
+            	alert('카테고리를 선택해주세요.'); 
+            	return; 
+            }
+            if (!foodMaterialCount || Number(foodMaterialCount) < 0) { 
+            	alert('전체수량을 올바르게 입력해주세요.'); 
+            	return; 
+            }
+            if (!foodMaterialCountAll || Number(foodMaterialCountAll) < 0) { 
+            	alert('식자재 용량을 올바르게 입력해주세요.'); 
+            	return; 
+            }
+            if (!foodMaterialPrice || Number(foodMaterialPrice) < 0) { 
+            	alert('가격을 올바르게 입력해주세요.'); 
+            	return; 
+            }
+            if (!foodMaterialType) { 
+            	alert('타입을 입력해주세요.'); 
+            	return; 
+            }
+            if (!vender) { 
+            	alert('구입처를 입력해주세요.'); 
+            	return; 
+            }
+            if (!expirationDate) { 
+            	alert('유통기한을 입력해주세요.'); 
+            	return; 
+            }
+            if (expirationDate < incomeDate) { 
+            	alert('유통기한이 매입일자보다 이전입니다.'); 
+            	return; 
+            }
 
             pendingList.push({
                 foodMaterialName: foodMaterialName,
