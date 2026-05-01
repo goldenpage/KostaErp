@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!DOCTYPE html>
-<html lang="kr">
+<html lang="ko">
 
 <head>
 <meta charset="UTF-8">
@@ -73,93 +75,139 @@ ul {
 	font-size: 18px;
 	line-height: 18px;
 }
+
+table {
+	border-collapse: collapse;
+	margin-top: 10px;
+}
+
+th, td {
+	border: 1px solid #999;
+	padding: 8px 12px;
+	text-align: center;
+}
+
+.chart_box {
+	width: 360px;
+	height: 300px;
+}
+
+canvas {
+	width: 360px !important;
+	height: 300px !important;
+}
 </style>
 </head>
 
 <body>
 	<div class="container">
 		<section class="sideMenu">
-
 			<jsp:include page="common/sideMenu.jsp" />
-
 		</section>
+
 		<div class="main">
 			<div>
 				<jsp:include page="common/userName.jsp" />
 			</div>
+
 			<h1>폐기통계</h1>
+
 			<div class="content_item">
 				<div class="disposal_price">
-					<div>4월 폐기율</div>
-					<div>4월 총폐기금액</div>
+					<div>폐기율: ${disposalRate}%</div>
+
 					<div>
-						<div>4월 폐기품목 Top3</div>
-						<ul>
-							<li>번호</li>
-							<li>폐기식자재명</li>
-							<li>카테고리</li>
-							<li>폐기총용량</li>
-							<li>폐기총가격</li>
-						</ul>
-						<ul>
-							<li>1</li>
-							<li>우유</li>
-							<li>유제품</li>
-							<li>3000g</li>
-							<li>15,000</li>
-						</ul>
+						총 폐기금액:
+						<fmt:formatNumber value="${totalDisposalPrice}" pattern="#,###" />
+						원
+					</div>
+
+					<div>
+						<div>폐기품목 Top3</div>
+
+						<table>
+							<thead>
+								<tr>
+									<th>번호</th>
+									<th>식자재명</th>
+									<th>폐기횟수</th>
+									<th>총 폐기금액</th>
+								</tr>
+							</thead>
+
+							<tbody>
+								<c:forEach var="item" items="${top3List}" varStatus="status">
+									<tr>
+										<td>${status.count}</td>
+										<td>${item.foodMaterialName}</td>
+										<td>${item.disposalCount}</td>
+										<td>
+											<fmt:formatNumber value="${item.totalDisposalPrice}" pattern="#,###" />
+											원
+										</td>
+									</tr>
+								</c:forEach>
+
+								<c:if test="${empty top3List}">
+									<tr>
+										<td colspan="4">폐기 데이터가 없습니다.</td>
+									</tr>
+								</c:if>
+							</tbody>
+						</table>
 					</div>
 				</div>
+
 				<div class="disposal_ratio">
-					<div>폐기사유비율</div>
-					<canvas id="reasonChart"></canvas>
+					<div>폐기사유 비율</div>
+					<div class="chart_box">
+						<canvas id="reasonChart"></canvas>
+					</div>
 				</div>
 
 				<div class="disposal_solid_liquid">
 					<div>날짜별 폐기량</div>
-					<canvas id="dailyDisposalChart"></canvas>
+					<div class="chart_box">
+						<canvas id="dailyDisposalChart"></canvas>
+					</div>
 				</div>
-
-
 			</div>
 		</div>
 	</div>
+
+	<script type="application/json" id="dailyLabelsJson">${dailyLabelsJson}</script>
+	<script type="application/json" id="dailyDatasetsJson">${dailyDatasetsJson}</script>
+	<script type="application/json" id="reasonLabelsJson">${reasonLabelsJson}</script>
+	<script type="application/json" id="reasonValuesJson">${reasonValuesJson}</script>
+
 	<script>
-	const dailyLabels = ["04-01", "04-02", "04-03", "04-04"];
-	const solidData = [3, 5, 2, 7];
-	const liquidData = [1, 2, 4, 3];
+	function readJson(id) {
+		const text = document.getElementById(id).textContent.trim();
+		return JSON.parse(text || "[]");
+	}
+
+	const dailyLabels = readJson("dailyLabelsJson");
+	const dailyDatasets = readJson("dailyDatasetsJson");
+	const reasonLabels = readJson("reasonLabelsJson");
+	const reasonValues = readJson("reasonValuesJson");
 
 	new Chart(document.querySelector("#dailyDisposalChart"), {
-	    type: "line",
-	    data: {
-	        labels: dailyLabels,
-	        datasets: [
-	            {
-	                label: "고체",
-	                data: solidData,
-	                borderDash: [6, 4]
-	            },
-	            {
-	                label: "액체",
-	                data: liquidData,
-	                borderDash: [6, 4]
-	            }
-	        ]
-	    }
+		type: "line",
+		data: {
+			labels: dailyLabels,
+			datasets: dailyDatasets
+		}
 	});
-
-	const reasonData = {
-	    labels: ["유통기한", "파손", "재고초과"],
-	    datasets: [{
-	        data: [40, 35, 25]
-	    }]
-	};
 
 	new Chart(document.querySelector("#reasonChart"), {
-	    type: "doughnut",
-	    data: reasonData
+		type: "doughnut",
+		data: {
+			labels: reasonLabels,
+			datasets: [{
+				data: reasonValues
+			}]
+		}
 	});
-
 	</script>
 </body>
 
