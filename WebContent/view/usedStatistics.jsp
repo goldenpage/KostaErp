@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+    pageEncoding="EUC-KR"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
@@ -81,25 +81,25 @@ table {
 				<jsp:include page="common/userName.jsp" />
 			</div>
 
-			<div>¸ÅÃâ¼øÀ§</div>
+			<div>ÁöÃâ¼øÀ§</div>
 			<div>
-				<canvas id = "revenueChart"></canvas>
+				<canvas id = "usedChart"></canvas>
 			</div>
 
 		</div>
 	</div>
 	<script>
-	const revenueData = {
+	const usedData = {
 		    labels: ["ÂüÄ¡±è¹ä", "±è¹ä", "¶¯ÃÊ±è¹ä"],
 		    datasets: [{
-		    	label: "¸ÅÃâ",
+		    	label: "ÁöÃâ",
 		        data: [15000, 20000, 30000]
 		    }]
 		};
 
-		new Chart(document.querySelector("#revenueChart"), {
+		new Chart(document.querySelector("#usedChart"), {
 		    type: "bar",
-		    data: revenueData,
+		    data: usedData,
 		    options: {
 		    	indexAxis: 'y'
 		    }

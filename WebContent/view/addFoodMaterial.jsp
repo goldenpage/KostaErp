@@ -174,6 +174,7 @@
         </section>
 
         <div class="main">
+        <form method="post" action="${pageContext.request.contextPath}/controller?cmd=addFoodMaterialAction" class="addFood">
             <div>
                 <jsp:include page="common/userName.jsp" />
             </div>
@@ -190,13 +191,14 @@
                     <div class="input_section">
 
                         <div class="input_row">
-                            <form method="post" action="${pageContext.request.contextPath}/controller?cmd=addFoodCategoryAction">
+                            
                             <div class="category_buttons">
                                 <label>카테고리 추가</label>
-                                <input type="text" name="foodCategory" placeholder="카테고리 입력">
-                                <button type="submit">추가하기</button>
+                                <input type="text" id="getfoodCategory" name="foodCategory" placeholder="카테고리 입력">
+                                <button type="button" onclick="addCategoryAjax()">추가하기</button>
+                                <div id="test"></div>
                             </div>
-                            </form>
+                            
                         </div>
 
                         <div class="input_row">
@@ -213,7 +215,7 @@
                             </div>
                         </div>
 
-                        <form method="post" action="${pageContext.request.contextPath}/controller?cmd=addFoodMaterialAction" class="addFood">
+                        
                         <input type="hidden" id="selectedCategoryId" value="">
 
                         <div class="input_row">
@@ -330,7 +332,9 @@
                 b.classList.remove('selected');
             });
             btn.classList.add('selected');
+            console.log(btn.getAttribute('data-category-id'))
             document.getElementById('selectedCategoryId').value = btn.getAttribute('data-category-id');
+            
         }
 
         function getSelectedCategoryName() {
@@ -338,63 +342,99 @@
             return sel ? sel.textContent.trim() : '';
         }
 
-        function addCategory() {
-            var categoryName = document.getElementById('inputCategoryName').value.trim();
-            if (!categoryName) { alert('카테고리명을 입력해주세요.'); return; }
-
-            var existing = Array.from(document.querySelectorAll('#categoryArea button'))
-                .map(function(b) { return b.textContent.trim(); });
-            if (existing.indexOf(categoryName) !== -1) { alert('이미 존재하는 카테고리입니다.'); return; }
+        function addCategoryButton(foodCategoryId, foodCategory) {
+            var area = document.getElementById('categoryArea');
 
             var btn = document.createElement('button');
             btn.type = 'button';
-            btn.textContent = categoryName;
-            btn.setAttribute('data-category-id', categoryName);
-            btn.onclick = function() { selectCategory(this); };
-            document.getElementById('categoryArea').appendChild(btn);
-            document.getElementById('inputCategoryName').value = '';
+           
+            btn.setAttribute('data-category-id', foodCategoryId);
+            btn.textContent = foodCategory;
+            btn.onclick = function () {
+                selectCategory(this);
+            };
+
+            area.appendChild(btn);
             selectCategory(btn);
         }
+        
+        function addCategoryAjax() {
+            var input = document.getElementById('getfoodCategory');
+            var categoryName = input.value.trim();
+            var msg = document.getElementById('test');
 
+            if (!categoryName) {
+                alert('카테고리명을 입력해주세요.');
+                return;
+            }
+
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "${pageContext.request.contextPath}/controller?cmd=addFoodCategoryAction", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                        var res = xhr.responseText;
+                        var parts = res.split("|");
+
+                        var result = parts[0];
+                        var value = parts[1];
+
+                        if (result === "success") {
+                            msg.innerText = "카테고리가 추가되었습니다.";
+                            addCategoryButton(value,value);
+                            input.value = '';
+                        } else {
+                            msg.innerText = value;
+                        }
+                    } else {
+                        msg.innerText = "카테고리 추가 중 오류가 발생했습니다.";
+                    }
+            };
+
+            xhr.send("foodCategory=" + encodeURIComponent(categoryName));
+        }
+
+        
         var pendingList = [];
 
         function addToList() {
-            var foodMaterialName     = document.getElementById('foodMaterialName').value.trim();
-            var foodCategory_Id      = document.getElementById('selectedCategoryId').value;
-            var foodCategoryName     = getSelectedCategoryName();
-            var foodMaterialCount    = document.getElementById('foodMaterialCount').value;
+            var foodMaterialName = document.getElementById('foodMaterialName').value.trim();
+            var foodCategory_Id = document.getElementById('selectedCategoryId').value;
+            var foodCategoryName = getSelectedCategoryName();
+            var foodMaterialCount = document.getElementById('foodMaterialCount').value;
             var foodMaterialCountAll = document.getElementById('foodMaterialCountAll').value;
-            var unit                 = document.getElementById('inputUnit').value;
-            var foodMaterialPrice    = document.getElementById('foodMaterialPrice').value;
-            var foodMaterialType     = document.getElementById('foodMaterialType').value.trim();
-            var vender               = document.getElementById('vender').value.trim();
-            var incomeDate           = document.getElementById('incomeDate').value;
-            var expirationDate       = document.getElementById('expirationDate').value;
+            var unit = document.getElementById('inputUnit').value;
+            var foodMaterialPrice = document.getElementById('foodMaterialPrice').value;
+            var foodMaterialType = document.getElementById('foodMaterialType').value.trim();
+            var vender = document.getElementById('vender').value.trim();
+            var incomeDate = document.getElementById('incomeDate').value;
+            var expirationDate = document.getElementById('expirationDate').value;
 
             if (!incomeDate) incomeDate = today();
 
-            if (!foodMaterialName)                                    { alert('식자재명을 입력해주세요.'); return; }
-            if (!foodCategory_Id)                                     { alert('카테고리를 선택해주세요.'); return; }
-            if (!foodMaterialCount    || Number(foodMaterialCount) < 0)    { alert('전체수량을 올바르게 입력해주세요.'); return; }
+            if (!foodMaterialName) { alert('식자재명을 입력해주세요.'); return; }
+            if (!foodCategory_Id) { alert('카테고리를 선택해주세요.'); return; }
+            if (!foodMaterialCount || Number(foodMaterialCount) < 0) { alert('전체수량을 올바르게 입력해주세요.'); return; }
             if (!foodMaterialCountAll || Number(foodMaterialCountAll) < 0) { alert('식자재 용량을 올바르게 입력해주세요.'); return; }
-            if (!foodMaterialPrice    || Number(foodMaterialPrice) < 0)    { alert('가격을 올바르게 입력해주세요.'); return; }
-            if (!foodMaterialType)                                    { alert('타입을 입력해주세요.'); return; }
-            if (!vender)                                              { alert('구입처를 입력해주세요.'); return; }
-            if (!expirationDate)                                      { alert('유통기한을 입력해주세요.'); return; }
-            if (expirationDate < incomeDate)                          { alert('유통기한이 매입일자보다 이전입니다.'); return; }
+            if (!foodMaterialPrice || Number(foodMaterialPrice) < 0) { alert('가격을 올바르게 입력해주세요.'); return; }
+            if (!foodMaterialType) { alert('타입을 입력해주세요.'); return; }
+            if (!vender) { alert('구입처를 입력해주세요.'); return; }
+            if (!expirationDate) { alert('유통기한을 입력해주세요.'); return; }
+            if (expirationDate < incomeDate) { alert('유통기한이 매입일자보다 이전입니다.'); return; }
 
             pendingList.push({
-                foodMaterialName:     foodMaterialName,
-                foodCategory_Id:      foodCategory_Id,
-                foodCategoryName:     foodCategoryName,
-                foodMaterialCount:    foodMaterialCount,
+                foodMaterialName: foodMaterialName,
+                foodCategory_Id: foodCategory_Id,
+                foodCategoryName: foodCategoryName,
+                foodMaterialCount: foodMaterialCount,
                 foodMaterialCountAll: foodMaterialCountAll,
-                unit:                 unit,
-                foodMaterialPrice:    foodMaterialPrice,
-                foodMaterialType:     foodMaterialType,
-                vender:               vender,
-                incomeDate:           incomeDate,
-                expirationDate:       expirationDate
+                unit: unit,
+                foodMaterialPrice: foodMaterialPrice,
+                foodMaterialType: foodMaterialType,
+                vender: vender,
+                incomeDate: incomeDate,
+                expirationDate: expirationDate
             });
 
             renderPendingList();
@@ -434,15 +474,15 @@
             container.innerHTML = '';
             pendingList.forEach(function(item) {
                 var fields = [
-                    ['foodMaterialName',     item.foodMaterialName],
-                    ['foodCategory_Id',      item.foodCategory_Id],
-                    ['foodMaterialCount',    item.foodMaterialCount],
+                    ['foodMaterialName', item.foodMaterialName],
+                    ['foodCategory_Id', item.foodCategory_Id],
+                    ['foodMaterialCount', item.foodMaterialCount],
                     ['foodMaterialCountAll', item.foodMaterialCountAll],
-                    ['foodMaterialPrice',    item.foodMaterialPrice],
-                    ['foodMaterialType',     item.foodMaterialType],
-                    ['vender',               item.vender],
-                    ['incomeDate',           item.incomeDate],
-                    ['expirationDate',       item.expirationDate]
+                    ['foodMaterialPrice', item.foodMaterialPrice],
+                    ['foodMaterialType', item.foodMaterialType],
+                    ['vender', item.vender],
+                    ['incomeDate', item.incomeDate],
+                    ['expirationDate', item.expirationDate]
                 ];
                 fields.forEach(function(f) {
                     var input = document.createElement('input');

@@ -1,35 +1,34 @@
 package com.kostaErp.servlet;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import com.kostaErp.model.foodMaterialCategoryVO;
 import com.kostaErp.model.foodMaterialDAO;
 
 public class addFoodCategoryAction implements Action {
 
-	@Override
-	public String execute(HttpServletRequest request) throws ServletException, IOException {
+    @Override
+    public String execute(HttpServletRequest request) throws ServletException, IOException {
+        String foodCategory = request.getParameter("foodCategory");
 
-		foodMaterialDAO dao = new foodMaterialDAO();
-		 
-		try {
-			if (dao.addFoodCategory(request.getParameter("foodCategory")))
-				System.out.println("등록성공");
-			else
-				System.out.println("등록실패");
-		} catch (Exception e) {
-			e.printStackTrace();
-			System.out.println("정보 못가져옴");
-		}
- 
-		List<foodMaterialCategoryVO> categoryList = dao.getFoodCategoryList();
-		request.setAttribute("categoryList", categoryList);
- 
-		return "addFoodMaterial.jsp";
-	}
+        if (foodCategory == null || foodCategory.trim().isEmpty()) {
+            request.setAttribute("ajaxResponse", "fail|카테고리명을 입력해주세요.");
+            return null;
+        }
 
+        foodCategory = foodCategory.trim();
+
+        foodMaterialDAO dao = new foodMaterialDAO();
+        boolean result = dao.addFoodCategory(foodCategory);
+
+        if (result) {
+            request.setAttribute("ajaxResponse", "success|" + foodCategory);
+        } else {
+            request.setAttribute("ajaxResponse", "fail|카테고리 추가에 실패했습니다.");
+        }
+
+        return null;
+    }
 }

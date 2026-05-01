@@ -5,12 +5,12 @@ import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-public class disposalUIAction implements Action {
+public class usedStatisticsUIAction implements Action {
 
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
-		
-		return "disposalStatistics.jsp";
+		// TODO Auto-generated method stub
+		return "usedStatistics.jsp";
 	}
 
 }

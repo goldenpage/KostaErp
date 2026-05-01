@@ -93,19 +93,7 @@ table {
 </head>
 
 <body>
-    <div class="container">
-        <section class="sideMenu">
-            
-        </section>
-        <div class="main">
-            <div>
-                <ul class="profile">
-                    <td>김상혁님</td>
-                    <td>알림</td>
-                </ul>
-            </div>
-            <h1>메뉴 조회</h1>
-            <div class="content_item">
+  
 
 	<div class="container">
 		<section class="sideMenu">
