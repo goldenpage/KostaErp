@@ -43,7 +43,7 @@
 			<li
 				onclick="location.href='controller?cmd=usedStatisticsUIAction'">지출통계</li>
 			<li
-				onclick="location.href='controller?cmd=disposalStatisticsAction'">폐기통계</li>
+				onclick="location.href='controller?cmd=disposalStatisticUIAction'">폐기통계</li>
 		</ul>
 	</div>
 

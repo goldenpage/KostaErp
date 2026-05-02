@@ -105,6 +105,9 @@ public class ActionFactory {
             case "usedStatisticsUIAction":
             	a = new usedStatisticsUIAction();
             	break;
+            case "usedStatisticsAction":
+            	a = new usedStatisticsAction() ;
+            	break;
 
             case "idCheckAction":
                 a = new IdCheckAction();

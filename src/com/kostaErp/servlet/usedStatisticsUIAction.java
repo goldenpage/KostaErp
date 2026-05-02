@@ -4,13 +4,16 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 public class usedStatisticsUIAction implements Action {
 
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		return "usedStatistics.jsp";
+		HttpSession session = request.getSession();
+		String bId = (String) session.getAttribute("loginOK");
+		
+		return new usedStatisticsAction().execute(request);
 	}
 
 }
