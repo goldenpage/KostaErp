@@ -58,10 +58,9 @@ public class foodMaterialDAO {
         try{
         	Connection conn = DBCP.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql);
-            
             stmt.setString(1, foodCategory);
-            
             ResultSet rs = stmt.executeQuery();
+            
             if (rs.next() && rs.getInt(1) > 0) {
                 rs.close();
                 stmt.close();
@@ -69,6 +68,7 @@ public class foodMaterialDAO {
                 
                 return 0;
             }
+            
             rs.close();
             stmt.close();
             
@@ -537,5 +537,30 @@ public class foodMaterialDAO {
 		}
 		return list;
 	}
+	//카테고리 id 불러오기
+	public String getCategoryId(String foodCategory){
+        String sql = "SELECT foodCategory_Id FROM FOODC "
+        		+ "WHERE foodCategory = ?";
+
+        try{
+        	Connection conn = DBCP.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, foodCategory);
+            ResultSet rs = stmt.executeQuery();
+            String categoryId = null;
+            
+            if (rs.next()) 
+            	categoryId = rs.getString("foodCategory_Id");
+            
+            rs.close();
+            stmt.close();
+            conn.close();
+
+            return categoryId;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
 

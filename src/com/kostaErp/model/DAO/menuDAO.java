@@ -369,4 +369,30 @@ public class menuDAO {
 		}
 		return result;
 	}
+	
+	//카테고리 id 불러오기
+	public String getCategoryId(String menuCategory){
+        String sql = "SELECT menuCategory_Id FROM MENUC "
+        		+ "WHERE menuCategory = ?";
+
+        try{
+        	Connection conn = DBCP.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql);
+            stmt.setString(1, menuCategory);
+            ResultSet rs = stmt.executeQuery();
+            String categoryId = null;
+            
+            if (rs.next()) 
+            	categoryId = rs.getString("menuCategory_Id");
+            
+            rs.close();
+            stmt.close();
+            conn.close();
+
+            return categoryId;
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

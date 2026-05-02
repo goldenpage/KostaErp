@@ -392,16 +392,20 @@
                     var parts = xhr.responseText.split("|");
                     var result = parts[0];
                     var value = parts[1];
+                    var getId = parts[2];
 
                     if (result === "success") {
                         msg.style.color = 'green';
                         msg.innerText = '카테고리가 추가되었습니다.';
+                        
                         var span = document.createElement('span');
                         span.style.cssText = 'display:inline-flex; align-items:center; gap:2px;';
                         var selectBtn = document.createElement('button');
                         selectBtn.type = 'button';
-                        selectBtn.textContent = value;
+                        selectBtn.textContent = getId;
+                        selectBtn.setAttribute('data-category-id', value);
                         selectBtn.onclick = function() { selectCategory(this); };
+                        
                         var delBtn = document.createElement('button');
                         delBtn.type = 'button';
                         delBtn.className = 'remove_btn';

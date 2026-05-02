@@ -31,11 +31,12 @@ public class addMenuCategoryAction implements Action {
 		}
 		menuCategory = menuCategory.trim();
 
-		menuDAO mDao = new menuDAO();
-		int result = mDao.addMenuCategory(menuCategory, bId);
+		menuDAO dao = new menuDAO();
+		int result = dao.addMenuCategory(menuCategory, bId);
+		String Id = dao.getCategoryId(menuCategory);
 
 		if (result == 1) {
-			request.setAttribute("ajaxResponse", "success|" + menuCategory);
+			request.setAttribute("ajaxResponse", "success|" + Id + "|" + menuCategory);
 		} else if (result == 0) {
 			request.setAttribute("ajaxResponse", "fail|이미 존재하는 카테고리입니다.");
 		} else {
