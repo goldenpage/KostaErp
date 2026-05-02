@@ -29,8 +29,8 @@
 			<li>식자재관리</li>
 			<li onclick="location.href='controller?cmd=addFoodMaterialUIAction'">식자재입력</li>
 			<li onclick="location.href='controller?cmd=addMenuUIAction'">메뉴입력</li>
-			<li onclick="location.href='controller?cmd=foodMaterialUIAction'">식자재조회</li>
-			<li onclick="location.href='controller?cmd=menuUIAction'">메뉴상세조회</li>
+			<li onclick="location.href='controller?cmd=foodMaterialAction'">식자재조회</li>
+			<li onclick="location.href='controller?cmd=menuAction'">메뉴상세조회</li>
 		</ul>
 		<ul>
 			<li>폐기관리</li>
