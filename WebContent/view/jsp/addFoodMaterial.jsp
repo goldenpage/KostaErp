@@ -232,7 +232,12 @@
                             <input type="number" id="foodMaterialPrice" placeholder="10000" min="0">
 
                             <label>타입 *</label>
-                            <input type="text" id="foodMaterialType" placeholder="고체">
+                            <select id="foodMaterialType">
+							    <option value="">선택</option>
+							    <option value="고체">고체</option>
+							    <option value="액체">액체</option>
+							    <option value="기타">기타</option>
+							</select>
 
                             <label>구입처 *</label>
                             <input type="text" id="vender" placeholder="하나로마트">
@@ -353,16 +358,22 @@
                     var parts = xhr.responseText.split("|");
                     var result = parts[0];
                     var value = parts[1];
-
+                    var getId = parts[2];
+					console.log(value);
+					console.log(getId);
+					
                     if (result === "success") {
                         msg.style.color = 'green';
                         msg.innerText = '카테고리가 추가되었습니다.';
+                      
                         var span = document.createElement('span');
                         span.style.cssText = 'display:inline-flex; align-items:center; gap:2px;';
                         var selectBtn = document.createElement('button');
                         selectBtn.type = 'button';
-                        selectBtn.textContent = value;
+                        selectBtn.textContent = getId;
+                        selectBtn.setAttribute('data-category-id', value);
                         selectBtn.onclick = function() { selectCategory(this); };
+                        
                         var delBtn = document.createElement('button');
                         delBtn.type = 'button';
                         delBtn.className = 'remove_btn';
@@ -549,7 +560,7 @@
             document.getElementById('foodMaterialCountAll').value = '';
             document.getElementById('inputUnit').selectedIndex = 0;
             document.getElementById('foodMaterialPrice').value = '';
-            document.getElementById('foodMaterialType').value = '';
+            document.getElementById('foodMaterialType').selectedIndex = 0;
             document.getElementById('vender').value = '';
             document.getElementById('expirationDate').value = '';
             document.getElementById('incomeDate').value = today();
@@ -598,7 +609,7 @@
         function fillFromSearch(data) {
             document.getElementById('foodMaterialName').value = data.foodMaterialName;
             document.getElementById('vender').value = data.vender;
-            document.getElementById('foodMaterialType').value = data.foodMaterialType;
+            document.getElementById('foodMaterialType').value = data.foodMaterialType || '';
 
             var catBtns = document.querySelectorAll('#categoryArea button[data-category-id]');
             var matched = false;
