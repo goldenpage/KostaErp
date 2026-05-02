@@ -6,7 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.kostaErp.model.menuDAO;
+import com.kostaErp.model.DAO.menuDAO;
 
 public class salesAction implements Action {
 

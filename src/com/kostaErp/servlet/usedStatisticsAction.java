@@ -12,8 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
-import com.kostaErp.model.foodMaterialDAO;
-import com.kostaErp.model.foodMaterialVO;
+import com.kostaErp.model.DAO.foodMaterialDAO;
+import com.kostaErp.model.VO.foodMaterialVO;
 
 public class usedStatisticsAction implements Action {
 

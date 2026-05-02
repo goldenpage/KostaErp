@@ -13,8 +13,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
-import com.kostaErp.model.disposalDAO;
-import com.kostaErp.model.disposalVO;
+import com.kostaErp.model.DAO.disposalDAO;
+import com.kostaErp.model.VO.disposalVO;
 
 public class disposalStatisticsAction implements Action {
 

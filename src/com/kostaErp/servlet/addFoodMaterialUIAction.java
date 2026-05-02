@@ -6,8 +6,8 @@ import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import com.kostaErp.model.foodMaterialCategoryVO;
-import com.kostaErp.model.foodMaterialDAO;
+import com.kostaErp.model.DAO.foodMaterialDAO;
+import com.kostaErp.model.VO.foodMaterialCategoryVO;
 
 public class addFoodMaterialUIAction implements Action {
 

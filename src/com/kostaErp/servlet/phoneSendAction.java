@@ -7,7 +7,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.kostaErp.model.userDAO;
+import com.kostaErp.model.DAO.userDAO;
 
 public class phoneSendAction implements Action {
 

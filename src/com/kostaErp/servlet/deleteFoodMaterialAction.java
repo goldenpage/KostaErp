@@ -6,7 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.kostaErp.model.foodMaterialDAO;
+import com.kostaErp.model.DAO.foodMaterialDAO;
 
 public class deleteFoodMaterialAction implements Action {
 
