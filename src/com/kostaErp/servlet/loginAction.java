@@ -13,7 +13,7 @@ public class loginAction implements Action {
 
     @Override
     public String execute(HttpServletRequest request) throws ServletException, IOException {
-    	String url = "login.jsp";
+       String url = "login.jsp";
         String bId = request.getParameter("bId");
         String pw = request.getParameter("pw");
         
@@ -22,14 +22,14 @@ public class loginAction implements Action {
         System.out.println("m : " + m);
         System.out.println("m size : " + m.size());
         if(m.keySet().size() > 0) {
-        	HttpSession session = request.getSession(true);
-        	session.setAttribute("loginOK", bId);
-        	session.setAttribute("info", m);
-        	session.setAttribute("bId", bId);
+           HttpSession session = request.getSession(true);
+           session.setAttribute("loginOK", bId);
+           session.setAttribute("info", m);
+           session.setAttribute("bId", bId);
 
-        	url="foodMaterials.jsp";
+           url=new foodMaterialAction().execute(request);
         }else {
-        	request.setAttribute("errorMessage", "다시 로그인 해주세요");
+           request.setAttribute("errorMessage", "다시 로그인 해주세요");
         }
 
         System.out.println("bId : " + bId);
