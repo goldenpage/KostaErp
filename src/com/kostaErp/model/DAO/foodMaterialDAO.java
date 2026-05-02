@@ -1,4 +1,4 @@
-package com.kostaErp.model;
+package com.kostaErp.model.DAO;
 
 import java.sql.Connection;
 
@@ -7,6 +7,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.kostaErp.model.DBCP;
+import com.kostaErp.model.VO.foodMaterialCategoryVO;
+import com.kostaErp.model.VO.foodMaterialVO;
+import com.kostaErp.model.VO.userInfoVO;
+
 import java.sql.Date;
 
 public class foodMaterialDAO {

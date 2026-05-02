@@ -1,4 +1,4 @@
-package com.kostaErp.model;
+package com.kostaErp.model.VO;
 
 import java.sql.Date;
 

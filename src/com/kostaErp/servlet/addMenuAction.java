@@ -7,22 +7,22 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.kostaErp.model.foodMaterialDAO;
-import com.kostaErp.model.foodMaterialVO;
-import com.kostaErp.model.menuCategoryVO;
-import com.kostaErp.model.menuDAO;
+import com.kostaErp.model.DAO.foodMaterialDAO;
+import com.kostaErp.model.DAO.menuDAO;
+import com.kostaErp.model.VO.foodMaterialVO;
+import com.kostaErp.model.VO.menuCategoryVO;
 
 public class addMenuAction implements Action {
 
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
-		String url = "addMenu.jsp";
+		String url = "/jsp/addMenu.jsp";
 		 
 		HttpSession session = request.getSession(false);
 		String bId = (session != null) ? (String) session.getAttribute("loginOK") : null;
  
 		if (bId == null){
-			return "login.jsp";
+			return "/jsp/login.jsp";
 		}
  
 		menuDAO mDao = new menuDAO();

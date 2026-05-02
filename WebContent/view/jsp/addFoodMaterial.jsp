@@ -161,13 +161,13 @@
 <body>
     <div class="container">
         <section class="sideMenu">
-          <jsp:include page="common/sideMenu.jsp" />
+          <jsp:include page="../common/sideMenu.jsp" />
         </section>
 
         <div class="main">
         <form method="post" action="${pageContext.request.contextPath}/controller?cmd=addFoodMaterialAction" class="addFood">
             <div>
-                <jsp:include page="common/userName.jsp" />
+                <jsp:include page="../common/userName.jsp" />
             </div>
             <h1>식자재 입력</h1>
             <c:if test="${not empty errorMessage}">

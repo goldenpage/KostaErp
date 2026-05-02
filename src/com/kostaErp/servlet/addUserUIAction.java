@@ -8,6 +8,6 @@ public class addUserUIAction implements Action {
 
     @Override
     public String execute(HttpServletRequest request) throws ServletException, IOException {
-        return "register.jsp";
+        return "/jsp/register.jsp";
     }
 }

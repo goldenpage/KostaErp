@@ -10,7 +10,7 @@ public class addMenuUIAction implements Action {
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
 		
-		return "addMenu.jsp";
+		return "/jsp/addMenu.jsp";
 	}
 
 }

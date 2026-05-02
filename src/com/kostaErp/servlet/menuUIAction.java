@@ -10,7 +10,7 @@ public class menuUIAction implements Action {
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
 		//return new menuAction().execute(request);
-		return "menuList.jsp";
+		return "/jsp/menuList.jsp";
 	}
 
 }

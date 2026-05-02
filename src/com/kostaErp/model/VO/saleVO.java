@@ -1,8 +1,8 @@
-package com.kostaErp.model;
+package com.kostaErp.model.VO;
 
 import java.sql.Date;
 
-public class revenueVO {
+public class saleVO {
 	private String saleId;
 	private int saleMenuCount;
 	private String menuId;
@@ -12,8 +12,16 @@ public class revenueVO {
 	private Date revenueDate;
 	private int saleTotalPrice;
 	private int ranking;
-    private int totalSaleCount;
-    private int totalSalesAmount;
+	private int totalSaleCount;
+	private int totalSalesAmount;
+	
+	public saleVO(){}
+
+	public saleVO(int saleMenuCount, String menuId, String revenueId){
+		this.saleMenuCount = saleMenuCount;
+		this.menuId = menuId;
+		this.revenueId = revenueId; 
+	}
 
 	public String getSaleId() {
 		return saleId;
@@ -81,6 +89,12 @@ public class revenueVO {
 	public void setTotalSalesAmount(int totalSalesAmount) {
 		this.totalSalesAmount = totalSalesAmount;
 	}
+
+
 	
 
+	
+	public String getSalMenuCount(){ return saleId; }
+	public String getmenuId(){ return saleId; }
+	public String getrevenueId(){ return saleId; }
 }

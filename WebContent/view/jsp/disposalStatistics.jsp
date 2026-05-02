@@ -102,12 +102,12 @@ canvas {
 <body>
 	<div class="container">
 		<section class="sideMenu">
-			<jsp:include page="common/sideMenu.jsp" />
+			<jsp:include page="../common/sideMenu.jsp" />
 		</section>
 
 		<div class="main">
 			<div>
-				<jsp:include page="common/userName.jsp" />
+				<jsp:include page="../common/userName.jsp" />
 			</div>
 
 			<h1>폐기통계</h1>

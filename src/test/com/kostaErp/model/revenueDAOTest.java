@@ -6,10 +6,10 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.kostaErp.model.disposalDAO;
-import com.kostaErp.model.disposalVO;
-import com.kostaErp.model.revenueDAO;
-import com.kostaErp.model.revenueVO;
+import com.kostaErp.model.DAO.disposalDAO;
+import com.kostaErp.model.DAO.revenueDAO;
+import com.kostaErp.model.VO.disposalVO;
+import com.kostaErp.model.VO.revenueVO;
 
 public class revenueDAOTest {
 	private revenueDAO dao;

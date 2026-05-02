@@ -12,7 +12,7 @@ public class revenueStatisticsAction implements Action {
 
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
-		String url = "revenueStatistics.jsp";
+		String url = "/jsp/revenueStatistics.jsp";
 		HttpSession session = request.getSession();
 		String bId = (String) session.getAttribute("loginOK");
 		
