@@ -22,6 +22,9 @@ public class DBCP {
 //		return  DriverManager.getConnection(uri, "hr", "hr");
 		String uri = "jdbc:oracle:thin:@127.0.0.1:1521:xe";
 		return DriverManager.getConnection(uri, "hr", "hr");
+//		String uri = "jdbc:oracle:thin:@192.168.0.234:1521:xe";
+//		String uri = "jdbc:oracle:thin:@127.0.0.1:1521:xe";
+//		return  DriverManager.getConnection(uri, "hr", "hr");
 
 
 

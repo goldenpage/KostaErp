@@ -605,7 +605,7 @@
             
             catBtns.forEach(function(btn) {
                 btn.classList.remove('selected');
-                if (btn.textContent.trim() === data.foodCategory_Id) {
+                if (btn.textContent.trim() === data.foodCategory) {
                     btn.classList.add('selected');
                     document.getElementById('selectedCategoryId').value = btn.getAttribute('data-category-id');
                     matched = true;
