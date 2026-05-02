@@ -4,8 +4,9 @@ import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import com.kostaErp.model.disposalDAO;
-import com.kostaErp.model.disposalVO;
+
+import com.kostaErp.model.DAO.disposalDAO;
+import com.kostaErp.model.VO.disposalVO;
 
 public class disposalUIAction implements Action {
 
@@ -20,7 +21,7 @@ public class disposalUIAction implements Action {
             bId = (String) session.getAttribute("bId");
         }
         if (bId == null) {
-            return "login.jsp"; 
+            return "/jsp/login.jsp"; 
         }
         
         int page = 1;
@@ -50,6 +51,6 @@ public class disposalUIAction implements Action {
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages); // 필수 추가
 
-        return "disposalItems.jsp";
+        return "/jsp/disposalItems.jsp";
     }
 }

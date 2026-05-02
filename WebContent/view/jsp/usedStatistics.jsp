@@ -97,11 +97,11 @@ ul {
 <body>
 	<div class="container">
 		<section class="sideMenu">
-			<jsp:include page="common/sideMenu.jsp" />
+			<jsp:include page="../common/sideMenu.jsp" />
 		</section>
 
 		<div class="main">
-			<jsp:include page="common/userName.jsp" />
+			<jsp:include page="../common/userName.jsp" />
 
 			<div class="top_area">
 				<h1>지출통계</h1>

@@ -1,8 +1,8 @@
 package test.com.kostaErp.model;
 
 
-import com.kostaErp.model.disposalDAO;
-import com.kostaErp.model.disposalVO;
+import com.kostaErp.model.DAO.disposalDAO;
+import com.kostaErp.model.VO.disposalVO;
 
 import static org.junit.Assert.*;
 import java.util.List;

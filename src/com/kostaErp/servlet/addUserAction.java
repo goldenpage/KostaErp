@@ -6,7 +6,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.kostaErp.model.userDAO;
+import com.kostaErp.model.DAO.userDAO;
 
 public class addUserAction implements Action {
 
@@ -59,7 +59,7 @@ public class addUserAction implements Action {
 		
 		
 		if(result == 1) {
-			url="login.jsp";
+			url="/jsp/login.jsp";
 			
 		} else {
 			request.setAttribute("errorMessage", "다시 기입해주세요");

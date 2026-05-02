@@ -8,9 +8,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.kostaErp.model.disposalDAO;
-import com.kostaErp.model.noticeDAO;
-import com.kostaErp.model.noticeVO;
+import com.kostaErp.model.DAO.disposalDAO;
+import com.kostaErp.model.DAO.noticeDAO;
+import com.kostaErp.model.VO.noticeVO;
 
 public class disposalNoticeAction implements Action {
     @Override
@@ -46,6 +46,6 @@ public class disposalNoticeAction implements Action {
         request.setAttribute("liquidTotal", liquidTotal);
         request.setAttribute("maxOverDay", maxOverDay);
         
-        return "notification.jsp";
+        return "/jsp/notification.jsp";
     }
 }

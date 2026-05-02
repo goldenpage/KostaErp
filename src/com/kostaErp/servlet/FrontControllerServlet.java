@@ -19,7 +19,7 @@ public class FrontControllerServlet extends HttpServlet {
         request.setAttribute("response", response);
         String url = action.execute(request);
 
-       
+
         String ajaxResponse = (String) request.getAttribute("ajaxResponse");
         if (ajaxResponse != null) {
             response.setContentType("text/plain; charset=UTF-8");
@@ -27,13 +27,11 @@ public class FrontControllerServlet extends HttpServlet {
             return;
         }
         
-        if (url == null) {
-            return;
-        }
+
 
         boolean isAjax = "true".equals(request.getParameter("ajax"));
         
-        if (url.equals("login.jsp") && isAjax) {
+        if (url.equals("/jsp/login.jsp") && isAjax) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }

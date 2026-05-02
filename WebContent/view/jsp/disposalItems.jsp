@@ -142,12 +142,12 @@ function resetFilter(){
     <div class="container">
         <section class="sideMenu">
 
-           <jsp:include page="common/sideMenu.jsp" />
+           <jsp:include page="../common/sideMenu.jsp" />
 
         </section>
         <div class="main">
             <div>
-               <jsp:include page="common/userName.jsp" />
+               <jsp:include page="../common/userName.jsp" />
             </div>
             <h2>폐기품목 확인</h2>
             <div class="content_item">

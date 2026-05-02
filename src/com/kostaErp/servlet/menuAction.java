@@ -7,14 +7,14 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.kostaErp.model.menuDAO;
-import com.kostaErp.model.menuVO;
+import com.kostaErp.model.DAO.menuDAO;
+import com.kostaErp.model.VO.menuVO;
 
 public class menuAction implements Action {
 
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
-		String url = "menuList.jsp";
+		String url = "/jsp/menuList.jsp";
 
 		String menuId = request.getParameter("menuId");
 

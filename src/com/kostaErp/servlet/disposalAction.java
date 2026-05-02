@@ -4,8 +4,9 @@ import java.io.IOException;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import com.kostaErp.model.disposalDAO;
-import com.kostaErp.model.disposalVO;
+
+import com.kostaErp.model.DAO.disposalDAO;
+import com.kostaErp.model.VO.disposalVO;
 
 public class disposalAction implements Action {
 
@@ -14,7 +15,7 @@ public class disposalAction implements Action {
         HttpSession session = request.getSession(false);
         if (session == null || session.getAttribute("bId") == null) {
             System.out.println("로그: 세션 비정상 (null)"); 
-            return "login.jsp"; 
+            return "/jsp/login.jsp"; 
         }
         
         System.out.println("로그: 세션 정상 bId = " + session.getAttribute("bId"));
@@ -52,9 +53,9 @@ public class disposalAction implements Action {
 
         String isAjax = request.getParameter("ajax");
         if ("true".equals(isAjax)) {
-            return "disposalItems.jsp"; 
+            return "/jsp/disposalItems.jsp"; 
         }
         
-        return "disposalItems.jsp"; 
+        return "jsp/disposalItems.jsp"; 
     }
 }

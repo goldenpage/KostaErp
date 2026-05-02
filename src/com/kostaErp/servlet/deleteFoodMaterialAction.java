@@ -6,13 +6,13 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.kostaErp.model.foodMaterialDAO;
+import com.kostaErp.model.DAO.foodMaterialDAO;
 
 public class deleteFoodMaterialAction implements Action {
 
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
-		String url = "foodMaterials.jsp";
+		String url = "/jsp/foodMaterials.jsp";
 
 		String[] foodMaterialIds = request.getParameterValues("foodMaterialId");
 

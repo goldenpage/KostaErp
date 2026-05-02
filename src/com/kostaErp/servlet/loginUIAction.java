@@ -8,6 +8,6 @@ public class loginUIAction implements Action {
 
     @Override
     public String execute(HttpServletRequest request) throws ServletException, IOException {
-        return "login.jsp";
+        return "/jsp/login.jsp";
     }
 }
