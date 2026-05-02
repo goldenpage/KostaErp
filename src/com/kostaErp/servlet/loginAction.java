@@ -27,7 +27,7 @@ public class loginAction implements Action {
         	session.setAttribute("info", m);
         	session.setAttribute("bId", bId);
 
-        	url="foodMaterials.jsp";
+        	url=new foodMaterialAction().execute(request);
         }else {
         	request.setAttribute("errorMessage", "다시 로그인 해주세요");
         }
