@@ -5,8 +5,10 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.List;
 
 public class noticeDAO {
+	// ÏïåÎ¶º Ï∂îÍ∞Ä
 	public boolean insertNotice(String noticeId, String disposalId) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -34,45 +36,58 @@ public class noticeDAO {
         return false;
     }
 
-    //æÀ∏≤ ∏Ò∑œ ¡∂»∏
-    public ArrayList<noticeVO> getNoticeList() {
-        ArrayList<noticeVO> list = new ArrayList<>();
-        Connection conn = null;
-        PreparedStatement pstmt = null;
-        ResultSet rs = null;
-        try {
-        	conn = DBCP.getConnection();
-            String sql = "SELECT notice_id, disposal_id, notice_date, read_yn FROM DISPOSAL_NOTICE ORDER BY notice_date DESC";
-            pstmt = conn.prepareStatement(sql);
-            rs = pstmt.executeQuery();
-            while (rs.next()) {
-                noticeVO vo = new noticeVO();
-                vo.setNoticeId(rs.getString("notice_id"));
-                vo.setDisposalId(rs.getString("disposal_id"));
-                vo.setNoticeDate(rs.getDate("notice_date"));
-                vo.setReadYn(rs.getString("read_yn"));
-                list.add(vo);
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            try { 
-            	if (rs != null) 
-            		rs.close(); 
-            	} catch (Exception e) {}
-            try { 
-            	if (pstmt != null) 
-            		pstmt.close(); 
-            	} catch (Exception e) {}
-            try { 
-            	if (conn != null) 
-            		conn.close(); 
-            	} catch (Exception e) {}
-        }
-        return list;
-    }
+    // ÏïåÎ¶º Î™©Î°ù Ï°∞Ìöå
+	public ArrayList<noticeVO> getNoticeList(String bId) {
 
-    //¿¸√º ªË¡¶ (∑—πÈ ∆˜«‘)
+	    ArrayList<noticeVO> list = new ArrayList<>();
+
+	    String sql =
+	    	    "SELECT " +
+	    	    " f.foodMaterialName, " +
+	    	    " fc.foodCategory, " +
+	    	    " NVL(d.disposalCountAll, 0) AS disposalCountAll, " +
+	    	    " f.foodMaterialType, " +
+	    	    " f.expirationDate, " +
+	    	    " d.disposal_Id " +
+	    	    "FROM FOODM f " +
+	    	    "JOIN FOODC fc ON f.foodCategory_Id = fc.foodCategory_Id " +
+	    	    "LEFT JOIN DISPOSALS d ON f.foodMaterial_Id = d.foodMaterial_Id " +
+	    	    "WHERE f.bId = ? " +
+	    	    "AND f.expirationDate < SYSDATE " +
+	    	    "AND NVL(d.disposalCountAll, 0) > 0 " + 
+	    	    "ORDER BY f.expirationDate DESC";
+
+
+	    try (
+	        Connection conn = DBCP.getConnection();
+	        PreparedStatement pstmt = conn.prepareStatement(sql);
+	    ) {
+	    	pstmt.setString(1, bId);
+
+            ResultSet rs = pstmt.executeQuery();
+	        while (rs.next()) {
+
+	            noticeVO vo = new noticeVO();
+
+	            vo.setFoodMaterialName(rs.getString("foodMaterialName"));
+	            vo.setFoodCategory(rs.getString("foodCategory"));
+	            vo.setFoodMaterialType(rs.getString("foodMaterialType"));
+	            vo.setDisposalCountAll(rs.getInt("disposalCountAll"));
+	            vo.setExpireDate(rs.getDate("expirationDate"));
+
+	            vo.setDisposalId(rs.getString("disposal_Id"));
+
+	            list.add(vo);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return list;
+	}
+
+ // Ï†ÑÏ≤¥ ÏÇ≠Ï†ú (Î°§Î∞± Ìè¨Ìï®)
     public boolean deleteAll() {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -102,7 +117,7 @@ public class noticeDAO {
         return false;
     }
     
-    //¿–¿Ω √≥∏Æ
+ // ÏùΩÏùå Ï≤òÎ¶¨
     public boolean updateReadYn(String noticeId) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -126,5 +141,119 @@ public class noticeDAO {
             	} catch (Exception e) {}
         }
         return false;
+    }
+    
+    public List<String> getExpiredDisposalIds(String bId) {
+        List<String> list = new ArrayList<>();
+        String sql =
+            "SELECT d.disposal_Id " +
+            "FROM DISPOSALS d " +
+            "JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id " +
+            "WHERE f.bId = ? " +
+            "AND f.expirationDate < SYSDATE";
+        try (
+            Connection conn = DBCP.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+            pstmt.setString(1, bId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                list.add(rs.getString("disposal_Id"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+    public int getExpiredCount(String bId) {
+        String sql =
+        		"SELECT COUNT(*) AS cnt " +
+        		        "FROM FOODM f " +
+        		        "LEFT JOIN DISPOSALS d ON f.foodMaterial_Id = d.foodMaterial_Id " +
+        		        "WHERE f.bId = ? " +
+        		        "AND f.expirationDate < SYSDATE " +
+        		        "AND NVL(d.disposalCountAll, 0) > 0";
+        
+        try (
+            Connection conn = DBCP.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+            pstmt.setString(1, bId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("cnt");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int getSolidTotal(String bId) {
+        String sql =
+            "SELECT NVL(SUM(d.disposalCountAll),0) total " +
+            "FROM DISPOSALS d " +
+            "JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id " +
+            "WHERE f.bId = ? " +
+            "AND f.foodMaterialType = 'Í≥†Ï≤¥'" + 
+            "AND f.expirationDate < SYSDATE";
+        try (
+            Connection conn = DBCP.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+            pstmt.setString(1, bId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int getLiquidTotal(String bId) {
+        String sql =
+            "SELECT NVL(SUM(d.disposalCountAll),0) total " +
+            "FROM DISPOSALS d " +
+            "JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id " +
+            "WHERE f.bId = ? " +
+            "AND f.foodMaterialType = 'Ïï°Ï≤¥'" +
+            "AND f.expirationDate < SYSDATE";
+        try (
+            Connection conn = DBCP.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+            pstmt.setString(1, bId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("total");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    public int getMaxOverDay(String bId) {
+        String sql =
+        		"SELECT NVL(MAX(TRUNC(SYSDATE - expirationDate)),0) AS max_day " +
+        		"FROM FOODM " +
+        		"WHERE bId = ? " +
+        		"AND expirationDate < SYSDATE";
+        try (
+            Connection conn = DBCP.getConnection();
+            PreparedStatement pstmt = conn.prepareStatement(sql)
+        ) {
+            pstmt.setString(1, bId);
+            ResultSet rs = pstmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("max_day");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

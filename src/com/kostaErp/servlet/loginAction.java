@@ -25,6 +25,8 @@ public class loginAction implements Action {
         	HttpSession session = request.getSession(true);
         	session.setAttribute("loginOK", bId);
         	session.setAttribute("info", m);
+        	session.setAttribute("bId", bId);
+
         	url="foodMaterials.jsp";
         }else {
         	request.setAttribute("errorMessage", "다시 로그인 해주세요");

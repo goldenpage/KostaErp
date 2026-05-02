@@ -23,7 +23,7 @@
             </ul>
             <ul>
                 <li>企扁包府</li>
-                <li><a href="${pageContext.request.contextPath}/controller?cmd=disposalItemsUIAction">企扁前格犬牢</a></li>
+                <li><a href="${pageContext.request.contextPath}/controller?cmd=disposalUIAction">企扁前格犬牢</a></li>
             </ul>
             <ul>
                 <li>烹拌</li>

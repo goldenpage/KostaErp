@@ -12,7 +12,8 @@ public class userInfoVO {
 	private String signDate;
 	private String agreementDate;
 	private String marketingDate;
-
+	private String storeType;
+	private String storeCategory;
 
 	public userInfoVO(){}
 
@@ -30,7 +31,6 @@ public class userInfoVO {
 		this.marketingDate = marketingDate;
 
 	}
-
 
 	public String getPw() {
 		return pw;
@@ -53,44 +53,49 @@ public class userInfoVO {
 	public String getStoreName() {
 		return storeName;
 	}
+
 	public void setStoreName(String storeName) {
 		this.storeName = storeName;
 	}
-	public String getEmail() {
-		return email;
+
+
+	public void setStoreType(String storeType) {
+		this.storeType = storeType;}
+
+		public String getEmail() {
+			return email;
+		}
+		public void setEmail(String email) {
+			this.email = email;
+		}
+		public String getPhone() {
+			return phone;
+		}
+		public void setPhone(String phone) {
+			this.phone = phone;
+		}
+		public String getMarketingDate() {
+			return marketingDate;
+		}
+
+		public String getSignDate() {return signDate;}
+		public String getAgreementDate() {return agreementDate;}
+
+		public void setMarketingDate(String marketingDate) {
+			this.marketingDate = marketingDate;
+		}
+
+		public void setStoreCategory(String storeCategory) {
+			this.storeCategory = storeCategory;
+		}
+
+		public void setSignDate(String signDate) {
+			this.signDate = signDate;
+		}
+
+		public void setAgreementDate(String agreementDate) {
+			this.agreementDate = agreementDate;
+		}    
 	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public String getPhone() {
-		return phone;
-	}
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-	public String getMarketingDate() {
-		return marketingDate;
-	}
-	
-
-
-
-	public String getSignDate() {return signDate;}
-	public String getAgreementDate() {return agreementDate;}
-
-	public void setMarketingDate(String marketingDate) {
-		this.marketingDate = marketingDate;
-	}
-
-
-
-
-
-}
-
-
-
-
-
 
 
