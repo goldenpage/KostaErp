@@ -34,8 +34,7 @@
 		</ul>
 		<ul>
 			<li>企扁包府</li>
-			<li><a
-				href="${pageContext.request.contextPath}/controller?cmd=disposalItemsUIAction">企扁前格犬牢</a></li>
+			<li onclick="location.href='controller?cmd=disposalUIAction'">企扁前格犬牢</li>
 		</ul>
 		<ul>
 			<li>烹拌</li>
