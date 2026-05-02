@@ -19,7 +19,7 @@ public class usedStatisticsAction implements Action {
 
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
-		String url = "usedStatistics.jsp";
+		String url = "/jsp/usedStatistics.jsp";
 
 		HttpSession session = request.getSession();
 		String bId = (String) session.getAttribute("loginOK");

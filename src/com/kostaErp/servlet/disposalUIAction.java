@@ -21,7 +21,7 @@ public class disposalUIAction implements Action {
             bId = (String) session.getAttribute("bId");
         }
         if (bId == null) {
-            return "login.jsp"; 
+            return "/jsp/login.jsp"; 
         }
         
         int page = 1;
@@ -51,6 +51,6 @@ public class disposalUIAction implements Action {
         request.setAttribute("currentPage", page);
         request.setAttribute("totalPages", totalPages); // 필수 추가
 
-        return "disposalItems.jsp";
+        return "/jsp/disposalItems.jsp";
     }
 }

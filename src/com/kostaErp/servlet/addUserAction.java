@@ -59,7 +59,7 @@ public class addUserAction implements Action {
 		
 		
 		if(result == 1) {
-			url="login.jsp";
+			url="/jsp/login.jsp";
 			
 		} else {
 			request.setAttribute("errorMessage", "다시 기입해주세요");

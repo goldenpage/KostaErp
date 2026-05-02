@@ -31,27 +31,27 @@ public class pwUpdateAction implements Action {
 
 		if (pwResetVerified == null || !pwResetVerified) {
 		    request.setAttribute("error", "본인 인증 후 비밀번호를 변경해주세요.");
-		    return "pwUdate.jsp";
+		    return "/jsp/pwUdate.jsp";
 		}
 
 		if (bId == null || name == null || phone == null) {
 		    request.setAttribute("error", "인증 정보가 만료되었습니다. 다시 인증해주세요.");
-		    return "pwUdate.jsp";
+		    return "/jsp/pwUdate.jsp";
 		}
 
 		if (!bId.equals(requestBId) || !name.equals(requestName) || !phone.equals(requestPhone)) {
 		    request.setAttribute("error", "인증한 회원 정보와 입력한 정보가 일치하지 않습니다.");
-		    return "pwUdate.jsp";
+		    return "/jsp/pwUdate.jsp";
 		}
 
 		if (pw == null || pw.trim().isEmpty() || pwConfirm == null || pwConfirm.trim().isEmpty()) {
 		    request.setAttribute("error", "새 비밀번호를 입력해주세요.");
-		    return "pwUdate.jsp";
+		    return "/jsp/pwUdate.jsp";
 		}
 
 		if (!pw.equals(pwConfirm)) {
 		    request.setAttribute("error", "비밀번호가 일치하지 않습니다.");
-		    return "pwUdate.jsp";
+		    return "/jsp/pwUdate.jsp";
 		}
 
 		userDAO dao = new userDAO();
@@ -65,10 +65,10 @@ public class pwUpdateAction implements Action {
 		    session.removeAttribute("pwPhoneAuthCode");
 		    session.removeAttribute("pwPhoneAuthPhone");
 
-		    return "login.jsp";
+		    return "/jsp/login.jsp";
 		} else {
 		    request.setAttribute("error", "회원 정보를 찾을 수 없습니다.");
-		    return "pwUdate.jsp";
+		    return "/jsp/pwUdate.jsp";
 		}
 	}
 

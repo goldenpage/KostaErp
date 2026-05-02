@@ -16,13 +16,13 @@ public class addFoodMaterialAction implements Action {
 
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
-		String url = "addFoodMaterial.jsp";
+		String url = "/jsp/addFoodMaterial.jsp";
 		 
 		HttpSession session = request.getSession(false);
 		String bId = (session != null) ? (String) session.getAttribute("loginOK") : null;
  
 		if (bId == null){
-			return "login.jsp";
+			return "/jsp/login.jsp";
 		}
  
 		foodMaterialDAO dao = new foodMaterialDAO();

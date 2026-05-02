@@ -31,7 +31,7 @@ public class FrontControllerServlet extends HttpServlet {
 
         boolean isAjax = "true".equals(request.getParameter("ajax"));
         
-        if (url.equals("login.jsp") && isAjax) {
+        if (url.equals("/jsp/login.jsp") && isAjax) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }

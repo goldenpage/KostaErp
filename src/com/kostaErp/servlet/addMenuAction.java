@@ -16,13 +16,13 @@ public class addMenuAction implements Action {
 
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
-		String url = "addMenu.jsp";
+		String url = "/jsp/addMenu.jsp";
 		 
 		HttpSession session = request.getSession(false);
 		String bId = (session != null) ? (String) session.getAttribute("loginOK") : null;
  
 		if (bId == null){
-			return "login.jsp";
+			return "/jsp/login.jsp";
 		}
  
 		menuDAO mDao = new menuDAO();

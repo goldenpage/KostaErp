@@ -20,7 +20,7 @@ public class disposalStatisticsAction implements Action {
 
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
-		String url = "disposalStatistics.jsp";
+		String url = "/jsp/disposalStatistics.jsp";
 
 		HttpSession session = request.getSession();
 		String bId = (String) session.getAttribute("loginOK");

@@ -12,7 +12,7 @@ public class deleteFoodMaterialAction implements Action {
 
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
-		String url = "foodMaterials.jsp";
+		String url = "/jsp/foodMaterials.jsp";
 
 		String[] foodMaterialIds = request.getParameterValues("foodMaterialId");
 

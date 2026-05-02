@@ -14,7 +14,7 @@ public class loginAction implements Action {
 
     @Override
     public String execute(HttpServletRequest request) throws ServletException, IOException {
-        String url = "login.jsp";
+        String url = "/jsp/login.jsp";
         String bId = request.getParameter("bId");
         String pw = request.getParameter("pw");
         
@@ -34,7 +34,7 @@ public class loginAction implements Action {
 
             System.out.println("로그: 세션 저장 완료 - bId : " + session.getAttribute("bId"));
             
-            url = "foodMaterials.jsp"; 
+            url = "/jsp/foodMaterials.jsp"; 
         } else {
             request.setAttribute("errorMessage", "아이디 또는 비밀번호가 틀렸습니다. 다시 로그인 해주세요.");
             System.out.println("로그: 로그인 실패");

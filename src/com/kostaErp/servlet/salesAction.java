@@ -13,7 +13,7 @@ public class salesAction implements Action {
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
 
-		String url = "menuList.jsp";
+		String url = "/jsp/menuList.jsp";
 
 		String menuId = request.getParameter("menuId");
 		String saleCountStr = request.getParameter("saleCount");

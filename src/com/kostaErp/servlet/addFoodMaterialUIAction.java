@@ -18,7 +18,7 @@ public class addFoodMaterialUIAction implements Action {
 		List<foodMaterialCategoryVO> categoryList = dao.getFoodCategoryList();
 		request.setAttribute("categoryList", categoryList);
 		
-		return "addFoodMaterial.jsp";
+		return "/jsp/addFoodMaterial.jsp";
 	}
 
 }

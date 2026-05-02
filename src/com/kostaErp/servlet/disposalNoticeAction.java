@@ -46,6 +46,6 @@ public class disposalNoticeAction implements Action {
         request.setAttribute("liquidTotal", liquidTotal);
         request.setAttribute("maxOverDay", maxOverDay);
         
-        return "notification.jsp";
+        return "/jsp/notification.jsp";
     }
 }

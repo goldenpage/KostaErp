@@ -10,7 +10,7 @@ public class pwFindUIAction implements Action {
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
 		
-		return "pwUdate.jsp";
+		return "/jsp/pwUdate.jsp";
 	}
 
 }

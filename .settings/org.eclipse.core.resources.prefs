@@ -2,7 +2,7 @@
 <<<<<<<=HEAD
 >>>>>>>=refs/remotes/origin/master
 eclipse.preferences.version=1
-encoding//WebContent/view/disposalItems.jsp=UTF-8
+encoding//WebContent/view/jsp/disposalItems.jsp=UTF-8
 encoding//WebContent/view/jsp/pwUdate.jsp=UTF-8
 encoding//src/com/kostaErp/model/DAO/disposalDAO.java=UTF-8
 encoding//src/com/kostaErp/model/DAO/foodMaterialDAO.java=UTF-8
