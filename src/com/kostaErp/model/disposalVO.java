@@ -6,7 +6,7 @@ public class disposalVO {
 	private String disposalId;
 	private int disposalCountAll;
 	private int disposalPrice;
-	private String disposalDate;
+	private Date disposalDate;
 	private String foodMaterialId;
 	private String reasonId;
 	private String foodMaterialName;
@@ -18,8 +18,7 @@ public class disposalVO {
     private int solidCount;
     private int liquidCount;
     private String foodMaterialType;
-
-
+    private String foodCategory;
     private double disposalRate;
 	
 	public String getDisposalId() {
@@ -31,7 +30,7 @@ public class disposalVO {
 	public int getDisposalPrice() {
 		return disposalPrice;
 	}
-	public String getDisposalDate() {
+	public Date getDisposalDate() {
 		return disposalDate;
 	}
 	public String getFoodMaterialId() {
@@ -103,7 +102,7 @@ public class disposalVO {
 	public void setDisposalPrice(int disposalPrice) {
 		this.disposalPrice = disposalPrice;
 	}
-	public void setDisposalDate(String disposalDate) {
+	public void setDisposalDate(Date disposalDate) {
 		this.disposalDate = disposalDate;
 	}
 	public void setFoodMaterialId(String foodMaterialId) {
@@ -118,6 +117,10 @@ public class disposalVO {
 	public void setFoodMaterialType(String foodMaterialType) {
 		this.foodMaterialType = foodMaterialType;
 	}
-	
-	
+	public String getFoodCategory() {
+		return foodCategory;
+	}
+	public void setFoodCategory(String foodCategory) {
+		this.foodCategory = foodCategory;
+	}
 }

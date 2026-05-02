@@ -13,6 +13,9 @@ public class reasonVO {
 	}
 	public String getReason() {
 		return reason;
-	}
 
 }
+
+	}
+
+

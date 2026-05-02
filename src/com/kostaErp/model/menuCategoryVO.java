@@ -22,8 +22,9 @@ public class menuCategoryVO {
 	public menuCategoryVO(){}
 
 	public menuCategoryVO(String menuCategory, String bId) {
-		this.menuCategory = menuCategory;
-		this.bId = bId;
+
+        this.menuCategory = menuCategory;
+        this.bId = bId;
 	}
 
 
@@ -32,6 +33,7 @@ public class menuCategoryVO {
 	public void setBId(String bId){
 		this.bId = bId;
 	}
+
 
 
 	public void setMenuCategoryId(String menuCategoryId) {

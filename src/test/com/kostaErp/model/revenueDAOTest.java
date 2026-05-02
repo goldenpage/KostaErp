@@ -16,17 +16,17 @@ public class revenueDAOTest {
 	@Before
 	public void setUp() {
 		 dao = new revenueDAO();
-		System.out.println("dao µî·Ï");
+		System.out.println("dao ï¿½ï¿½ï¿½");
 	}
 
 	
 	@After
 	public void tearDown() {
 		 dao = null;
-		System.out.println("dao »èÁ¦");
+		System.out.println("dao ï¿½ï¿½ï¿½ï¿½");
 	}
 	
-	//¿ùº° ¸Þ´º ÆÇ¸Å ·©Å· Á¶È¸
+	//ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ ï¿½Ç¸ï¿½ ï¿½ï¿½Å· ï¿½ï¿½È¸
 	
 	@Test
 	public void getMonthlyMenuSalesRankTest() {
@@ -38,12 +38,12 @@ public class revenueDAOTest {
 	    revenueVO first = list.get(0);
 
 	    assertEquals(1, first.getRanking());
-	    assertEquals("ÂüÄ¡±è¹ä", first.getMenuName());
+	    assertEquals("ì°¸ì¹˜ê¹€ë°¥", first.getMenuName());
 	    assertEquals(21, first.getTotalSaleCount());
 	    assertEquals(84000, first.getTotalSalesAmount());
 	}
 	
-	//¿ùº° ÃÑ ¸ÅÃâ
+	//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	@Test
 	public void getMonthlyRevenue() {
 	    int result = dao.getMonthlyRevenue("0000000000","2026-04-01","2026-05-01");

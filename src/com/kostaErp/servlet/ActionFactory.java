@@ -86,8 +86,17 @@ public class ActionFactory {
             case "disposalAction":
                 a = new disposalAction();
                 break;
+                
             case "disposalUIAction":
             	a = new disposalUIAction();
+            	break;
+                
+            case "notificationUI":
+            	a = new disposalNoticeAction();
+            	break;
+            	
+            case "notificationUIAction":
+            	a = new disposalNoticeUIAction();
             	break;
 
             case "disposalStatisticUIAction":
@@ -147,7 +156,6 @@ public class ActionFactory {
             default:
                 a = new loginUIAction();
         }
-
         return a;
     }
 }

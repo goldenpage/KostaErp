@@ -22,6 +22,7 @@
 </style>
 </head>
 <body>
+
 	<div class="sideMenu">
 
 		<ul>
@@ -46,6 +47,7 @@
 				onclick="location.href='controller?cmd=disposalStatisticUIAction'">∆Û±‚≈Î∞Ë</li>
 		</ul>
 	</div>
+
 
 </body>
 </html>
