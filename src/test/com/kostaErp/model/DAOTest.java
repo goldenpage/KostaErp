@@ -340,7 +340,6 @@ public class DAOTest {
 
 		assertTrue("식자재 삭제 실패", result > 0);
 	}
-	
 	// 사용자의 메뉴 카테고리 조회
 	@Test
 	public void getMenuCategoryList() {
@@ -353,7 +352,6 @@ public class DAOTest {
 			assertNotNull("menuCategoryId가 null이면 안됩니다", vo.getMenuCategoryId());
 			assertNotNull("menuCategory가 null이면 안됩니다", vo.getMenuCategory());
 		}
-
 	}
 
 	// 식자재 조회
@@ -371,11 +369,11 @@ public class DAOTest {
 			assertNotNull("foodMaterialName이 null이면 안됩니다", vo.getFoodMaterialName());
 		}
 	}
+	
+	@Test
+	public void getMenuName() {
+		boolean result = dao2.hasMenuCheck("참치김밥");
+		assertTrue(result);
 
-	   //@Test
-	   public void getMenuName(){
-		   boolean result = dao2.hasMenuCheck("참치김밥");
-		   assertTrue(result);
-		   
-	   }
+	}
 }
