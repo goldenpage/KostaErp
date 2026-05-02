@@ -61,59 +61,7 @@ th, td {
 }
 </style>
 
-<script>
-	function onChangeCategory() {
 
-		var category = document.getElementById("categoryFilter").value;
-
-		var xhr = new XMLHttpRequest();
-
-		xhr.open("GET", "controller?cmd=disposalAction&category="
-				+ encodeURIComponent(category), true);
-
-		xhr.onreadystatechange = function() {
-
-			if (xhr.readyState === 4 && xhr.status === 200) {
-
-				var list = JSON.parse(xhr.responseText);
-				renderTable(list);
-			}
-		};
-
-		xhr.send();
-	}
-
-	function renderTable(list) {
-
-		var tbody = document.getElementById("tbody");
-		var html = "";
-
-		if (list.length === 0) {
-			html = "<tr><td colspan='13'>데이터 없음</td></tr>";
-		} else {
-
-			for (var i = 0; i < list.length; i++) {
-
-				var d = list[i];
-
-				html += "<tr>" + "<td>" + d.disposalId.substring(3, 6)
-						+ "</td>" + "<td>" + d.foodMaterialName + "</td>"
-						+ "<td>" + d.foodCategory + "</td>" + "<td>"
-						+ (d.foodMaterialType || '-') + "</td>" + "<td>"
-						+ d.disposalCountAll + "g</td>" + "<td>"
-						+ Number(d.disposalPrice).toLocaleString() + "</td>"
-						+ "<td>" + (d.purchasePlace || '-') + "</td>" + "<td>"
-						+ (d.purchaseDate || '-') + "</td>" + "<td>"
-						+ (d.expirationDate || '-') + "</td>" + "<td>"
-						+ (d.foodType || '-') + "</td>" + "<td>폐기수정</td>"
-						+ "<td><input type='checkbox'></td>" + "<td>삭제</td>"
-						+ "</tr>";
-			}
-		}
-
-		tbody.innerHTML = html;
-	}
-</script>
 
 </head>
 
@@ -133,7 +81,7 @@ th, td {
 			</div>
 			<h2>폐기품목 확인</h2>
 
-			<!-- 🔍 검색 영역 -->
+			
 			<div>
 				<input type="text" placeholder="검색">
 				<button>검색하기</button>
@@ -202,6 +150,58 @@ th, td {
 		</div>
 
 	</div>
+<script>
+	function onChangeCategory() {
 
+		var category = document.getElementById("categoryFilter").value;
+
+		var xhr = new XMLHttpRequest();
+
+		xhr.open("GET", "controller?cmd=disposalAction&category="
+				+ encodeURIComponent(category), true);
+
+		xhr.onreadystatechange = function() {
+
+			if (xhr.readyState === 4 && xhr.status === 200) {
+
+				var list = JSON.parse(xhr.responseText);
+				renderTable(list);
+			}
+		};
+
+		xhr.send();
+	}
+
+	function renderTable(list) {
+
+		var tbody = document.getElementById("tbody");
+		var html = "";
+
+		if (list.length === 0) {
+			html = "<tr><td colspan='13'>데이터 없음</td></tr>";
+		} else {
+
+			for (var i = 0; i < list.length; i++) {
+
+				var d = list[i];
+
+				html += "<tr>" + "<td>" + d.disposalId.substring(3, 6)
+						+ "</td>" + "<td>" + d.foodMaterialName + "</td>"
+						+ "<td>" + d.foodCategory + "</td>" + "<td>"
+						+ (d.foodMaterialType || '-') + "</td>" + "<td>"
+						+ d.disposalCountAll + "g</td>" + "<td>"
+						+ Number(d.disposalPrice).toLocaleString() + "</td>"
+						+ "<td>" + (d.purchasePlace || '-') + "</td>" + "<td>"
+						+ (d.purchaseDate || '-') + "</td>" + "<td>"
+						+ (d.expirationDate || '-') + "</td>" + "<td>"
+						+ (d.foodType || '-') + "</td>" + "<td>폐기수정</td>"
+						+ "<td><input type='checkbox'></td>" + "<td>삭제</td>"
+						+ "</tr>";
+			}
+		}
+
+		tbody.innerHTML = html;
+	}
+</script>
 </body>
 </html>
