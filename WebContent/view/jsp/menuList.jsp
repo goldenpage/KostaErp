@@ -18,18 +18,15 @@ ul {
 .container {
 	display: flex;
 	gap: 30px;
-	border: 5px solid;
 	height: 100vh;
 }
 
 .sideMenu {
 	height: 100vh;
-	border: 1px solid;
 	width: 300px;
 }
 
 .main {
-	border: 1px solid;
 	width: 100%;
 }
 
@@ -39,7 +36,6 @@ ul {
 }
 
 .content_item {
-	border: 3px solid blue;
 	height: 100%;
 	display: flex;
 	gap: 16px;
@@ -50,14 +46,12 @@ ul {
 }
 
 .menu_list {
-	border: 3px solid;
 	padding: 10px;
 	margin: 10px;
 }
 
 .content_right {
 	width: 300px;
-	border: 3px solid green;
 	padding: 10px;
 	margin: 10px;
 }
@@ -91,7 +85,6 @@ button {
 
 	<div class="message">${message}</div>
 	<div class="errorMessage">${errorMessage}</div>
-
 
 	<div class="container">
 		 <section class="sideMenu"> 
@@ -182,6 +175,7 @@ button {
 			</div>
 		</div>
 	</div>
+
 	<script>
 		function selectMenu(rowEl, menuName, ingredients) {
 			var rows = document.querySelectorAll(".menu_list tr");
@@ -227,4 +221,3 @@ button {
 	</script>
 </body>
 </html>
-

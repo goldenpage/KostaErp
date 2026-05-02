@@ -28,18 +28,15 @@ ul {
 .container {
    display: flex;
    gap: 30px;
-   border: 5px solid;
    height: 100vh;
 }
 
 .sideMenu {
    height: 100vh;
-   border: 1px solid;
    width: 300px;
 }
 
 .main {
-   border: 1px solid;
    width: 100%;
 }
 
@@ -49,7 +46,6 @@ ul {
 }
 
 .content_item {
-   border: 3px solid blue;
    height: 100%;
    align-items: center;
 }
@@ -59,14 +55,12 @@ ul {
    width: 75%;
    gap: 16px;
    align-items: center;
-   border: 3px solid;
 }
 
 .list_container {
    display: flex;
    justify-content: center;
    height: 100%;
-   border: 3px solid red;
    font-size: 14px;
    line-height: 14px;
 }
@@ -139,7 +133,6 @@ button {
                      <option value="곡류">곡류</option>
                      <option value="해산물">해산물</option>
                   </select>
-
 
                   <!-- <button type="button" id="resetBtn">초기화</button> -->
                </ul>
@@ -241,8 +234,8 @@ button {
                                     <strong>${i}</strong>
                                  </c:when>
                                  <c:otherwise>
-            ${i}
-           </c:otherwise>
+                                    ${i}
+                                 </c:otherwise>
                               </c:choose>
                         </a></li>
                      </c:forEach>
