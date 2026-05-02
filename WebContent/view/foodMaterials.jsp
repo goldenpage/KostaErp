@@ -284,107 +284,93 @@ button {
 		</div>
 	</div>
 
-	<script>
-		window.onload = function() {
-			document.getElementById("searchBtn").onclick = function() {
-				searchFood();
-			};
-
-			/*document.getElementById("resetBtn").onclick = function() {
-			 location.href = "${pageContext.request.contextPath}/controller?cmd=foodMaterialAction&sortType=idDesc&page=1";
-			 }; */
-			document.getElementById("categorySelect").onchange = function() {
-				categoryAjax();
-			};
-
-			document.getElementById("selectAllBtn").onclick = function() {
-				selectAllFoodMaterial();
-			};
-
-			document.getElementById("searchKeyword").onkeydown = function(event) {
-				if (event.key === "Enter") {
-					searchFood();
-				}
-			};
+<script>
+	window.onload = function() {
+		document.getElementById("searchBtn").onclick = function() {
+			searchFood();
 		};
 
-		function searchFood() {
-			var keyword = document.getElementById("searchKeyword").value.trim();
-			var category = document.getElementById("categorySelect").value;
-			var rows = document.querySelectorAll(".foodRow");
+		document.getElementById("categorySelect").onchange = function() {
+			categoryAjax();
+		};
 
-			rows.forEach(function(row) {
-				var cells = row.querySelectorAll("td");
+		document.getElementById("selectAllBtn").onclick = function() {
+			selectAllFoodMaterial();
+		};
 
-				var foodName = cells[1].textContent.trim();
-				var foodCategory = cells[2].textContent.trim();
+		document.getElementById("searchKeyword").onkeydown = function(event) {
+			if (event.key === "Enter") {
+				searchFood();
+			}
+		};
+	};
 
-				var keywordOk = true;
-				var categoryOk = true;
+	function searchFood() {
+		var keyword = document.getElementById("searchKeyword").value.trim();
+		var category = document.getElementById("categorySelect").value;
+		var rows = document.querySelectorAll(".foodRow");
 
-				if (keyword !== "") {
-					keywordOk = foodName.indexOf(keyword) !== -1;
-				}
+		rows.forEach(function(row) {
+			var cells = row.querySelectorAll("td");
 
-				if (category !== "") {
-					categoryOk = foodCategory === category;
-				}
+			var foodName = cells[1].textContent.trim();
+			var foodCategory = cells[2].textContent.trim();
 
-				if (keywordOk && categoryOk) {
-					row.style.display = "";
-				} else {
-					row.style.display = "none";
-				}
-			});
-		}
+			var keywordOk = true;
+			var categoryOk = true;
 
-		/* 		function resetFood() {
-		 document.getElementById("searchKeyword").value = "";
-		 document.getElementById("categorySelect").value = "";
+			if (keyword !== "") {
+				keywordOk = foodName.indexOf(keyword) !== -1;
+			}
 
-		 var rows = document.querySelectorAll(".foodRow");
+			if (category !== "") {
+				categoryOk = foodCategory === category;
+			}
 
-		 rows.forEach(function(row) {
-		 row.style.display = "";
-		 });
-		 }  */
-	       function categoryAjax() {
-	            searchFood();
-
-	            var xhr = new XMLHttpRequest();
-
-	            xhr.onreadystatechange = function() {
-	               if (xhr.readyState == 4 && xhr.status == 200) {
-	                  console.log("카테고리 비동기 요청 완료");
-	               }
-
-	            xhr.open("GET", "${pageContext.request.contextPath}/controller?cmd=foodMaterialAction&sortType=${sortType}&page=${currentPage}", true);
-	            xhr.send();
-	         }
-
-		function selectAllFoodMaterial() {
-			var checkboxes = document
-					.querySelectorAll("input[name='foodMaterialId']");
-			var allChecked = true;
-
-			checkboxes.forEach(function(checkbox) {
-				var row = checkbox.closest("tr");
-
-				if (row.style.display !== "none" && checkbox.checked == false) {
-					allChecked = false;
-				}
-			});
-
-			checkboxes.forEach(function(checkbox) {
-				var row = checkbox.closest("tr");
-
-				if (row.style.display !== "none") {
-					checkbox.checked = !allChecked;
-				}
-			});
-		}
+			if (keywordOk && categoryOk) {
+				row.style.display = "";
+			} else {
+				row.style.display = "none";
+			}
+		});
 	}
-	</script>
+
+	function categoryAjax() {
+		searchFood();
+
+		var xhr = new XMLHttpRequest();
+
+		xhr.onreadystatechange = function() {
+			if (xhr.readyState == 4 && xhr.status == 200) {
+				console.log("카테고리 비동기 요청 완료");
+			}
+		};
+
+		xhr.open("GET", "${pageContext.request.contextPath}/controller?cmd=foodMaterialAction&sortType=${sortType}&page=${currentPage}", true);
+		xhr.send();
+	}
+
+	function selectAllFoodMaterial() {
+		var checkboxes = document.querySelectorAll("input[name='foodMaterialId']");
+		var allChecked = true;
+
+		checkboxes.forEach(function(checkbox) {
+			var row = checkbox.closest("tr");
+
+			if (row.style.display !== "none" && checkbox.checked == false) {
+				allChecked = false;
+			}
+		});
+
+		checkboxes.forEach(function(checkbox) {
+			var row = checkbox.closest("tr");
+
+			if (row.style.display !== "none") {
+				checkbox.checked = !allChecked;
+			}
+		});
+	}
+</script>
 
 </body>
 </html>
