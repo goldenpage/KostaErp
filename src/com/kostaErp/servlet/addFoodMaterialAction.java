@@ -56,8 +56,11 @@ public class addFoodMaterialAction implements Action {
 			}
  
 			int successCount = dao.addFoodMaterial(list, bId);
-			System.out.println("등록 완료: " + successCount + "/" + foodMaterialNames.length);
+			request.setAttribute("successMessage", successCount + "개의 식자재가 등록되었습니다.");
 		}
+		
+		List<foodMaterialCategoryVO> categoryList = dao.getFoodCategoryList();
+		request.setAttribute("categoryList", categoryList);
  
 		return url;
 	}
