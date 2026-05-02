@@ -26,11 +26,7 @@ public class FrontControllerServlet extends HttpServlet {
 
         String url = action.execute(request);
 
-       
-        if (url == null) {
-            return;
-        }
-
+ 
         if (url == null) {
             url = "login.jsp";
         }
