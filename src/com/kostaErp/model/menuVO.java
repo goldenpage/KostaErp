@@ -10,23 +10,43 @@ public class menuVO {
     private int foodMaterialPrice;
     private int foodMaterialCountAll;
     private int usedPrice;
+	private String menuCategoryId;
 
-    public String getMenuId() {
-        return menuId;
-    }
+	public menuVO() {}
 
-    public void setMenuId(String menuId) {
-        this.menuId = menuId;
-    }
+	public menuVO(String menuName, int menuPrice, String menuCategoryId) {
+		this.menuName = menuName;
+		this.menuPrice = menuPrice;
+		this.menuCategoryId = menuCategoryId;
+	}
+	
+	public menuVO(String menuName) {
+		this.menuName = menuName;
+	}
+	
+	public String getMenuName(){ return menuName; }
+	public int getMenuPrice(){ return menuPrice; }
+	public String getMenuCategoryId(){ return menuCategoryId; }
 
-    public String getMenuName() {
-        return menuName;
-    }
+	public String getMenuId(){
+	    	return menuId;
+	}
+	
+	public void setMenuId(String menuId){ 
+		this.menuId = menuId;
+	}
+	public void setMenuName(String menuName){
+		this.menuName = menuName;
+	}
+	public void setMenuPrice(int menuPrice){
+		this.menuPrice = menuPrice;
+	}
+	public void setMenuCategory_Id(String menuCategoryId){
+		this.menuCategoryId = menuCategoryId;
+	}
+  
 
-    public void setMenuName(String menuName) {
-        this.menuName = menuName;
-    }
-
+  
     public String getMenuCategory() {
         return menuCategory;
     }
@@ -35,13 +55,9 @@ public class menuVO {
         this.menuCategory = menuCategory;
     }
 
-    public int getMenuPrice() {
-        return menuPrice;
-    }
+  
 
-    public void setMenuPrice(int menuPrice) {
-        this.menuPrice = menuPrice;
-    }
+ 
 
     public String getFoodMaterialName() {
         return foodMaterialName;
@@ -82,4 +98,6 @@ public class menuVO {
     public void setUsedPrice(int usedPrice) {
         this.usedPrice = usedPrice;
     }
+    
+  
 }
