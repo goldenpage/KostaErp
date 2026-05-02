@@ -50,9 +50,17 @@ public class ActionFactory {
             case "foodMaterialAction":
                 a = new foodMaterialAction();
                 break;
-
+            
+            case "addMenuCategoryAction":
+            	a = new addMenuCategoryAction();
+            	break;
+            	
+            case "deleteMenuCategoryAction":
+            	a = new deleteMenuCategoryAction();
+            	break;
+            	
             case "addMenuUIAction":
-            	a = new addMenuUIAction();
+            	a = new addMenuAction();
             	break;
             	
             case "addMenuAction":
