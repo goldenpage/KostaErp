@@ -83,7 +83,164 @@ public class disposalDAO {
 		}
 		return list;
 	}
+	
+	public List<disposalVO> getDisposalsFilteredPaging(String bId, String category, String reason, int start, int end) {
+	    List<disposalVO> list = new ArrayList<>();
+	    boolean isCatFiltered = category != null && !category.equals("전체") && !category.isEmpty();
+	    boolean isReasFiltered = reason != null && !reason.equals("전체") && !reason.isEmpty();
 
+	    // 줄 끝에 의도적으로 공백을 한 칸씩 더 넣었습니다.
+	    String sql = "SELECT * FROM ( " +
+	                 "  SELECT d.disposal_Id, f.foodMaterialName, fc.foodCategory, d.disposalCountAll, " +
+	                 "  f.foodMaterialType, d.disposalPrice, d.disposalDate, r.reason, " +
+	                 "  ROW_NUMBER() OVER (ORDER BY d.disposal_Id DESC) AS rn " +
+	                 "  FROM DISPOSALS d " +
+	                 "  JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id " +
+	                 "  JOIN FOODC fc ON f.foodCategory_Id = fc.foodCategory_Id " +
+	                 "  JOIN REASON r ON d.reason_Id = r.reason_Id " +
+	                 "  WHERE f.BID = ? " + // 👈 f.BID 뒤에 공백 확인 필수!
+	                 (isCatFiltered ? " AND fc.foodCategory = ? " : "") +
+	                 (isReasFiltered ? " AND r.reason = ? " : "") +
+	                 ") WHERE rn BETWEEN ? AND ? ";
+
+	    try (Connection conn = DBCP.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        
+	        int idx = 1;
+	        pstmt.setString(idx++, bId);
+	        if (isCatFiltered) pstmt.setString(idx++, category);
+	        if (isReasFiltered) pstmt.setString(idx++, reason);
+	        pstmt.setInt(idx++, start);
+	        pstmt.setInt(idx++, end);
+
+	        ResultSet rs = pstmt.executeQuery();
+	        while (rs.next()) {
+	            disposalVO vo = new disposalVO();
+	            vo.setDisposalId(rs.getString("disposal_Id"));
+	            vo.setFoodMaterialName(rs.getString("foodMaterialName"));
+	            vo.setFoodCategory(rs.getString("foodCategory"));
+	            vo.setFoodMaterialType(rs.getString("foodMaterialType"));
+	            vo.setDisposalCountAll(rs.getInt("disposalCountAll"));
+	            vo.setDisposalPrice(rs.getInt("disposalPrice"));
+	            vo.setDisposalDate(rs.getDate("disposalDate"));
+	            vo.setReason(rs.getString("reason"));
+	            list.add(vo);
+	        }
+	    } catch (Exception e) { e.printStackTrace(); }
+	    return list;
+	}	
+	
+	public List<disposalVO> getDisposalsPaging(String bId, String category, String reason, int start, int end) {
+	    List<disposalVO> list = new ArrayList<>();
+	    
+	    // 필터 조건 확인
+	    boolean isCategoryFiltered = category != null && !category.equals("전체") && !category.isEmpty();
+	    boolean isReasonFiltered = reason != null && !reason.equals("전체") && !reason.isEmpty();
+	    
+	    // 쿼리 조립 (각 줄 끝에 명확하게 공백을 추가했습니다)
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("SELECT * FROM ( ");
+	    sb.append("    SELECT d.disposal_Id, f.foodMaterialName, fc.foodCategory, d.disposalCountAll, ");
+	    sb.append("           f.foodMaterialType, d.disposalPrice, d.disposalDate, r.reason, ");
+	    sb.append("           ROW_NUMBER() OVER (ORDER BY d.disposal_Id DESC) AS rn ");
+	    sb.append("    FROM DISPOSALS d ");
+	    sb.append("    JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id ");
+	    sb.append("    JOIN FOODC fc ON f.foodCategory_Id = fc.foodCategory_Id ");
+	    sb.append("    JOIN REASON r ON d.reason_Id = r.reason_Id ");
+	    sb.append("    WHERE f.BID = ? "); // 👈 확인하신 대문자 BID 사용 및 뒤에 공백 추가
+	    
+	    if (isCategoryFiltered) sb.append(" AND fc.foodCategory = ? ");
+	    if (isReasonFiltered) sb.append(" AND r.reason = ? ");
+	    
+	    sb.append(") WHERE rn BETWEEN ? AND ? ");
+
+	    try (Connection conn = DBCP.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sb.toString())) {
+	        
+	        int idx = 1;
+	        pstmt.setString(idx++, bId);
+	        if (isCategoryFiltered) pstmt.setString(idx++, category);
+	        if (isReasonFiltered) pstmt.setString(idx++, reason);
+	        pstmt.setInt(idx++, start);
+	        pstmt.setInt(idx++, end);
+
+	        ResultSet rs = pstmt.executeQuery();
+	        while (rs.next()) {
+	            disposalVO vo = new disposalVO();
+	            vo.setDisposalId(rs.getString("disposal_Id"));
+	            vo.setFoodMaterialName(rs.getString("foodMaterialName"));
+	            vo.setFoodCategory(rs.getString("foodCategory"));
+	            vo.setFoodMaterialType(rs.getString("foodMaterialType"));
+	            vo.setDisposalCountAll(rs.getInt("disposalCountAll"));
+	            vo.setDisposalPrice(rs.getInt("disposalPrice"));
+	            vo.setDisposalDate(rs.getDate("disposalDate"));
+	            vo.setReason(rs.getString("reason"));
+	            list.add(vo);
+	        }
+	    } catch (Exception e) { 
+	        e.printStackTrace(); 
+	    }
+	    return list;
+	}
+	
+	public int getDisposalCount(String bId, String category, String reason) {
+	    int count = 0;
+	    boolean isCategoryFiltered = category != null && !category.equals("전체") && !category.isEmpty();
+	    boolean isReasonFiltered = reason != null && !reason.equals("전체") && !reason.isEmpty();
+
+	    StringBuilder sb = new StringBuilder();
+	    sb.append("SELECT COUNT(*) FROM DISPOSALS d ");
+	    sb.append("JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id ");
+	    sb.append("JOIN FOODC fc ON f.foodCategory_Id = fc.foodCategory_Id ");
+	    sb.append("JOIN REASON r ON d.reason_Id = r.reason_Id ");
+	    sb.append("WHERE f.BID = ? "); // 👈 여기도 BID 사용
+
+	    if (isCategoryFiltered) sb.append(" AND fc.foodCategory = ? ");
+	    if (isReasonFiltered) sb.append(" AND r.reason = ? ");
+
+	    try (Connection conn = DBCP.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sb.toString())) {
+	        
+	        int idx = 1;
+	        pstmt.setString(idx++, bId);
+	        if (isCategoryFiltered) pstmt.setString(idx++, category);
+	        if (isReasonFiltered) pstmt.setString(idx++, reason);
+	        
+	        ResultSet rs = pstmt.executeQuery();
+	        if (rs.next()) count = rs.getInt(1);
+	    } catch (Exception e) { 
+	        e.printStackTrace(); 
+	    }
+	    return count;
+	}
+
+	public int getTotalCount(String bId, String category, String reason) {
+	    int count = 0;
+	    boolean isCatFiltered = category != null && !category.equals("전체") && !category.isEmpty();
+	    boolean isReasFiltered = reason != null && !reason.equals("전체") && !reason.isEmpty();
+
+	    String sql = "SELECT COUNT(*) FROM DISPOSALS d " +
+	                 "JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id " +
+	                 "JOIN FOODC fc ON f.foodCategory_Id = fc.foodCategory_Id " +
+	                 "JOIN REASON r ON d.reason_Id = r.reason_Id " +
+	                 "WHERE f.BID = ? " + 
+	                 (isCatFiltered ? " AND fc.foodCategory = ? " : "") +
+	                 (isReasFiltered ? " AND r.reason = ? " : "");
+
+	    try (Connection conn = DBCP.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+	        
+	        int idx = 1;
+	        pstmt.setString(idx++, bId);
+	        if (isCatFiltered) pstmt.setString(idx++, category);
+	        if (isReasFiltered) pstmt.setString(idx++, reason);
+	        
+	        ResultSet rs = pstmt.executeQuery();
+	        if (rs.next()) count = rs.getInt(1);
+	    } catch (Exception e) { e.printStackTrace(); }
+	    return count;
+	}
+	
 	//4. 폐기사유 조회
 	public List<String> getReasons() {
 		List<String> list = new ArrayList<>();
