@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+<!DOCTYPE html>
 <html lang="kr">
 
 <head>
@@ -46,78 +49,86 @@ ul {
 	flex: 1;
 }
 
-.content_right {
-	width: 300px;
-	border: 3px solid green;
-	padding: 10px;
-}
-
-.content_right h3 {
-	margin-top: 0;
-}
-
-.content_right table {
-	border-spacing: 10px;
-	font-size: 14px;
-	width: 100%;
-}
-
 .menu_list {
 	border: 3px solid;
 	padding: 10px;
 	margin: 10px;
 }
 
-.menu_list table {
-	border-spacing: 16px;
-	width: 100%;
-	font-size: 14px;
-}
-
-.menu_list tr {
-	cursor: pointer;
-}
-
-.menu_list tr:hover {
-	background-color: #f0f0f0;
-}
-
-.menu_list tr.active {
-	background-color: #ddd;
+.content_right {
+	width: 300px;
+	border: 3px solid green;
+	padding: 10px;
+	margin: 10px;
 }
 
 table {
 	border-spacing: 24px;
 }
+
+a {
+	text-decoration: none;
+	color: black;
+}
+
+.message {
+	color: blue;
+	font-weight: bold;
+}
+
+.errorMessage {
+	color: red;
+	font-weight: bold;
+}
+
+button {
+	cursor: pointer;
+}
 </style>
 </head>
 
 <body>
-    <div class="container">
-        <section class="sideMenu">
-            
-        </section>
-        <div class="main">
-            <div>
-                <ul class="profile">
-                    <td>김상혁님</td>
-                    <td>알림</td>
-                </ul>
-            </div>
-            <h1>메뉴 조회</h1>
-            <div class="content_item">
+	<div class="message">${message}</div>
+	<div class="errorMessage">${errorMessage}</div>
 
 	<div class="container">
 		<section class="sideMenu">
-			<jsp:include page="common/sideMenu.jsp" />
+			<ul>
+				<li>식자재관리</li>
+				<li>식자재입력</li>
+				<li>메뉴입력</li>
+				<li><a
+					href="${pageContext.request.contextPath}/controller?cmd=foodMaterialAction">
+						식자재조회 </a></li>
+				<li><a
+					href="${pageContext.request.contextPath}/controller?cmd=menuAction">
+						메뉴상세조회 </a></li>
+			</ul>
+
+			<ul>
+				<li>폐기관리</li>
+				<li>폐기품목확인</li>
+			</ul>
+
+			<ul>
+				<li>통계</li>
+				<li>매출통계</li>
+				<li>지출통계</li>
+				<li>폐기통계</li>
+			</ul>
 		</section>
+
 		<div class="main">
 			<div>
-				<jsp:include page="common/userName.jsp" />
+				<ul class="profile">
+					<td>김상혁님</td>
+					<td>알림</td>
+				</ul>
 			</div>
-			<h1>메뉴 조회</h1>
-			<div class="content_item">
 
+			<h1>메뉴 조회</h1>
+
+			<div class="content_item">
 				<div class="content_left">
 					<div class="menu_list">
 						<table>
@@ -126,63 +137,74 @@ table {
 								<th>판매가능 메뉴</th>
 								<th>가격(원)</th>
 							</tr>
-							<tr
-								onclick="selectMenu(this, '참치김밥', [['참치','50g'],['밥','150g'],['단무지','30g'],['당근','20g'],['김','10g']])"
-								class="active">
-								<td><input type="checkbox" checked></td>
-								<td>참치김밥</td>
-								<td>4,500</td>
-							</tr>
-							<tr
-								onclick="selectMenu(this, '치즈김밥', [['치즈','40g'],['밥','150g'],['단무지','30g'],['당근','20g'],['김','10g']])">
-								<td><input type="checkbox"></td>
-								<td>치즈김밥</td>
-								<td>4,000</td>
-							</tr>
-							<tr
-								onclick="selectMenu(this, '기본김밥', [['밥','150g'],['단무지','30g'],['당근','20g'],['김','10g'],['계란','50g']])">
-								<td><input type="checkbox"></td>
-								<td>기본김밥</td>
-								<td>3,500</td>
-							</tr>
+
+							<c:forEach items="${menuList}" var="menu">
+								<tr>
+									<td><c:choose>
+											<c:when test="${menu.menuId == selectedMenuId}">
+												<input type="radio" name="menuSelect" checked="checked">
+											</c:when>
+											<c:otherwise>
+												<input type="radio" name="menuSelect">
+											</c:otherwise>
+										</c:choose></td>
+
+									<td><a
+										href="${pageContext.request.contextPath}/controller?cmd=menuAction&menuId=${menu.menuId}">
+											${menu.menuName} </a></td>
+
+									<td>${menu.menuPrice}</td>
+								</tr>
+							</c:forEach>
+
+							<c:if test="${empty menuList}">
+								<tr>
+									<td colspan="3">조회된 메뉴가 없습니다.</td>
+								</tr>
+							</c:if>
 						</table>
 					</div>
 				</div>
 
 				<div class="content_right">
 					<h3>사용하는 식자재</h3>
+
 					<table id="ingredientDetail">
 						<tr>
 							<th>이름</th>
 							<th>수량</th>
+							<th>가격</th>
+							<th>사용원가</th>
 						</tr>
-						<tr>
-							<td>참치</td>
-							<td>50g</td>
-						</tr>
-						<tr>
-							<td>밥</td>
-							<td>150g</td>
-						</tr>
-						<tr>
-							<td>단무지</td>
-							<td>30g</td>
-						</tr>
-						<tr>
-							<td>당근</td>
-							<td>20g</td>
-						</tr>
-						<tr>
-							<td>김</td>
-							<td>10g</td>
-						</tr>
-					</table>
-				</div>
 
+						<c:forEach items="${detailList}" var="detail">
+							<tr>
+								<td>${detail.foodMaterialName}</td>
+								<td>${detail.usedCount}</td>
+								<td>${detail.foodMaterialPrice}</td>
+								<td>${detail.usedPrice}</td>
+							</tr>
+						</c:forEach>
+
+						<c:if test="${empty detailList}">
+							<tr>
+								<td colspan="4">선택된 메뉴의 식자재 정보가 없습니다.</td>
+							</tr>
+						</c:if>
+					</table>
+
+					<div style="margin-top: 20px;">
+						<form method="post"
+							action="${pageContext.request.contextPath}/controller?cmd=salesAction">
+							<input type="hidden" name="menuId" value="${selectedMenuId}">
+							판매수량: <input type="number" name="saleCount" value="1" min="1">
+							<input type="submit" value="판매 처리">
+						</form>
+					</div>
+				</div>
 			</div>
 		</div>
 	</div>
-
 	<script>
 		function selectMenu(rowEl, menuName, ingredients) {
 			var rows = document.querySelectorAll(".menu_list tr");
@@ -227,5 +249,5 @@ table {
 		}
 	</script>
 </body>
-
 </html>
+

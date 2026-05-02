@@ -54,7 +54,11 @@ public class ActionFactory {
             case "foodMaterialAction":
                 a = new foodMaterialAction();
                 break;
-            
+                
+            case "deleteFoodMaterialAction":
+                a = new deleteFoodMaterialAction();
+                break;
+                
             case "addMenuCategoryAction":
             	a = new addMenuCategoryAction();
             	break;
@@ -129,7 +133,6 @@ public class ActionFactory {
             case "pwPhoneVerifyAction":
                 a = new pwPhoneVerifyAction();
                 break;
-
             default:
                 a = new loginUIAction();
         }
