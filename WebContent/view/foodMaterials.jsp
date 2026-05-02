@@ -348,19 +348,19 @@ button {
 		 row.style.display = "";
 		 });
 		 }  */
-		 function categoryAjax() {
-				searchFood();
+	       function categoryAjax() {
+	            searchFood();
 
-				var xhr = new XMLHttpRequest();
+	            var xhr = new XMLHttpRequest();
 
-				xhr.onreadystatechange = function() {
-					if (xhr.readyState == 4 && xhr.status == 200) {
-						console.log("카테고리 비동기 요청 완료");
-					}
+	            xhr.onreadystatechange = function() {
+	               if (xhr.readyState == 4 && xhr.status == 200) {
+	                  console.log("카테고리 비동기 요청 완료");
+	               }
 
-				xhr.open("GET", "${pageContext.request.contextPath}/controller?cmd=foodMaterialAction&sortType=${sortType}&page=${currentPage}", true);
-				xhr.send();
-			}
+	            xhr.open("GET", "${pageContext.request.contextPath}/controller?cmd=foodMaterialAction&sortType=${sortType}&page=${currentPage}", true);
+	            xhr.send();
+	         }
 
 		function selectAllFoodMaterial() {
 			var checkboxes = document

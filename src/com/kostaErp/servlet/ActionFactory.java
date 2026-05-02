@@ -100,20 +100,31 @@ public class ActionFactory {
             	break;
 
             case "disposalStatisticUIAction":
-            	a = new disposalStatisticsUIAction();
+            	a = new disposalStatisticUIAction();
+            	break;
+            	
+            case "disposalStatisticsAction":
+            	a = new disposalStatisticsAction();
             	break;
             	
             case "salesAction":
                 a = new salesAction();
                 break;
 
-            case "revenueUIAction":
-                a = new revenueUIAction();
+            case "revenueStatisticsUIAction":
+                a = new revenueStatisticsUIAction();
                 break;
 
-            case "revenueAction":
-                a = new revenueAction();
+            case "revenueStatisticsAction":
+                a = new revenueStatisticsAction();
                 break;
+                
+            case "usedStatisticsUIAction":
+            	a = new usedStatisticsUIAction();
+            	break;
+            case "usedStatisticsAction":
+            	a = new usedStatisticsAction() ;
+            	break;
 
             case "idCheckAction":
                 a = new IdCheckAction();

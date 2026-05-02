@@ -88,8 +88,10 @@ button {
 </head>
 
 <body>
+
 	<div class="message">${message}</div>
 	<div class="errorMessage">${errorMessage}</div>
+
 
 	<div class="container">
 		<section class="sideMenu">
