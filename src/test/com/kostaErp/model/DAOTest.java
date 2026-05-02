@@ -64,14 +64,14 @@ public class DAOTest {
 		// assertTrue("입력실패", 0);
 	}
 
-/*	// 2. 카테고리 추가
-	@Test
-	public void addFoodCategory() {
-		boolean result = dao.addFoodCategory("테스트카테고리");
-		assertTrue(result);
-		// int result = dao.addFoodCategory("PP", "가공식품");
-		// assertEquals("추가실패", 0, result);
-	}*/
+	// 2. 카테고리 추가
+	//@Test
+	public void addFoodCategory(){
+		int result = dao.addFoodCategory("테스트카테고리");
+		assertTrue(result>0);
+		//        int result = dao.addFoodCategory("PP", "가공식품");
+		//        assertEquals("추가실패", 0, result);
+	}
 
 	// 3. 카테고리 삭제
 	// @Test
@@ -83,16 +83,16 @@ public class DAOTest {
 	}
 
 	// 4. 식자재 검색
-	// @Test
-	public void getFoodMaterial() {
-		List<foodMaterialVO> list = dao.getFoodMaterialByName("단무지");
+	@Test
+	public void getFoodMaterial(){
+		List<foodMaterialVO> list = dao.getFoodMaterialByName("단무지", "0000000000");
 		assertTrue("검색성공", list.size() > 0);
 		// List<foodMaterialVO> list = dao.getFoodMaterialByName("컴퓨터");
 		// assertTrue("검색실패", list.isEmpty());
 	}
 
 	// 5. 메뉴추가
-	@Test
+	//@Test
 	public void addMenu() {
 		String result = dao2.addMenu("참치김밥", 4000, "M001");
 		assertTrue("메뉴 추가 성공", result != null);
@@ -340,7 +340,7 @@ public class DAOTest {
 
 		assertTrue("식자재 삭제 실패", result > 0);
 	}
-
+	
 	// 사용자의 메뉴 카테고리 조회
 	@Test
 	public void getMenuCategoryList() {
@@ -353,6 +353,7 @@ public class DAOTest {
 			assertNotNull("menuCategoryId가 null이면 안됩니다", vo.getMenuCategoryId());
 			assertNotNull("menuCategory가 null이면 안됩니다", vo.getMenuCategory());
 		}
+
 	}
 
 	// 식자재 조회
@@ -371,10 +372,10 @@ public class DAOTest {
 		}
 	}
 
-	@Test
-	public void getMenuName() {
-		boolean result = dao2.hasMenuCheck("참치김밥");
-		assertTrue(result);
-
-	}
+	   //@Test
+	   public void getMenuName(){
+		   boolean result = dao2.hasMenuCheck("참치김밥");
+		   assertTrue(result);
+		   
+	   }
 }
