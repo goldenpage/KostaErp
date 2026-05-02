@@ -8,9 +8,9 @@ import static org.junit.Assert.*;
 
 import java.util.List;
 
-import com.kostaErp.model.foodMaterialDAO;
-import com.kostaErp.model.foodMaterialVO;
-import com.kostaErp.model.revenueDAO;
+import com.kostaErp.model.DAO.foodMaterialDAO;
+import com.kostaErp.model.DAO.revenueDAO;
+import com.kostaErp.model.VO.foodMaterialVO;
 
 public class foodMaterialDAOTest {
 	
@@ -18,18 +18,18 @@ public class foodMaterialDAOTest {
 	@Before
 	public void setUp() {
 		 dao = new foodMaterialDAO();
-		System.out.println("dao µî·Ï");
+		System.out.println("dao ï¿½ï¿½ï¿½");
 	}
 
 	
 	@After
 	public void tearDown() {
 		 dao = null;
-		System.out.println("dao »èÁ¦");
+		System.out.println("dao ï¿½ï¿½ï¿½ï¿½");
 	}
 	
 	
-	//¿ùº° ÃÑ ÁöÃâ¾×
+	//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½
 	@Test
 	public void getFoodMaterialTotalAmount() {
 		   int result = dao.getFoodMaterialTotalAmount("0000000000","2026-04-01","2026-05-01");
@@ -38,7 +38,7 @@ public class foodMaterialDAOTest {
 
 			    assertTrue(result > 0);
 	}
-	//¿ùº° ÁöÃâ·©Å·
+	//ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½â·©Å·
 	@Test
 	public void getFoodMaterialSpendingRank() {
 		  List<foodMaterialVO> list = dao.getFoodMaterialSpendingRank("0000000000","2026-04-01","2026-05-01"	    );

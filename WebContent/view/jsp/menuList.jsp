@@ -95,15 +95,15 @@ button {
 
 	<div class="container">
 		 <section class="sideMenu"> 
-			<jsp:include page="common/sideMenu.jsp" />
+			<jsp:include page="../common/sideMenu.jsp" />
 		 </section>
 
 		<div class="main">
 			<div>
-				<jsp:include page="common/userName.jsp" />
+				<jsp:include page="../common/userName.jsp" />
 			</div>
 
-			<h1>메뉴 조회</h1>
+			<h1>메뉴 상세 조회</h1>
 
 			<div class="content_item">
 				<div class="content_left">

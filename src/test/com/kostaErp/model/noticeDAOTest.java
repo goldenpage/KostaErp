@@ -8,8 +8,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.kostaErp.model.noticeDAO;
-import com.kostaErp.model.noticeVO;
+import com.kostaErp.model.DAO.noticeDAO;
+import com.kostaErp.model.VO.noticeVO;
 
 public class noticeDAOTest {
 	private String bId;

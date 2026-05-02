@@ -7,10 +7,10 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.kostaErp.model.foodMaterialDAO;
-import com.kostaErp.model.foodMaterialVO;
-import com.kostaErp.model.menuCategoryVO;
-import com.kostaErp.model.menuDAO;
+import com.kostaErp.model.DAO.foodMaterialDAO;
+import com.kostaErp.model.DAO.menuDAO;
+import com.kostaErp.model.VO.foodMaterialVO;
+import com.kostaErp.model.VO.menuCategoryVO;
 
 public class addMenuCategoryAction implements Action {
 

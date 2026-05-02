@@ -85,14 +85,14 @@ button {
 
 		<!-- 사이드 메뉴 -->
 		<section class="sideMenu">
-			<jsp:include page="common/sideMenu.jsp" />
+			<jsp:include page="../common/sideMenu.jsp" />
 		</section>
 
 		<!-- 메인 -->
 		<div class="main">
 
 			<div>
-				<jsp:include page="common/userName.jsp" />
+				<jsp:include page="../common/userName.jsp" />
 			</div>
 
 			<h2>알림 내역</h2>

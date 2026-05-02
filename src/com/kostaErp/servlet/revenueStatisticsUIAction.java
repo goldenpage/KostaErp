@@ -10,7 +10,7 @@ public class revenueStatisticsUIAction implements Action {
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
 		
-		return "revenueStatistics.jsp";
+		return "/jsp/revenueStatistics.jsp";
 	}
 
 }

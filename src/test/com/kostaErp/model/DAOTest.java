@@ -12,14 +12,13 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.kostaErp.model.DBCP;
-import com.kostaErp.model.foodMaterialDAO;
-import com.kostaErp.model.foodMaterialVO;
-import com.kostaErp.model.menuCategoryVO;
-import com.kostaErp.model.menuDAO;
-import com.kostaErp.model.userDAO;
-
-import com.kostaErp.model.menuVO;
-import com.kostaErp.model.userInfoVO;
+import com.kostaErp.model.DAO.foodMaterialDAO;
+import com.kostaErp.model.DAO.menuDAO;
+import com.kostaErp.model.DAO.userDAO;
+import com.kostaErp.model.VO.foodMaterialVO;
+import com.kostaErp.model.VO.menuCategoryVO;
+import com.kostaErp.model.VO.menuVO;
+import com.kostaErp.model.VO.userInfoVO;
 
 public class DAOTest {
 

@@ -1,4 +1,4 @@
-package com.kostaErp.model;
+package com.kostaErp.model.DAO;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,11 +7,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.kostaErp.model.DBCP;
+import com.kostaErp.model.VO.revenueVO;
+import com.kostaErp.model.VO.userInfoVO;
+
 public class revenueDAO {
 
 	public revenueDAO(){}
 	
-	// 1. ¿ùº° ¸Þ´º ÆÇ¸Å ·©Å· Á¶È¸
+	// 1. ï¿½ï¿½ï¿½ï¿½ ï¿½Þ´ï¿½ ï¿½Ç¸ï¿½ ï¿½ï¿½Å· ï¿½ï¿½È¸
 	public List<revenueVO> getMonthlyMenuSalesRank(String bId, String startDate, String endDate) {
 	    String sql =
 	        "SELECT " +
@@ -94,7 +98,7 @@ public class revenueDAO {
 	}
 	
 	
-	// ¿ùº° ÃÑ ¸ÅÃâ
+	// ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
 	public int getMonthlyRevenue(String bId, String startDate, String endDate) {
 	    String sql =
 	        "SELECT NVL(SUM(s.saleMenuCount * m.menuPrice), 0) AS totalRevenue " +
@@ -154,7 +158,7 @@ public class revenueDAO {
 				}
 			}
 		} catch (SQLException e) {
-			System.err.println("·Î±×ÀÎ Ã¼Å© Áß DB ¿¡·¯: " + e.getMessage());
+			System.err.println("ï¿½Î±ï¿½ï¿½ï¿½ Ã¼Å© ï¿½ï¿½ DB ï¿½ï¿½ï¿½ï¿½: " + e.getMessage());
 		}
 		return null;
 	}

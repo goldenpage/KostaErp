@@ -9,7 +9,7 @@ public class foodMaterialUIAction implements Action {
 
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
-		return "foodMaterials.jsp";
+		return "/jsp/foodMaterials.jsp";
 	}
 
 }

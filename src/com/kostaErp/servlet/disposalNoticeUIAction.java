@@ -8,6 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 public class disposalNoticeUIAction implements Action{
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
-		return "notification.jsp";
+		return "/jsp/notification.jsp";
 	}
 }
