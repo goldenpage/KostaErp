@@ -9,8 +9,10 @@ import com.kostaErp.model.disposalVO;
 
 public class disposalUIAction implements Action {
 
+
     @Override
     public String execute(HttpServletRequest request) throws IOException {
+
 
         HttpSession session = request.getSession(false);
         String bId = null;

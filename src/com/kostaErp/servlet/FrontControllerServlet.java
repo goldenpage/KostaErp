@@ -19,6 +19,14 @@ public class FrontControllerServlet extends HttpServlet {
         request.setAttribute("response", response);
         String url = action.execute(request);
 
+       
+        String ajaxResponse = (String) request.getAttribute("ajaxResponse");
+        if (ajaxResponse != null) {
+            response.setContentType("text/plain; charset=UTF-8");
+            response.getWriter().write(ajaxResponse);
+            return;
+        }
+        
         if (url == null) {
             return;
         }

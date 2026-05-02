@@ -8,6 +8,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Document</title>
 </head>
+<script src="
+https://cdn.jsdelivr.net/npm/jquery@4.0.0/dist/jquery.min.js
+"></script>
 <style>
 .signup-box {
 	max-width: 500px;
@@ -179,9 +182,10 @@
 				<input type="text" id="phone" name="phone" class="phone-input"
 					placeholder="휴대폰 번호 입력 (숫자만)" required>
 				<button type="button" id="sendBtn" class="auth-send-btn"
-					onclick="sendPhoneCode()">인증발송</button>
+					onclick="sendPhoneCodeJquery()">인증발송</button>
+					<div id="phoneMessage"></div>
 			</div>
-			<div id="phoneMessage">${phoneMessage}</div>
+			
 		</div>
 
 		<div class="form-group">
@@ -298,6 +302,24 @@
 		    xhr.send();
 
 		}
+		
+		function sendPhoneCodeJquery() {
+			const phone = document.querySelector("#phone").value
+			
+			if (!phone) {
+				alert("휴대폰 번호를 입력해주세요")
+				return;
+			}
+			const url = '${pageContext.request.contextPath}/controller?cmd=phoneSendAction&phone='+ encodeURIComponent(phone);
+			
+			$.ajax({
+				  method:'GET',
+				  url: url,
+				  success: function( result ) {
+				    $( "#phoneMessage" ).html( result );
+				  }
+				});
+		}
 
 		function verifyPhoneCode() {
 			const
@@ -349,6 +371,7 @@
 		            }
 		        }
 		    };
+		    
 
 		    xhr.send();
 		}

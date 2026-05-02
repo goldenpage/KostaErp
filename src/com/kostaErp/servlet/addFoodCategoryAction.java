@@ -1,15 +1,14 @@
 package com.kostaErp.servlet;
 
 import java.io.IOException;
-import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
-import com.kostaErp.model.foodMaterialCategoryVO;
 import com.kostaErp.model.foodMaterialDAO;
 
 public class addFoodCategoryAction implements Action {
+
 
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
@@ -34,4 +33,5 @@ public class addFoodCategoryAction implements Action {
         }
 		return null;
 	}
+
 }

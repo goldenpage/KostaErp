@@ -111,38 +111,13 @@ button {
 	<div class="errorMessage">${errorMessage}</div>
 
 	<div class="container">
-		<section class="sideMenu">
-			<ul>
-				<li>식자재관리</li>
-				<li>식자재입력</li>
-				<li>메뉴입력</li>
-				<li><a
-					href="${pageContext.request.contextPath}/controller?cmd=foodMaterialAction">
-						식자재조회 </a></li>
-				<li><a
-					href="${pageContext.request.contextPath}/controller?cmd=menuAction">
-						메뉴상세조회 </a></li>
-			</ul>
-
-			<ul>
-				<li>폐기관리</li>
-				<li>폐기품목확인</li>
-			</ul>
-
-			<ul>
-				<li>통계</li>
-				<li>매출통계</li>
-				<li>지출통계</li>
-				<li>폐기통계</li>
-			</ul>
-		</section>
+		<section class="sideMenu"> 
+			<jsp:include page="common/sideMenu.jsp" />
+		 </section>
 
 		<div class="main">
 			<div>
-				<ul class="profile">
-					<td>김상혁님</td>
-					<td>알림</td>
-				</ul>
+				<jsp:include page="common/userName.jsp" />
 			</div>
 
 			<h1>식자재 확인</h1>
@@ -348,19 +323,19 @@ button {
 		 row.style.display = "";
 		 });
 		 }  */
-		 function categoryAjax() {
-				searchFood();
+	       function categoryAjax() {
+	            searchFood();
 
-				var xhr = new XMLHttpRequest();
+	            var xhr = new XMLHttpRequest();
 
-				xhr.onreadystatechange = function() {
-					if (xhr.readyState == 4 && xhr.status == 200) {
-						console.log("카테고리 비동기 요청 완료");
-					}
+	            xhr.onreadystatechange = function() {
+	               if (xhr.readyState == 4 && xhr.status == 200) {
+	                  console.log("카테고리 비동기 요청 완료");
+	               }
 
-				xhr.open("GET", "${pageContext.request.contextPath}/controller?cmd=foodMaterialAction&sortType=${sortType}&page=${currentPage}", true);
-				xhr.send();
-			}
+	            xhr.open("GET", "${pageContext.request.contextPath}/controller?cmd=foodMaterialAction&sortType=${sortType}&page=${currentPage}", true);
+	            xhr.send();
+	         }
 
 		function selectAllFoodMaterial() {
 			var checkboxes = document
