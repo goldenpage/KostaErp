@@ -14,26 +14,19 @@ public class deleteFoodCategoryAction implements Action {
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
 		foodMaterialDAO dao = new foodMaterialDAO();
-		 
 		String foodCategory = request.getParameter("foodCategory");
- 
-		if (dao.hasFoodMaterialByCategory(foodCategory)) {
-			request.setAttribute("errorMessage", "'" + foodCategory + "' 카테고리에 등록된 식자재가 있어 삭제할 수 없습니다.");
-		} else {
+
+		if(dao.hasFoodMaterialByCategory(foodCategory)){
+			request.setAttribute("ajaxResponse", "fail|'" + foodCategory + "'카테고리에 등록된 식자재가 있어 삭제할 수 없습니다.");
+		}else{
 			int result = dao.deleteFoodCategory(foodCategory);
-			if (result > 0) {
-				request.setAttribute("successMessage", "'" + foodCategory + "' 카테고리가 삭제되었습니다.");
-				System.out.println("삭제성공");
-			} else {
-				request.setAttribute("errorMessage", "카테고리 삭제에 실패했습니다.");
-				System.out.println("삭제실패");
+			if(result > 0){
+				request.setAttribute("ajaxResponse", "success|'" + foodCategory + "'카테고리가 삭제되었습니다.");
+			}
+			else{
+				request.setAttribute("ajaxResponse", "fail|카테고리 삭제에 실패했습니다.");
 			}
 		}
- 
-		List<foodMaterialCategoryVO> categoryList = dao.getFoodCategoryList();
-		request.setAttribute("categoryList", categoryList);
- 
-		return "addFoodMaterial.jsp";
+		return null;
 	}
-
 }

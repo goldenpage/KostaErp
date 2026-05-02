@@ -35,6 +35,10 @@ public class ActionFactory {
             	a = new deleteFoodCategoryAction();
             	break;
             
+            case "searchFoodMaterialAction":
+            	a = new searchFoodMaterialAction();
+            	break;
+            	
             case "addFoodMaterialUIAction":
             	a = new addFoodMaterialUIAction();
             	break;
@@ -50,9 +54,21 @@ public class ActionFactory {
             case "foodMaterialAction":
                 a = new foodMaterialAction();
                 break;
-
+                
+            case "deleteFoodMaterialAction":
+                a = new deleteFoodMaterialAction();
+                break;
+                
+            case "addMenuCategoryAction":
+            	a = new addMenuCategoryAction();
+            	break;
+            	
+            case "deleteMenuCategoryAction":
+            	a = new deleteMenuCategoryAction();
+            	break;
+            	
             case "addMenuUIAction":
-            	a = new addMenuUIAction();
+            	a = new addMenuAction();
             	break;
             	
             case "addMenuAction":
@@ -126,7 +142,6 @@ public class ActionFactory {
             case "pwPhoneVerifyAction":
                 a = new pwPhoneVerifyAction();
                 break;
-
             default:
                 a = new loginUIAction();
         }

@@ -1,17 +1,71 @@
 package com.kostaErp.servlet;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import com.kostaErp.model.menuDAO;
+import com.kostaErp.model.menuVO;
 
 public class menuAction implements Action {
 
-    @Override
-    public String execute(HttpServletRequest request) throws ServletException, IOException {
-        System.out.println("¸Ş´º Ã³¸® Action ½ÇÇà");
+	@Override
+	public String execute(HttpServletRequest request) throws ServletException, IOException {
+		String url = "menuList.jsp";
 
-        request.setAttribute("message", "¸Ş´º ¿äÃ» Ã³¸® È®ÀÎ");
+		String menuId = request.getParameter("menuId");
 
-        return "menuList.jsp";
-    }
+		try {
+			HttpSession session = request.getSession(true);
+			String bId = (String) session.getAttribute("bId");
+
+			if (bId == null || bId.equals("")) {
+				bId = "0000000000";
+				session.setAttribute("bId", bId);
+			}
+
+			menuDAO dao = new menuDAO();
+
+			List<menuVO> menuList = dao.getMenuList(bId);
+
+			List<menuVO> detailList = null;
+
+			if ((menuId == null || menuId.equals("")) && menuList != null && menuList.size() > 0) {
+
+				for (menuVO menu : menuList) {
+					List<menuVO> tempList = dao.getMenuDetail(menu.getMenuId());
+
+					if (tempList != null && tempList.size() > 0) {
+						menuId = menu.getMenuId();
+						detailList = tempList;
+						break;
+					}
+				}
+
+				if (menuId == null || menuId.equals("")) {
+					menuId = menuList.get(0).getMenuId();
+					detailList = dao.getMenuDetail(menuId);
+				}
+
+			} else {
+				detailList = dao.getMenuDetail(menuId);
+			}
+
+			System.out.println("ì„ íƒëœ ë©”ë‰´ID : " + menuId);
+			System.out.println("ì‚¬ìš© ì‹ìì¬ ê°œìˆ˜  : " + (detailList == null ? 0 : detailList.size()));
+
+			request.setAttribute("menuList", menuList);
+			request.setAttribute("detailList", detailList);
+			request.setAttribute("selectedMenuId", menuId);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			request.setAttribute("errorMessage", "ë©”ë‰´ ì¡°íšŒ ì‹¤íŒ¨");
+		}
+
+		return url;
+	}
 }
