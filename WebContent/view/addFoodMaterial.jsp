@@ -129,15 +129,6 @@
             margin-bottom: 10px;
         }
 
-        .list_container {
-            display: flex;
-            justify-content: center;
-            border: 3px solid red;
-            font-size: 14px;
-            line-height: 14px;
-            width: 100%;
-        }
-
         table { border-spacing: 24px; }
 
         .page {
@@ -280,11 +271,12 @@
                                         <th>이름</th>
                                         <th>카테고리</th>
                                         <th>구입처</th>
+                                        <th>타입</th>
                                         <th>추가</th>
                                     </tr>
                                 </thead>
                                 <tbody id="searchResultBody">
-                                    <tr><td colspan="4" class="empty_msg">검색어를 입력하세요</td></tr>
+                                    <tr><td colspan="5" class="empty_msg">검색어를 입력하세요</td></tr>
                                 </tbody>
                             </table>
                         </div>
@@ -572,49 +564,59 @@
             var body = document.getElementById('searchResultBody');
 
             if (!keyword) {
-                body.innerHTML = '<tr><td colspan="4" class="empty_msg">검색어를 입력하세요</td></tr>';
+                body.innerHTML = '<tr><td colspan="5" class="empty_msg">검색어를 입력하세요</td></tr>';
                 return;
             }
 
-            if (typeof results === 'undefined' || results.length === 0) {
-                body.innerHTML = '<tr><td colspan="4" class="empty_msg">검색 결과가 없습니다</td></tr>';
-                return;
-            }
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", "${pageContext.request.contextPath}/controller?cmd=searchFoodMaterialAction&keyword=" + encodeURIComponent(keyword), true);
 
-            body.innerHTML = results.map(function(m) {
-                return '<tr>' +
-                    '<td>' + m.foodMaterialName + '</td>' +
-                    '<td>' + m.foodCategory + '</td>' +
-                    '<td>' + m.vender + '</td>' +
-                    '<td><button type="button" onclick=\'fillFromSearch(' + JSON.stringify(m) + ')\'>&#8853;</button></td>' +
-                    '</tr>';
-            }).join('');
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    var list = JSON.parse(xhr.responseText);
+                    if (list.length === 0) {
+                        body.innerHTML = '<tr><td colspan="5" class="empty_msg">검색 결과가 없습니다</td></tr>';
+                        return;
+                    }
+                    body.innerHTML = list.map(function(m) {
+                        return '<tr>' +
+                            '<td>' + m.foodMaterialName + '</td>' +
+                            '<td>' + m.foodCategory + '</td>' +
+                            '<td>' + m.vender + '</td>' +
+                            '<td>' + m.foodMaterialType + '</td>' +
+                            '<td><button type="button" onclick=\'fillFromSearch(' + JSON.stringify(m) + ')\'>&#8853;</button></td>' +
+                            '</tr>';
+                    }).join('');
+                } else if (xhr.readyState === 4) {
+                    body.innerHTML = '<tr><td colspan="5" class="empty_msg">검색 중 오류가 발생했습니다</td></tr>';
+                }
+            };
+
+            xhr.send();
         }
 
         function fillFromSearch(data) {
             document.getElementById('foodMaterialName').value = data.foodMaterialName;
-            document.getElementById('foodMaterialCount').value = data.foodMaterialCount;
-            document.getElementById('foodMaterialCountAll').value = data.foodMaterialCountAll;
             document.getElementById('vender').value = data.vender;
-            document.getElementById('foodMaterialPrice').value = data.foodMaterialPrice;
+            document.getElementById('foodMaterialType').value = data.foodMaterialType;
 
-            var catBtns = document.querySelectorAll('#categoryArea button');
+            var catBtns = document.querySelectorAll('#categoryArea button[data-category-id]');
             var matched = false;
+            
             catBtns.forEach(function(btn) {
                 btn.classList.remove('selected');
-                if (btn.getAttribute('data-category-id') === data.foodCategory_Id) {
+                if (btn.textContent.trim() === data.foodCategory_Id) {
                     btn.classList.add('selected');
-                    document.getElementById('selectedCategoryId').value = data.foodCategory_Id;
+                    document.getElementById('selectedCategoryId').value = btn.getAttribute('data-category-id');
                     matched = true;
                 }
             });
 
             if (!matched) {
-                document.getElementById('inputCategoryName').value = data.foodCategory;
-                addCategory();
+            	document.getElementById('selectedCategoryId').value = '';
             }
 
-            alert('"' + data.foodMaterialName + '" 정보를 불러왔습니다. 날짜를 확인 후 추가해주세요.');
+            alert('"' + data.foodMaterialName + '" 정보를 불러왔습니다.');
         }
 
         function registerAll() {
