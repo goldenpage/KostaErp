@@ -99,6 +99,50 @@ public class disposalDAO {
 		}
 		return list;
 	}
+	
+	public List<disposalVO> getDisposalsByCategoryAndBId(String category, String bId) {
+	    List<disposalVO> list = new ArrayList<>();
+
+	    String sql =
+	        "SELECT d.disposal_Id, f.foodMaterialName, fc.foodCategory, " +
+	        "d.disposalCountAll, f.foodMaterialType, d.disposalPrice, " +
+	        "d.disposalDate, r.reason_Id, r.reason " +
+	        "FROM DISPOSALS d " +
+	        "JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id " +
+	        "JOIN FOODC fc ON f.foodCategory_Id = fc.foodCategory_Id " +
+	        "JOIN REASON r ON d.reason_Id = r.reason_Id " +
+	        "WHERE fc.foodCategory = ? AND f.bId = ? " +
+	        "ORDER BY d.disposal_Id DESC";
+
+	    try (Connection conn = DBCP.getConnection();
+	         PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+	        pstmt.setString(1, category);
+	        pstmt.setString(2, bId);
+
+	        ResultSet rs = pstmt.executeQuery();
+
+	        while (rs.next()) {
+	            disposalVO vo = new disposalVO();
+
+	            vo.setDisposalId(rs.getString("disposal_Id"));
+	            vo.setFoodMaterialName(rs.getString("foodMaterialName"));
+	            vo.setFoodCategory(rs.getString("foodCategory"));
+	            vo.setFoodMaterialType(rs.getString("foodMaterialType"));
+	            vo.setDisposalCountAll(rs.getInt("disposalCountAll"));
+	            vo.setDisposalPrice(rs.getInt("disposalPrice"));
+	            vo.setDisposalDate(rs.getDate("disposalDate"));
+	            vo.setReason(rs.getString("reason"));
+
+	            list.add(vo);
+	        }
+
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	    }
+
+	    return list;
+	}
 
 	//5. 폐기품목 페이지 이동 (페이징)
 	public List<disposalVO> getDisposalsPaging(String bId, int start, int end) {

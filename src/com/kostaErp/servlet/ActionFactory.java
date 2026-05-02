@@ -67,12 +67,12 @@ public class ActionFactory {
                 a = new menuAction();
                 break;
 
-            case "disposalUI":
+            case "disposalAction":
                 a = new disposalAction();
                 break;
                 
             case "disposalUIAction":
-            	a = new disposalAction();
+            	a = new disposalUIAction();
             	break;
                 
             case "notificationUI":

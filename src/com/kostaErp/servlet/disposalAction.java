@@ -2,51 +2,78 @@ package com.kostaErp.servlet;
 
 import java.io.IOException;
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.google.gson.Gson;
 import com.kostaErp.model.disposalDAO;
 import com.kostaErp.model.disposalVO;
 
 public class disposalAction implements Action {
 
-    @Override
-    public String execute(HttpServletRequest request) throws IOException {
+	@Override
+	public String execute(HttpServletRequest request) throws IOException {
 
-        HttpSession session = request.getSession(false);
+	    System.out.println("disposalAction 실행됨");
 
-        String bId = null;
+	    String category = request.getParameter("category");
 
-        if (session != null) {
-            bId = (String) session.getAttribute("bId");
-        }
+	    HttpSession session = request.getSession(false);
+	    String bId = null;
 
-        System.out.println("SESSION = " + session);
-        System.out.println("bId = " + bId);
+	    if (session != null) {
+	        bId = (String) session.getAttribute("bId");
+	    }
 
-        if (bId == null) {
-            System.out.println(" bId 없음 → 로그인 필요");
-            return "login.jsp";
-        }
+	    disposalDAO dao = new disposalDAO();
 
-        int page = 1;
-        int pageSize = 5;
+	    
+	    if (category != null) {
 
-        String pageParam = request.getParameter("page");
-        if (pageParam != null) {
-            page = Integer.parseInt(pageParam);
-        }
+	        System.out.println("AJAX 요청, bId = " + bId);
 
-        int start = (page - 1) * pageSize + 1;
-        int end = page * pageSize;
+	        List<disposalVO> list;
 
-        disposalDAO dao = new disposalDAO();
+	        if ("전체".equals(category)) {
+	            list = dao.getDisposalsPaging(bId, 1, 100);
+	        } else {
+	            list = dao.getDisposalsByCategoryAndBId(category, bId);
+	        }
 
-        List<disposalVO> list = dao.getDisposalsPaging(bId, start, end);
-        System.out.println("list size = " + list.size());
-        request.setAttribute("list", list);
-        request.setAttribute("currentPage", page);
+	        HttpServletResponse response =
+	            (HttpServletResponse) request.getAttribute("response");
 
-        return "disposalItems.jsp";
-    }
+	        response.setContentType("application/json; charset=UTF-8");
+
+	        Gson gson = new Gson();
+	        response.getWriter().write(gson.toJson(list));
+
+	        return null; 
+	    }
+
+	    
+	    if (bId == null) {
+	        return "login.jsp";
+	    }
+
+	    int page = 1;
+	    int pageSize = 5;
+
+	    String pageParam = request.getParameter("page");
+	    if (pageParam != null) {
+	        page = Integer.parseInt(pageParam);
+	    }
+
+	    int start = (page - 1) * pageSize + 1;
+	    int end = page * pageSize;
+
+	    List<disposalVO> list = dao.getDisposalsPaging(bId, start, end);
+
+	    request.setAttribute("list", list);
+	    request.setAttribute("currentPage", page);
+
+	    return "disposalItems.jsp";
+	}
 }
