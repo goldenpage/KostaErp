@@ -98,25 +98,32 @@ public class foodMaterialDAO {
 		return result;
 	}
 
-	public List<foodMaterialVO> getFoodMaterialByName(String foodMaterialName) {
+	public List<foodMaterialVO> getFoodMaterialByName(String foodMaterialName, String bId) {
 		List<foodMaterialVO> list = new ArrayList<>();
-		String sql = "SELECT foodMaterialName, foodCategory_Id, vender FROM FOODM "
-				+ "WHERE foodMaterialName = ?";
+		String sql = "SELECT f.foodMaterialName, c.foodCategory, f.vender, f.foodMaterialType " +
+				 "FROM FOODM f JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id " +
+				 "WHERE f.foodMaterialName LIKE ? AND f.bId = ?";
 
 		try{
 			Connection conn = DBCP.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(sql);
 
-			stmt.setString(1, foodMaterialName);
+			stmt.setString(1, "%" + foodMaterialName + "%");
+			stmt.setString(2, bId);
 			ResultSet rs = stmt.executeQuery();
 
 			while (rs.next()) {
 				foodMaterialVO foodMaterial = new foodMaterialVO();
 				foodMaterial.setFoodMaterialName(rs.getString("foodMaterialName"));
-				foodMaterial.setFoodCategory(rs.getString("foodCategory_Id"));
+				foodMaterial.setFoodCategory(rs.getString("foodCategory"));
 				foodMaterial.setVender(rs.getString("vender"));
+				foodMaterial.setFoodMaterialType(rs.getString("foodMaterialType"));
 				list.add(foodMaterial);
 			}
+			
+			rs.close();
+			stmt.close();
+			conn.close();
 
 		}catch(Exception e){
 			e.printStackTrace();
