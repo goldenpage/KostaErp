@@ -74,8 +74,10 @@ table {
 </head>
 <body>
 	<div class="container">
-		<section class="sideMenu"> <jsp:include
-			page="common/sideMenu.jsp" /> </section>
+		<section class="sideMenu"> 
+			<jsp:include page="common/sideMenu.jsp" />
+			
+		 </section>
 		<div class="main">
 			<div>
 				<jsp:include page="common/userName.jsp" />
@@ -83,26 +85,27 @@ table {
 
 			<div>¸ÅÃâ¼øÀ§</div>
 			<div>
-				<canvas id = "revenueChart"></canvas>
+				<canvas id="revenueChart"></canvas>
 			</div>
 
 		</div>
 	</div>
 	<script>
-	const revenueData = {
-		    labels: ["ÂüÄ¡±è¹ä", "±è¹ä", "¶¯ÃÊ±è¹ä"],
-		    datasets: [{
-		    	label: "¸ÅÃâ",
-		        data: [15000, 20000, 30000]
-		    }]
+		const
+		revenueData = {
+			labels : [ "ÂüÄ¡±è¹ä", "±è¹ä", "¶¯ÃÊ±è¹ä" ],
+			datasets : [ {
+				label : "¸ÅÃâ",
+				data : [ 15000, 20000, 30000 ]
+			} ]
 		};
 
 		new Chart(document.querySelector("#revenueChart"), {
-		    type: "bar",
-		    data: revenueData,
-		    options: {
-		    	indexAxis: 'y'
-		    }
+			type : "bar",
+			data : revenueData,
+			options : {
+				indexAxis : 'y'
+			}
 		});
 	</script>
 </body>
