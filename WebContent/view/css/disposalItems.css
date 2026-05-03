@@ -1,0 +1,85 @@
+<style>
+ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+}
+
+.container {
+	display: flex;
+	min-height: 100vh;
+	border: 3px solid #000;
+}
+
+.sideMenu {
+	width: 260px;
+	border-right: 1px solid #000;
+	padding: 20px;
+}
+
+.main {
+	flex: 1;
+	padding: 20px;
+}
+
+.content_item {
+	border: 2px solid #2f49ff;
+	padding: 15px;
+}
+
+.category {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+	border: 2px solid #000;
+	padding: 10px;
+	margin-bottom: 20px;
+}
+
+.list_container {
+	width: 100%;
+	border-collapse: collapse;
+	border: 2px solid red;
+}
+
+.list_container th, .list_container td {
+	border-bottom: 1px solid #ddd;
+	padding: 10px 8px;
+}
+
+.list_container th {
+	background: #f7f7f7;
+}
+
+.center {
+	text-align: center;
+}
+
+.right {
+	text-align: right;
+}
+
+.page {
+	margin-top: 20px;
+	text-align: center;
+}
+
+.page a {
+	margin: 0 5px;
+	text-decoration: none;
+	padding: 5px 10px;
+	border: 1px solid #ddd;
+	cursor: pointer;
+}
+
+.page a.active {
+	background-color: #2f49ff;
+	color: white;
+	border-color: #2f49ff;
+}
+</style>
