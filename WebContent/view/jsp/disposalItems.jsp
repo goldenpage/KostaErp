@@ -17,13 +17,19 @@
 					<td class="right">${d.disposalCountAll}</td>
 					<td class="right"><fmt:formatNumber value="${d.disposalPrice}" /></td>
 					<td class="center">${d.disposalDate}</td>
-					<td class="actionCell"><select>
-							<option selected>${d.reason}</option>
-							<option>변질</option>
-							<option>파손</option>
-							<option>유통기한지남</option>
-							<option>기타</option>
-					</select></td>
+					<td class="actionCell">
+						<div
+							style="display: flex; gap: 5px; align-items: center; justify-content: center;">
+
+							<select id="reason_${d.disposalId}">
+								<option value="D" ${d.reason eq '변질' ? 'selected' : ''}>변질</option>
+								<option value="B" ${d.reason eq '파손' ? 'selected' : ''}>파손</option>
+								<option value="E" ${d.reason eq '유통기한만료' ? 'selected' : ''}>유통기한지남</option>
+								<option value="BETC" ${d.reason eq '기타' ? 'selected' : ''}>기타</option>
+							</select>
+							<button type="button" onclick="updateReason('${d.disposalId}')">확인</button>
+						</div>
+					</td>
 				</tr>
 			</c:forEach>
 		</tbody>
@@ -42,10 +48,7 @@
 		</c:if>
 	</div>
 
-	<%
-		if ("true".equals(request.getParameter("ajax")))
-				return;
-	%>
+	<% if("true".equals(request.getParameter("ajax"))) return; %>
 </c:if>
 
 <!DOCTYPE html>
@@ -206,6 +209,30 @@ function resetFilter(){
     document.getElementById("reasonFilter").value = "전체";
     loadData(1);
 }
+
+function updateReason(disposalId) {
+    const selectBox = document.getElementById("reason_" + disposalId);
+    const reasonId = selectBox.value; 
+
+    if(!confirm("해당 항목의 폐기 사유를 수정하시겠습니까?")) return;
+	
+    const url = "controller?cmd=disposalUIAction&disposalId=" + disposalId + "&reasonId=" + reasonId;
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            if(xhr.responseText.trim() === "true") {
+                alert("성공적으로 수정되었습니다.");
+                const activePage = document.querySelector(".page a.active") ? document.querySelector(".page a.active").innerText : 1;
+                loadData(activePage); 
+            } else {
+                alert("수정에 실패했습니다.");
+            }
+        }
+    };
+    xhr.send();
+}
 </script>
 </head>
 <body>
@@ -280,13 +307,19 @@ function resetFilter(){
 								<td class="right"><fmt:formatNumber
 										value="${d.disposalPrice}" /></td>
 								<td class="center">${d.disposalDate}</td>
-								<td class="actionCell"><select>
-										<option selected>${d.reason}</option>
-										<option>변질</option>
-										<option>파손</option>
-										<option>유통기한지남</option>
-										<option>기타</option>
-								</select></td>
+								<td class="actionCell">
+									<div
+										style="display: flex; gap: 5px; align-items: center; justify-content: center;">
+										<select id="reason_${d.disposalId}">
+											<option value="D" ${d.reason eq '변질' ? 'selected' : ''}>변질</option>
+											<option value="B" ${d.reason eq '파손' ? 'selected' : ''}>파손</option>
+											<option value="E" ${d.reason eq '유통기한만료' ? 'selected' : ''}>유통기한지남</option>
+											<option value="BETC" ${d.reason eq '기타' ? 'selected' : ''}>기타</option>
+										</select>
+										<button type="button"
+											onclick="updateReason('${d.disposalId}')">확인</button>
+									</div>
+								</td>
 							</tr>
 						</c:forEach>
 					</tbody>
