@@ -21,8 +21,9 @@ public class DBCP {
 
 		String uri = "jdbc:oracle:thin:@127.0.0.1:1521:xe";
 //		String uri = "jdbc:oracle:thin:@localhost:1521:xe";
-		//return DriverManager.getConnection(uri, "mywork", "1234");
-	return DriverManager.getConnection(uri, "hr", "hr");
+//		return DriverManager.getConnection(uri, "mywork", "1234");
+		return DriverManager.getConnection(uri, "hr", "hr");
+
 
 
 	}
