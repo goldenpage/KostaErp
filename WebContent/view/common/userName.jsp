@@ -9,21 +9,36 @@
 .profile {
 	display: flex;
 	justify-content: end;
+	gap: 12px;
 }
+
+li {
+	cursor: pointer;
+}
+
+li:hover{
+	opacity:0.5
+}
+
+
+
 </style>
 <script>
-function goBack(){
-    history.back();
-}
+	function goBack() {
+		history.back();
+	}
 </script>
 </head>
 <body>
 
 	<ul class="profile">
+		
 		<li><span>${info.name}님</span></li>
-    <button onclick="location.href='controller?cmd=notificationUI'">알림</button>
-        <button onclick="goBack()">뒤로가기</button>
+		<li onclick = "location.href='${pageContext.request.contextPath}/controller?cmd=logoutAction'">로그아웃</li>
+		<li onclick="location.href='controller?cmd=notificationUI'">알림</li>
+		<li onclick="goBack()">뒤로가기</button>
 	</ul>
+
 
 </body>
 </html>

@@ -18,6 +18,9 @@ public class ActionFactory {
             case "loginAction":
                 a = new loginAction();
                 break;
+            case "logoutAction":
+            	a = new LogoutAction();
+            	break;
 
             case "addUserUIAction":
                 a = new addUserUIAction();
