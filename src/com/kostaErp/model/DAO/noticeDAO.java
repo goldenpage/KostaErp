@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.kostaErp.model.DBCP;
+import com.kostaErp.model.Query;
 import com.kostaErp.model.VO.noticeVO;
 
 public class noticeDAO {
@@ -17,9 +18,7 @@ public class noticeDAO {
         PreparedStatement pstmt = null;
         try {
         	conn = DBCP.getConnection();
-            String sql = "INSERT INTO DISPOSAL_NOTICE (notice_id, disposal_id, notice_date, read_yn) VALUES (?, ?, SYSDATE, 'N')";
-
-            pstmt = conn.prepareStatement(sql);
+            pstmt = conn.prepareStatement(Query.INSERT_NOTICE);
             pstmt.setString(1, noticeId);
             pstmt.setString(2, disposalId);
             int result = pstmt.executeUpdate();
@@ -41,52 +40,26 @@ public class noticeDAO {
 
     // 알림 목록 조회
 	public ArrayList<noticeVO> getNoticeList(String bId) {
-
 	    ArrayList<noticeVO> list = new ArrayList<>();
-
-	    String sql =
-	    	    "SELECT " +
-	    	    " f.foodMaterialName, " +
-	    	    " fc.foodCategory, " +
-	    	    " NVL(d.disposalCountAll, 0) AS disposalCountAll, " +
-	    	    " f.foodMaterialType, " +
-	    	    " f.expirationDate, " +
-	    	    " d.disposal_Id " +
-	    	    "FROM FOODM f " +
-	    	    "JOIN FOODC fc ON f.foodCategory_Id = fc.foodCategory_Id " +
-	    	    "LEFT JOIN DISPOSALS d ON f.foodMaterial_Id = d.foodMaterial_Id " +
-	    	    "WHERE f.bId = ? " +
-	    	    "AND f.expirationDate < SYSDATE " +
-	    	    "AND NVL(d.disposalCountAll, 0) > 0 " + 
-	    	    "ORDER BY f.expirationDate DESC";
-
-
 	    try (
 	        Connection conn = DBCP.getConnection();
-	        PreparedStatement pstmt = conn.prepareStatement(sql);
+	        PreparedStatement pstmt = conn.prepareStatement(Query.GET_NOTICELIST);
 	    ) {
 	    	pstmt.setString(1, bId);
-
             ResultSet rs = pstmt.executeQuery();
 	        while (rs.next()) {
-
 	            noticeVO vo = new noticeVO();
-
 	            vo.setFoodMaterialName(rs.getString("foodMaterialName"));
 	            vo.setFoodCategory(rs.getString("foodCategory"));
 	            vo.setFoodMaterialType(rs.getString("foodMaterialType"));
 	            vo.setDisposalCountAll(rs.getInt("disposalCountAll"));
 	            vo.setExpireDate(rs.getDate("expirationDate"));
-
 	            vo.setDisposalId(rs.getString("disposal_Id"));
-
 	            list.add(vo);
 	        }
-
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	    }
-
 	    return list;
 	}
 
@@ -97,8 +70,7 @@ public class noticeDAO {
         try {
         	conn = DBCP.getConnection();
             conn.setAutoCommit(false);
-            String sql = "DELETE FROM DISPOSAL_NOTICE";
-            pstmt = conn.prepareStatement(sql);
+            pstmt = conn.prepareStatement(Query.DELETE_ALL);
             pstmt.executeUpdate();
             conn.commit();
             return true;
@@ -126,8 +98,7 @@ public class noticeDAO {
         PreparedStatement pstmt = null;
         try {
         	conn = DBCP.getConnection();
-            String sql = "UPDATE DISPOSAL_NOTICE SET read_yn = 'Y' WHERE notice_id = ?";
-            pstmt = conn.prepareStatement(sql);
+            pstmt = conn.prepareStatement(Query.UPDATE_READYN);
             pstmt.setString(1, noticeId);
             int result = pstmt.executeUpdate();
             return result > 0;
@@ -148,15 +119,9 @@ public class noticeDAO {
     
     public List<String> getExpiredDisposalIds(String bId) {
         List<String> list = new ArrayList<>();
-        String sql =
-            "SELECT d.disposal_Id " +
-            "FROM DISPOSALS d " +
-            "JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id " +
-            "WHERE f.bId = ? " +
-            "AND f.expirationDate < SYSDATE";
         try (
             Connection conn = DBCP.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(sql)
+            PreparedStatement pstmt = conn.prepareStatement(Query.GET_EXPIRED_DISPOSALIDS)
         ) {
             pstmt.setString(1, bId);
             ResultSet rs = pstmt.executeQuery();
@@ -170,17 +135,9 @@ public class noticeDAO {
     }
 
     public int getExpiredCount(String bId) {
-        String sql =
-        		"SELECT COUNT(*) AS cnt " +
-        		        "FROM FOODM f " +
-        		        "LEFT JOIN DISPOSALS d ON f.foodMaterial_Id = d.foodMaterial_Id " +
-        		        "WHERE f.bId = ? " +
-        		        "AND f.expirationDate < SYSDATE " +
-        		        "AND NVL(d.disposalCountAll, 0) > 0";
-        
         try (
             Connection conn = DBCP.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(sql)
+            PreparedStatement pstmt = conn.prepareStatement(Query.GET_EXPIRED_COUNT)
         ) {
             pstmt.setString(1, bId);
             ResultSet rs = pstmt.executeQuery();
@@ -194,16 +151,9 @@ public class noticeDAO {
     }
 
     public int getSolidTotal(String bId) {
-        String sql =
-            "SELECT NVL(SUM(d.disposalCountAll),0) total " +
-            "FROM DISPOSALS d " +
-            "JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id " +
-            "WHERE f.bId = ? " +
-            "AND f.foodMaterialType = '고체'" + 
-            "AND f.expirationDate < SYSDATE";
         try (
             Connection conn = DBCP.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(sql)
+            PreparedStatement pstmt = conn.prepareStatement(Query.GET_SOLID_TOTAL)
         ) {
             pstmt.setString(1, bId);
             ResultSet rs = pstmt.executeQuery();
@@ -217,16 +167,9 @@ public class noticeDAO {
     }
 
     public int getLiquidTotal(String bId) {
-        String sql =
-            "SELECT NVL(SUM(d.disposalCountAll),0) total " +
-            "FROM DISPOSALS d " +
-            "JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id " +
-            "WHERE f.bId = ? " +
-            "AND f.foodMaterialType = '액체'" +
-            "AND f.expirationDate < SYSDATE";
         try (
             Connection conn = DBCP.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(sql)
+            PreparedStatement pstmt = conn.prepareStatement(Query.GET_LIQUID_TOTAL)
         ) {
             pstmt.setString(1, bId);
             ResultSet rs = pstmt.executeQuery();
@@ -240,14 +183,9 @@ public class noticeDAO {
     }
 
     public int getMaxOverDay(String bId) {
-        String sql =
-        		"SELECT NVL(MAX(TRUNC(SYSDATE - expirationDate)),0) AS max_day " +
-        		"FROM FOODM " +
-        		"WHERE bId = ? " +
-        		"AND expirationDate < SYSDATE";
         try (
             Connection conn = DBCP.getConnection();
-            PreparedStatement pstmt = conn.prepareStatement(sql)
+            PreparedStatement pstmt = conn.prepareStatement(Query.GET_MAX_OVERDAY)
         ) {
             pstmt.setString(1, bId);
             ResultSet rs = pstmt.executeQuery();
