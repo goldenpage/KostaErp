@@ -22,9 +22,12 @@ public class addFoodCategoryAction implements Action {
 		foodCategory = foodCategory.trim();
 		foodMaterialDAO dao = new foodMaterialDAO();
 		int result = dao.addFoodCategory(foodCategory);
+		String Id = dao.getCategoryId(foodCategory);
 		
 		if(result == 1){
-            request.setAttribute("ajaxResponse", "success|" + foodCategory);
+            request.setAttribute("ajaxResponse", "success|" + Id + "|" + foodCategory);
+            System.out.println(foodCategory);
+            System.out.println(Id);
         }else if(result == 0){
         	request.setAttribute("ajaxResponse", "fail|이미 존재하는 카테고리입니다.");
         }
