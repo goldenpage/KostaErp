@@ -14,16 +14,14 @@ import com.kostaErp.model.VO.foodMaterialVO;
 import com.kostaErp.model.VO.userInfoVO;
 
 import java.sql.Date;
-
+import com.kostaErp.model.Query;
 public class foodMaterialDAO {
 	
 	public foodMaterialDAO(){}
 
 	public int addFoodMaterial(List<foodMaterialVO> list, String bId){
 		int successCount = 0;
-		String sql = "INSERT INTO FOODM(foodMaterialName, foodCategory_Id, foodMaterialCount, foodMaterialCountAll, "
-				+ "foodMaterialPrice, foodMaterialType, vender, incomeDate, expirationDate, bId) "
-				+ "VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = Query.ADD_FOOD_MATERIAL;
 		try{
 			Connection conn = DBCP.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -52,9 +50,8 @@ public class foodMaterialDAO {
 	
 	 // 2. 카테고리 추가
     public int addFoodCategory(String foodCategory){
-    	String sql = "SELECT COUNT(*) FROM FOODC WHERE foodCategory = ?";
-        String sql2 = "INSERT INTO FOODC(foodCategory) VALUES(?)";
-
+    	String sql = Query.CHECK_FOOD_CATEGORY_EXISTS;
+    	String sql2 = Query.ADD_FOOD_CATEGORY;
         try{
         	Connection conn = DBCP.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql);
@@ -88,8 +85,7 @@ public class foodMaterialDAO {
 
 	public int deleteFoodCategory(String foodCategory) {
 		int result = 0;
-		String sql = "DELETE FROM FOODC WHERE foodCategory = ?";
-
+		String sql = Query.DELETE_FOOD_CATEGORY;
 		try{
 			Connection conn = DBCP.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -106,10 +102,7 @@ public class foodMaterialDAO {
 
 	public List<foodMaterialVO> getFoodMaterialByName(String foodMaterialName, String bId) {
 		List<foodMaterialVO> list = new ArrayList<>();
-		String sql = "SELECT f.foodMaterialName, c.foodCategory, f.vender, f.foodMaterialType " +
-				 "FROM FOODM f JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id " +
-				 "WHERE f.foodMaterialName LIKE ? AND f.bId = ?";
-
+		String sql = Query.GET_FOOD_MATERIAL_BY_NAME;
 		try{
 			Connection conn = DBCP.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -138,7 +131,7 @@ public class foodMaterialDAO {
 	}
 
 	public List<userInfoVO> getMarketingMembers() throws ClassNotFoundException {
-		String sql = "SELECT bid, name, phone, email, marketingDate FROM USERINFO WHERE marketingDate IS NOT NULL";
+		String sql = Query.GET_MARKETING_MEMBERS;
 		List<userInfoVO> list = new ArrayList<>();
 
 		try (Connection conn = DBCP.getConnection();
@@ -165,8 +158,8 @@ public class foodMaterialDAO {
 	public int getFoodMaterialCount(String bId) {
 		int count = 0;
 
-		String sql = "SELECT COUNT(*) FROM FOODM WHERE bId = ?";
-
+		String sql = Query.GET_FOOD_MATERIAL_COUNT;
+		
 		try {
 			Connection conn = DBCP.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -295,18 +288,7 @@ public class foodMaterialDAO {
 			orderBy = "f.expirationDate DESC";
 		}
 
-		return
-				"SELECT * " +
-				"FROM ( " +
-				" SELECT ROW_NUMBER() OVER (ORDER BY " + orderBy + ") AS rn, " +
-				" f.foodMaterial_Id, f.foodMaterialName, c.foodCategory, " +
-				" f.foodMaterialCount, f.foodMaterialCountAll, f.foodMaterialPrice, " +
-				" f.vender, f.incomeDate, f.expirationDate, f.foodMaterialType " +
-				" FROM FOODM f " +
-				" JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id " +
-				" WHERE f.bId = ? " +
-				") " +
-				"WHERE rn BETWEEN ? AND ?";
+		return String.format(Query.GET_FOOD_MATERIAL_LIST, orderBy);
 	}
 	
 	public int deleteFoodMaterial(String foodMaterialId, String bId) {
@@ -317,18 +299,9 @@ public class foodMaterialDAO {
 		 PreparedStatement stmt2 = null;
 		 PreparedStatement stmt3 = null;
 
-		 String sql1 =
-		  "DELETE FROM USED " +
-		  "WHERE foodMaterial_Id = ?";
-
-		 String sql2 =
-		  "DELETE FROM DISPOSALS " +
-		  "WHERE foodMaterial_Id = ?";
-
-		 String sql3 =
-		  "DELETE FROM FOODM " +
-		  "WHERE foodMaterial_Id = ? " +
-		  "AND bId = ?";
+		 String sql1 = Query.DELETE_USED_BY_FOOD_MATERIAL;
+		 String sql2 = Query.DELETE_DISPOSALS_BY_FOOD_MATERIAL;
+		 String sql3 = Query.DELETE_FOOD_MATERIAL;
 
 		 try {
 		  conn = DBCP.getConnection();
@@ -382,13 +355,8 @@ public class foodMaterialDAO {
 
 	// 월별 총지출액
 	public int getFoodMaterialTotalAmount(String bId, String startDate, String endDate) {
-	    String sql =
-	        "SELECT NVL(SUM(foodMaterialPrice), 0) AS totalAmount " +
-	        "FROM FOODM " +
-	        "WHERE bId = ? " +
-	        "AND incomeDate >= TO_DATE(?, 'YYYY-MM-DD') " +
-	        "AND incomeDate < TO_DATE(?, 'YYYY-MM-DD')";
-
+		String sql = Query.GET_FOOD_MATERIAL_TOTAL_AMOUNT;
+		
 	    try (
 	        Connection conn = DBCP.getConnection();
 	        PreparedStatement stmt = conn.prepareStatement(sql)
@@ -414,22 +382,8 @@ public class foodMaterialDAO {
 	
 	// 월별 지출 식자재 순위
 	public List<foodMaterialVO> getFoodMaterialSpendingRank(String bId, String startDate, String endDate) {
-	    String sql =
-	        "SELECT " +
-	        "    RANK() OVER (ORDER BY foodMaterialPrice * foodMaterialCount DESC) AS ranking, " +
-	        "    foodMaterial_Id, " +
-	        "    foodMaterialName, " +
-	        "    foodMaterialPrice, " +
-	        "    foodMaterialCount, " +
-	        "    foodMaterialPrice * foodMaterialCount AS totalExpense, " +
-	        "    incomeDate, " +
-	        "    bId " +
-	        "FROM FOODM " +
-	        "WHERE bId = ? " +
-	        "AND incomeDate >= TO_DATE(?, 'YYYY-MM-DD') " +
-	        "AND incomeDate < TO_DATE(?, 'YYYY-MM-DD') " +
-	        "ORDER BY totalExpense DESC";
-
+		String sql = Query.GET_FOOD_MATERIAL_SPENDING_RANK;
+		
 	    List<foodMaterialVO> list = new ArrayList<>();
 
 	    try (
@@ -469,7 +423,8 @@ public class foodMaterialDAO {
 	// 식자재 카테고리 전체 검색(추가)
 	public List<foodMaterialCategoryVO> getFoodCategoryList(){
 		List<foodMaterialCategoryVO> list = new ArrayList<>();
-		String sql = "SELECT foodCategory_Id, foodCategory FROM FOODC";
+		String sql = Query.GET_FOOD_CATEGORY_LIST;
+		
 		try{
 			Connection conn = DBCP.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -492,8 +447,8 @@ public class foodMaterialDAO {
 	//카테고리 삭제시, 이용하고 있는 식자재가 있는지 검색(추가)
 	public boolean hasFoodMaterialByCategory(String foodCategory){
 		int count = 0;
-		String sql = "SELECT COUNT(*) FROM FOODM f JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id "
-				+ "WHERE c.foodCategory = ?";
+		String sql = Query.HAS_FOOD_MATERIAL_BY_CATEGORY;
+		
 		try{
 			Connection conn = DBCP.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -514,9 +469,8 @@ public class foodMaterialDAO {
 	//식재료 선택 시, 사용할 전체 식자재 목록 불러오기(추가)
 	public List<foodMaterialVO> getFoodMaterialListAll(String bId){
 		List<foodMaterialVO> list = new ArrayList<>();
-		String sql = "SELECT f.foodMaterial_Id, f.foodMaterialName, c.foodCategory " +
-					 "FROM FOODM f JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id " +
-					 "WHERE f.bId = ? ORDER BY f.foodMaterialName ASC";
+		String sql = Query.GET_FOOD_MATERIAL_LIST_ALL;
+		
 		try{
 			Connection conn = DBCP.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -539,8 +493,7 @@ public class foodMaterialDAO {
 	}
 	//카테고리 id 불러오기
 	public String getCategoryId(String foodCategory){
-        String sql = "SELECT foodCategory_Id FROM FOODC "
-        		+ "WHERE foodCategory = ?";
+		String sql = Query.GET_CATEGORY_ID;
 
         try{
         	Connection conn = DBCP.getConnection();
