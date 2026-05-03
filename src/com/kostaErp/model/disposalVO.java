@@ -18,17 +18,31 @@ public class disposalVO {
     private int solidCount;
     private int liquidCount;
     private String foodMaterialType;
+    private double disposalRate;
 
-    public disposalVO(){
+    public disposalVO(String disposalId, int disposalCountAll, int disposalPrice, 
+    		String disposalDate, String foodMaterialId, String reasonId, 
+    		String foodMaterialName, int disposalCount, int totalDisposalPrice,
+    		String reason, double reasonRatio, Date disposalDay,
+    		int solidCount, int liquidCount, String foodMaterialType,
+    		double disposalRate){
 		this.disposalId = disposalId;
 		this.disposalCountAll = disposalCountAll;
 		this.disposalPrice = disposalPrice;
 		this.disposalDate = disposalDate;
-		this.reasonId = reasonId;
 		this.foodMaterialId = foodMaterialId;
+		this.reasonId = reasonId;
+		this.foodMaterialName = foodMaterialName;
+		this.disposalCount = disposalCount;
+		this.totalDisposalPrice = totalDisposalPrice;
+		this.reason = reason;
+		this.reasonRatio = reasonRatio;
+		this.disposalDay = disposalDay;
+		this.solidCount = solidCount;
+		this.liquidCount = liquidCount;
+		this.foodMaterialType = foodMaterialType;
+		this.disposalRate = disposalRate;
 	}
-
-    private double disposalRate;
 	
 	public String getDisposalId() {
 		return disposalId;

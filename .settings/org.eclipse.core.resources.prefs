@@ -1,8 +1,12 @@
+=\=\=\=\=\=\=
+<<<<<<<=HEAD
+>>>>>>>=refs/remotes/origin/master
 eclipse.preferences.version=1
-encoding//WebContent/view/pwUdate.jsp=UTF-8
-encoding//src/com/kostaErp/model/disposalDAO.java=UTF-8
-encoding//src/com/kostaErp/model/foodMaterialDAO.java=UTF-8
-encoding//src/com/kostaErp/model/menuDAO.java=UTF-8
+encoding//WebContent/view/jsp/disposalItems.jsp=UTF-8
+encoding//WebContent/view/jsp/pwUdate.jsp=UTF-8
+encoding//src/com/kostaErp/model/DAO/disposalDAO.java=UTF-8
+encoding//src/com/kostaErp/model/DAO/foodMaterialDAO.java=UTF-8
+encoding//src/com/kostaErp/model/DAO/menuDAO.java=UTF-8
 encoding//src/test/com/kostaErp/model/DAOTest.java=UTF-8
 encoding//src/test/com/kostaErp/model/disposalDAOTest.java=UTF-8
 encoding/<project>=UTF-8

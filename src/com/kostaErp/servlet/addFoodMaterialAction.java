@@ -8,21 +8,21 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.kostaErp.model.foodMaterialCategoryVO;
-import com.kostaErp.model.foodMaterialDAO;
-import com.kostaErp.model.foodMaterialVO;
+import com.kostaErp.model.DAO.foodMaterialDAO;
+import com.kostaErp.model.VO.foodMaterialCategoryVO;
+import com.kostaErp.model.VO.foodMaterialVO;
 
 public class addFoodMaterialAction implements Action {
 
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
-		String url = "addFoodMaterial.jsp";
+		String url = "/jsp/addFoodMaterial.jsp";
 		 
 		HttpSession session = request.getSession(false);
 		String bId = (session != null) ? (String) session.getAttribute("loginOK") : null;
  
 		if (bId == null){
-			return "login.jsp";
+			return "/jsp/login.jsp";
 		}
  
 		foodMaterialDAO dao = new foodMaterialDAO();
@@ -56,8 +56,11 @@ public class addFoodMaterialAction implements Action {
 			}
  
 			int successCount = dao.addFoodMaterial(list, bId);
-			System.out.println("등록 완료: " + successCount + "/" + foodMaterialNames.length);
+			request.setAttribute("successMessage", successCount + "개의 식자재가 등록되었습니다.");
 		}
+		
+		List<foodMaterialCategoryVO> categoryList = dao.getFoodCategoryList();
+		request.setAttribute("categoryList", categoryList);
  
 		return url;
 	}

@@ -1,8 +1,8 @@
 package test.com.kostaErp.model;
 
 
-import com.kostaErp.model.disposalDAO;
-import com.kostaErp.model.disposalVO;
+import com.kostaErp.model.DAO.disposalDAO;
+import com.kostaErp.model.VO.disposalVO;
 
 import static org.junit.Assert.*;
 import java.util.List;
@@ -14,21 +14,21 @@ import org.junit.Test;
 public class disposalDAOTest {
 	private disposalDAO dao;
 
-	//占쌓쏙옙트 占쏙옙占쏙옙 DAO 占쏙옙占쏙옙
+	//테스트 전에 DAO 생성
 	@Before
 	public void setUp() {
 		dao = new disposalDAO();
-		System.out.println("占쌓쏙옙트 占쏙옙占쏙옙");
+		System.out.println("테스트 시작");
 	}
 
-	//占쌓쏙옙트 占쏙옙占쏙옙 占쏙옙 占쏙옙占쏙옙
+	//테스트 종료 후 실행
 	@After
 	public void tearDown() {
 		dao = null;
-		System.out.println("占쌓쏙옙트 占쏙옙占쏙옙");
+		System.out.println("테스트 종료");
 	}
 
-	//1. 占쏙옙占� 품占쏙옙 占쏙옙회 占쌓쏙옙트
+	//1. 폐기 품목 조회 테스트
 	//@Test
 	public void getDisposalsTest() {
 		List<disposalVO> list = dao.getDisposals();
@@ -39,17 +39,17 @@ public class disposalDAOTest {
 		}
 	}
 
-	//2. 占쏙옙占� 占쏙옙占쏙옙占쏙옙占� 占쏙옙회 占쌓쏙옙트
+	//2. 폐기 식자재명 조회 테스트
 	//@Test
 	public void getFoodMaterialNamesTest() { 
 		List<String> list = dao.getFoodMaterialNames(); 
 		assertNotNull(list); assertTrue(list.size() > 0); 
 		for (String name : list) { 
-			System.out.println("占쏙옙占쏙옙占쏙옙占� : " + name); 
+			System.out.println("식자재명 : " + name); 
 		} 
 	}
 
-	//3. 카占쌓곤옙占쏙옙 占쏙옙회 占쌓쏙옙트
+	//3. 카테고리 조회 테스트
 	//@Test 
 	public void getCategoriesTest() { 
 		List<String> list = dao.getCategories(); 
@@ -60,40 +60,41 @@ public class disposalDAOTest {
 		} 
 	}
 
-	//4. 占쏙옙占쏙옙占쏙옙 占쏙옙회 占쌓쏙옙트 
+	//4. 폐기사유 조회 테스트
 	//@Test 
 	public void getReasonsTest() { 
 		List<String> list = dao.getReasons(); 
 		assertNotNull(list); 
 		assertTrue(list.size() > 0); 
 		for (String reason : list) { 
-			System.out.println("占쏙옙占쏙옙: " + reason); 
+			System.out.println("사유: " + reason); 
 		}
 	}
 
-	//5. 占쏙옙占쏙옙징 占쌓쏙옙트 
+	//5. 폐기 품목 페이징 테스트
 	//@Test 
 	public void getDisposalsPagingTest() { 
-		List<disposalVO> list = dao.getDisposalsPaging(1, 4); 
+		List<disposalVO> list = dao.getDisposalsPaging("0000000000", 1, 4); 
 		assertNotNull(list); 
 		assertTrue(list.size() > 0); 
 		for (disposalVO vo : list) { 
 			System.out.println("ID: " + vo.getDisposalId()); 
 		} 
 	}
-	//6. 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙 占쌓쏙옙트
+	//6. 폐기사유 수정
 	//@Test 
 	public void updateReasonTest() { 
 		String disposalId = "DIS001"; 
 		String before = "D"; 
 		String after = "B"; 
-		//占쏙옙占쏙옙 
+		
 		boolean result = dao.updateReason(disposalId, after); 
 		assertTrue(result); 
 		System.out.println("占쏙옙占쏙옙 占쏙옙占쏙옙"); 
-		//占쌕쏙옙 占쏙옙占쏙옙 (占쌓쏙옙트 占쏙옙占쏙옙占쏙옙 占쏙옙占쏙옙) 
+		//삭제 롤백
 		dao.updateReason(disposalId, before); 
 	}
+	
 	//7. 월별 폐기율
 	//@Test
 	public void getDisoposalRateTest() throws ClassNotFoundException {

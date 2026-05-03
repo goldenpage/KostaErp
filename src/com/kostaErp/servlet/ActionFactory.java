@@ -35,6 +35,10 @@ public class ActionFactory {
             	a = new deleteFoodCategoryAction();
             	break;
             
+            case "searchFoodMaterialAction":
+            	a = new searchFoodMaterialAction();
+            	break;
+            	
             case "addFoodMaterialUIAction":
             	a = new addFoodMaterialUIAction();
             	break;
@@ -50,7 +54,11 @@ public class ActionFactory {
             case "foodMaterialAction":
                 a = new foodMaterialAction();
                 break;
-            
+                
+            case "deleteFoodMaterialAction":
+                a = new deleteFoodMaterialAction();
+                break;
+                
             case "addMenuCategoryAction":
             	a = new addMenuCategoryAction();
             	break;
@@ -78,25 +86,45 @@ public class ActionFactory {
             case "disposalAction":
                 a = new disposalAction();
                 break;
+                
             case "disposalUIAction":
             	a = new disposalUIAction();
             	break;
+                
+            case "notificationUI":
+            	a = new disposalNoticeAction();
+            	break;
+            	
+            case "notificationUIAction":
+            	a = new disposalNoticeUIAction();
+            	break;
 
             case "disposalStatisticUIAction":
-            	a = new disposalStatisticsUIAction();
+            	a = new disposalStatisticUIAction();
+            	break;
+            	
+            case "disposalStatisticsAction":
+            	a = new disposalStatisticsAction();
             	break;
             	
             case "salesAction":
                 a = new salesAction();
                 break;
 
-            case "revenueUIAction":
-                a = new revenueUIAction();
+            case "revenueStatisticsUIAction":
+                a = new revenueStatisticsUIAction();
                 break;
 
-            case "revenueAction":
-                a = new revenueAction();
+            case "revenueStatisticsAction":
+                a = new revenueStatisticsAction();
                 break;
+                
+            case "usedStatisticsUIAction":
+            	a = new usedStatisticsUIAction();
+            	break;
+            case "usedStatisticsAction":
+            	a = new usedStatisticsAction() ;
+            	break;
 
             case "idCheckAction":
                 a = new IdCheckAction();
@@ -125,11 +153,9 @@ public class ActionFactory {
             case "pwPhoneVerifyAction":
                 a = new pwPhoneVerifyAction();
                 break;
-
             default:
                 a = new loginUIAction();
         }
-
         return a;
     }
 }

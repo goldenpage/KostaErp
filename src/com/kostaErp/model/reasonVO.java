@@ -9,7 +9,6 @@ public class reasonVO {
 		this.reason = reason;
 	}
 
-	
 	public String getReasonId() {
 		return reasonId;
 	}

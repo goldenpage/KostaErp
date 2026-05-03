@@ -11,12 +11,18 @@
 	justify-content: end;
 }
 </style>
+<script>
+function goBack(){
+    history.back();
+}
+</script>
 </head>
 <body>
 
 	<ul class="profile">
 		<li><span>${info.name}님</span></li>
-		<li><span>알림</span></li>
+    <button onclick="location.href='controller?cmd=notificationUI'">알림</button>
+        <button onclick="goBack()">뒤로가기</button>
 	</ul>
 
 </body>
