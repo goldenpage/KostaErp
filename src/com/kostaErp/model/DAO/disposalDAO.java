@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.kostaErp.model.DBCP;
+import com.kostaErp.model.Query;
 import com.kostaErp.model.VO.disposalVO;
 
 import java.sql.SQLException;
@@ -15,24 +16,10 @@ public class disposalDAO {
 	// 1. 폐기 품목 조회 
 	public List<disposalVO> getDisposals() {
 	    List<disposalVO> list = new ArrayList<>();
-	    String sql =
-	        "SELECT " +
-	        " d.disposal_Id, " +
-	        " f.foodMaterialName, " +
-	        " fc.foodCategory, " +
-	        " d.disposalCountAll, " +
-	        " d.disposalPrice, " +
-	        " d.disposalDate, " +
-	        " r.reason_Id, " +
-	        " r.reason " +
-	        "FROM DISPOSALS d " +
-	        "JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id " +
-	        "JOIN FOODC fc ON f.foodCategory_Id = fc.foodCategory_Id " +
-	        "JOIN REASON r ON d.reason_Id = r.reason_Id " +
-	        "ORDER BY d.disposal_Id DESC";
+	  
 	    try (
 	        Connection conn = DBCP.getConnection();
-	        PreparedStatement pstmt = conn.prepareStatement(sql);
+	        PreparedStatement pstmt = conn.prepareStatement(Query.GET_DISPOSALS);
 	        ResultSet rs = pstmt.executeQuery();
 	    		
 	    ) {
