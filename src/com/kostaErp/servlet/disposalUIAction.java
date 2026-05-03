@@ -24,6 +24,20 @@ public class disposalUIAction implements Action {
             return "/jsp/login.jsp"; 
         }
         
+        disposalDAO dao = new disposalDAO();
+        String disposalId = request.getParameter("disposalId");
+        String reasonId = request.getParameter("reasonId");
+
+        if (disposalId != null && reasonId != null) {
+            boolean isSuccess = dao.updateReason(disposalId, reasonId);
+            
+            if (isSuccess) {
+                request.setAttribute("ajaxResponse", "true");
+            } else {
+                request.setAttribute("ajaxResponse", "false");
+            }
+            return null; 
+        }
         int page = 1;
         int pageSize = 5;
         String pageParam = request.getParameter("page");
@@ -40,7 +54,6 @@ public class disposalUIAction implements Action {
         int start = (page - 1) * pageSize + 1;
         int end = page * pageSize;
 
-        disposalDAO dao = new disposalDAO();
         
         List<disposalVO> list = dao.getDisposalsFilteredPaging(bId, category, reason, start, end);
         
@@ -49,7 +62,7 @@ public class disposalUIAction implements Action {
 
         request.setAttribute("list", list);
         request.setAttribute("currentPage", page);
-        request.setAttribute("totalPages", totalPages); // 필수 추가
+        request.setAttribute("totalPages", totalPages); 
 
         return "/jsp/disposalItems.jsp";
     }
