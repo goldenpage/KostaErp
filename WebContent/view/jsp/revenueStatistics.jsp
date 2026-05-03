@@ -1,11 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
 	pageEncoding="EUC-KR"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+
+<!DOCTYPE html>
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-<title>Insert title here</title>
+<title>매출통계</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <style>
 ul {
 	list-style: none;
@@ -15,7 +19,7 @@ ul {
 	display: flex;
 	gap: 30px;
 	border: 5px solid;
-	height: 100vh;
+	min-height: 100vh;
 }
 
 .sideMenu {
@@ -26,7 +30,9 @@ ul {
 
 .main {
 	border: 1px solid;
-	width: 100%;
+	width: calc(100% - 330px);
+	min-width: 0;
+	padding: 20px;
 }
 
 .profile {
@@ -34,77 +40,230 @@ ul {
 	justify-content: end;
 }
 
-.content_item {
-	border: 3px solid blue;
-	height: 100%;
+.top_area {
+	display: flex;
+	justify-content: space-between;
 	align-items: center;
+	margin-bottom: 20px;
 }
 
-.category {
-	display: flex;
-	width: 75%;
-	gap: 16px;
-	align-items: center;
-	border: 3px solid;
+.summary {
+	margin-bottom: 20px;
+	font-size: 20px;
+	font-weight: bold;
 }
 
-.list_container {
+.chart_area {
 	display: flex;
-	justify-content: center;
-	height: 100%;
-	border: 3px solid red;
-	font-size: 14px;
-	line-height: 14px;
+	gap: 24px;
+	width: 100%;
+	margin-bottom: 24px;
+}
+
+.chart_box {
+	width: 50%;
+	height: 320px;
+}
+
+.chart_box canvas {
+	width: 100% !important;
+	height: 260px !important;
 }
 
 table {
-	border-spacing: 24px;
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 10px;
 }
 
-.page {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	gap: 16px;
-	width: 100%;
-	font-size: 18px;
-	line-height: 18px;
+th, td {
+	border: 1px solid #999;
+	padding: 8px 12px;
+	text-align: center;
+}
+
+th {
+	background-color: #f3f4f6;
+}
+
+button {
+	cursor: pointer;
 }
 </style>
 </head>
+
 <body>
 	<div class="container">
-		<section class="sideMenu"> 
+		<section class="sideMenu">
 			<jsp:include page="../common/sideMenu.jsp" />
-			
-		 </section>
+		</section>
+
 		<div class="main">
-			<div>
-				<jsp:include page="../common/userName.jsp" />
+			<jsp:include page="../common/userName.jsp" />
+
+			<div class="top_area">
+				<h1>매출통계</h1>
+
+				<form method="get"
+					action="${pageContext.request.contextPath}/controller">
+					<input type="hidden" name="cmd" value="revenueStatisticsUIAction">
+					<input type="month" name="month" value="${selectedMonth}">
+					<button type="submit">조회</button>
+				</form>
 			</div>
 
-			<div>매출순위</div>
-			<div>
-				<canvas id="revenueChart"></canvas>
+			<div class="summary">
+				${selectedMonth} 총 매출:
+				<fmt:formatNumber value="${totalRevenue}" pattern="#,###" />
+				원
 			</div>
 
+			<div class="chart_area">
+				<div class="chart_box">
+					<h3>메뉴별 매출 순위</h3>
+					<canvas id="rankChart"></canvas>
+				</div>
+
+				<div class="chart_box">
+					<h3>최근 6개월 매출</h3>
+					<canvas id="monthlyChart"></canvas>
+				</div>
+			</div>
+
+			<table>
+				<thead>
+					<tr>
+						<th>순위</th>
+						<th>메뉴명</th>
+						<th>단가</th>
+						<th>판매수량</th>
+						<th>총매출</th>
+					</tr>
+				</thead>
+
+				<tbody>
+					<c:forEach var="item" items="${rankList}">
+						<tr>
+							<td>${item.ranking}</td>
+							<td>${item.menuName}</td>
+							<td>
+								<fmt:formatNumber value="${item.menuPrice}" pattern="#,###" />
+								원
+							</td>
+							<td>${item.totalSaleCount}</td>
+							<td>
+								<fmt:formatNumber value="${item.totalSalesAmount}" pattern="#,###" />
+								원
+							</td>
+						</tr>
+					</c:forEach>
+
+					<c:if test="${empty rankList}">
+						<tr>
+							<td colspan="5">매출 데이터가 없습니다.</td>
+						</tr>
+					</c:if>
+				</tbody>
+			</table>
 		</div>
 	</div>
-	<script>
-		const
-		revenueData = {
-			labels : [ "참치김밥", "김밥", "땡초김밥" ],
-			datasets : [ {
-				label : "매출",
-				data : [ 15000, 20000, 30000 ]
-			} ]
-		};
 
-		new Chart(document.querySelector("#revenueChart"), {
+	<script type="application/json" id="rankLabelsJson">${rankLabelsJson}</script>
+	<script type="application/json" id="rankSalesAmountJson">${rankSalesAmountJson}</script>
+	<script type="application/json" id="rankSaleCountJson">${rankSaleCountJson}</script>
+	<script type="application/json" id="monthlyLabelsJson">${monthlyLabelsJson}</script>
+	<script type="application/json" id="monthlyRevenueJson">${monthlyRevenueJson}</script>
+
+	<script>
+		function readJson(id) {
+			var text = document.getElementById(id).textContent.trim();
+			return JSON.parse(text || "[]");
+		}
+
+		function won(value) {
+			return Number(value).toLocaleString() + "원";
+		}
+
+		var rankLabels = readJson("rankLabelsJson");
+		var rankSalesAmount = readJson("rankSalesAmountJson");
+		var rankSaleCount = readJson("rankSaleCountJson");
+		var monthlyLabels = readJson("monthlyLabelsJson");
+		var monthlyRevenue = readJson("monthlyRevenueJson");
+
+		new Chart(document.getElementById("rankChart"), {
 			type : "bar",
-			data : revenueData,
+			data : {
+				labels : rankLabels,
+				datasets : [ {
+					label : "매출",
+					data : rankSalesAmount,
+					backgroundColor : "#2563eb"
+				} ]
+			},
 			options : {
-				indexAxis : 'y'
+				indexAxis : "y",
+				responsive : true,
+				maintainAspectRatio : false,
+				plugins : {
+					legend : {
+						display : false
+					},
+					tooltip : {
+						callbacks : {
+							label : function(context) {
+								var index = context.dataIndex;
+								return "매출: " + won(context.raw) + " / 판매수량: "
+										+ rankSaleCount[index];
+							}
+						}
+					}
+				},
+				scales : {
+					x : {
+						ticks : {
+							callback : function(value) {
+								return won(value);
+							}
+						}
+					}
+				}
+			}
+		});
+
+		new Chart(document.getElementById("monthlyChart"), {
+			type : "bar",
+			data : {
+				labels : monthlyLabels,
+				datasets : [ {
+					label : "월별 매출",
+					data : monthlyRevenue,
+					backgroundColor : "#16a34a"
+				} ]
+			},
+			options : {
+				responsive : true,
+				maintainAspectRatio : false,
+				plugins : {
+					legend : {
+						display : false
+					},
+					tooltip : {
+						callbacks : {
+							label : function(context) {
+								return "매출: " + won(context.raw);
+							}
+						}
+					}
+				},
+				scales : {
+					y : {
+						ticks : {
+							callback : function(value) {
+								return won(value);
+							}
+						}
+					}
+				}
 			}
 		});
 	</script>
