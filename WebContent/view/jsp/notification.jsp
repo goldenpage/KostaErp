@@ -9,74 +9,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>알림 페이지</title>
-
-<style>
-ul {
-	list-style: none;
-}
-
-.container {
-	display: flex;
-	gap: 30px;
-	border: 5px solid;
-	height: 100vh;
-}
-
-.sideMenu {
-	height: 100vh;
-	border: 1px solid;
-	width: 300px;
-}
-
-.main {
-	border: 1px solid;
-	width: 100%;
-	height: 100vh;
-	overflow: hidden;
-}
-
-.profile {
-	display: flex;
-	justify-content: end;
-}
-
-.content_item {
-	border: 3px solid blue;
-	height: calc(100vh - 230px);
-	overflow: hidden;
-}
-
-.content_item .list_container {
-	display: block;
-	width: 100%;
-	max-height: 100%;
-	overflow-y: auto;
-	border: 3px solid red;
-	font-size: 14px;
-	line-height: 14px;
-}
-
-.content_item table {
-	width: 100%;
-	border-spacing: 20px;
-}
-
-.summary_box {
-	display: flex;
-	gap: 25px;
-	padding: 15px;
-	border: 2px solid #333;
-	margin-bottom: 15px;
-	font-size: 15px;
-	font-weight: bold;
-	flex-wrap: wrap;
-}
-
-button {
-	cursor: pointer;
-}
-</style>
-
+<link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/notification.css">
 </head>
 
 <body>

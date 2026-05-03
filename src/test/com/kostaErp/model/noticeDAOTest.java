@@ -35,7 +35,7 @@ public class noticeDAOTest {
     }
     
     //2. 알림 목록 조회 테스트
-    //@Test
+    @Test
     public void getnotificationListTest() {
         noticeDAO dao = new noticeDAO();
         ArrayList<noticeVO> list = dao.getNoticeList(bId);
@@ -78,7 +78,7 @@ public class noticeDAOTest {
     }
     
     //5. 알림 존재 여부 확인 테스트
-    @Test
+    //@Test
     public void noticeCountTest() {
         ArrayList<noticeVO> list = dao.getNoticeList(bId);
         System.out.println("현재 알림 개수 : " + list.size());
