@@ -1,7 +1,7 @@
 package com.kostaErp.model;
 
 public interface Query {
-
+	
 	    String addMenu1 =
 	        "INSERT INTO MENUS(menuName, menuPrice, menuCategory_Id) VALUES(?, ?, ?)";
 
