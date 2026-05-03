@@ -1,0 +1,71 @@
+ul {
+   list-style: none;
+}
+
+.container {
+   display: flex;
+   gap: 30px;
+   height: 100vh;
+}
+
+.sideMenu {
+   height: 100vh;
+   width: 300px;
+}
+
+.main {
+   width: 100%;
+}
+
+.profile {
+   display: flex;
+   justify-content: end;
+}
+
+.content_item {
+   height: 100%;
+   display: flex;
+   gap: 16px;
+}
+
+.content_left {
+   flex: 1;
+}
+
+.menu_list {
+   padding: 10px;
+   margin: 10px;
+}
+
+.content_right {
+   width: 300px;
+   padding: 10px;
+   margin: 10px;
+}
+
+table {
+   border-spacing: 24px;
+}
+
+a {
+   text-decoration: none;
+   color: black;
+}
+
+.message {
+   color: blue;
+   font-weight: bold;
+}
+
+.errorMessage {
+   color: red;
+   font-weight: bold;
+}
+
+button {
+   cursor: pointer;
+}
+
+.sale_form_area {
+   margin-top: 20px;
+}
