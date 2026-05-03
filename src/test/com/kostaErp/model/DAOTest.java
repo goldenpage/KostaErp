@@ -67,7 +67,7 @@ public class DAOTest {
 	//@Test
 	public void addFoodCategory(){
 		int result = dao.addFoodCategory("테스트카테고리");
-		assertTrue(result>0);
+		assertTrue(result > 0);
 		//        int result = dao.addFoodCategory("PP", "가공식품");
 		//        assertEquals("추가실패", 0, result);
 	}
