@@ -1,9 +1,6 @@
 package com.kostaErp.model;
 
 public interface Query {
-	
-	String GET_DISPOSALS = "SELECT " +
-
 	    String addMenu1 =
 	        "INSERT INTO MENUS(menuName, menuPrice, menuCategory_Id) VALUES(?, ?, ?)";
 
@@ -276,7 +273,7 @@ public interface Query {
     		"FROM FOODM " +
     		"WHERE bId = ? " +
     		"AND expirationDate < SYSDATE";
-}
+
 	
 	public static final String GET_Monthly_MENU_SALE_RANK = "SELECT " +
 	        "    RANK() OVER (ORDER BY SUM(s.saleMenuCount) DESC) AS ranking, " +
@@ -414,16 +411,15 @@ public interface Query {
 
 	public static final String HAS_FOOD_MATERIAL_BY_CATEGORY =
 			"SELECT COUNT(*) "
-			+ "FROM FOODM f JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id "
-			+ "WHERE c.foodCategory = ?";
+					+ "FROM FOODM f JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id "
+					+ "WHERE c.foodCategory = ?";
 
 	public static final String GET_FOOD_MATERIAL_LIST_ALL =
 			"SELECT f.foodMaterial_Id, f.foodMaterialName, c.foodCategory "
-			+ "FROM FOODM f JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id "
-			+ "WHERE f.bId = ? ORDER BY f.foodMaterialName ASC";
+					+ "FROM FOODM f JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id "
+					+ "WHERE f.bId = ? ORDER BY f.foodMaterialName ASC";
 
 	public static final String GET_CATEGORY_ID =
 			"SELECT foodCategory_Id FROM FOODC "
-			+ "WHERE foodCategory = ?";
+					+ "WHERE foodCategory = ?";
 }
-
