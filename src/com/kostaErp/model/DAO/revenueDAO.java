@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.kostaErp.model.DBCP;
+import com.kostaErp.model.Query;
 import com.kostaErp.model.VO.revenueVO;
 import com.kostaErp.model.VO.userInfoVO;
 
@@ -15,31 +16,15 @@ public class revenueDAO {
 
 	public revenueDAO(){}
 	
-	// 1. ���� �޴� �Ǹ� ��ŷ ��ȸ
+	// 1. 
 	public List<revenueVO> getMonthlyMenuSalesRank(String bId, String startDate, String endDate) {
-	    String sql =
-	        "SELECT " +
-	        "    RANK() OVER (ORDER BY SUM(s.saleMenuCount) DESC) AS ranking, " +
-	        "    s.menu_Id, " +
-	        "    m.menuName, " +
-	        "    m.menuPrice, " +
-	        "    SUM(s.saleMenuCount) AS totalSaleCount, " +
-	        "    SUM(s.saleMenuCount * m.menuPrice) AS totalSalesAmount " +
-	        "FROM SALES s " +
-	        "JOIN MENUS m ON s.menu_Id = m.menu_Id " +
-	        "JOIN MENUC mc ON m.menuCategory_Id = mc.menuCategory_Id " +
-	        "JOIN REVENUE r ON s.revenue_Id = r.revenue_Id " +
-	        "WHERE mc.bId = ? " +
-	        "AND r.revenueDate >= TO_DATE(?, 'YYYY-MM-DD') " +
-	        "AND r.revenueDate < TO_DATE(?, 'YYYY-MM-DD') " +
-	        "GROUP BY s.menu_Id, m.menuName, m.menuPrice " +
-	        "ORDER BY ranking";
+		String sql = Query.GET_Monthly_MENU_SALE_RANK;
 
 	    List<revenueVO> list = new ArrayList<>();
 
 	    try (
 	        Connection conn = DBCP.getConnection();
-	        PreparedStatement stmt = conn.prepareStatement(sql)
+	        PreparedStatement stmt = conn.prepareStatement(sql);
 	    ) {
 	        stmt.setString(1, bId);
 	        stmt.setString(2, startDate);
@@ -70,12 +55,11 @@ public class revenueDAO {
 	}
 	
 	public int getRevenue(String bId, String startDate, String endDate) {
-		String sql = "SELECT SUM(menuprice * salemenucount) FROM SALES, MENUS";
 		
 		Connection conn;
 		try {
 			conn = DBCP.getConnection();
-			PreparedStatement stmt = conn.prepareStatement(sql);
+			PreparedStatement stmt = conn.prepareStatement(Query.GET_REVENU);
 			stmt.setString(1, bId);
 	        stmt.setString(2, startDate);
 	        stmt.setString(3, endDate);
@@ -100,19 +84,12 @@ public class revenueDAO {
 	
 	// ���� �� ����
 	public int getMonthlyRevenue(String bId, String startDate, String endDate) {
-	    String sql =
-	        "SELECT NVL(SUM(s.saleMenuCount * m.menuPrice), 0) AS totalRevenue " +
-	        "FROM SALES s " +
-	        "JOIN MENUS m ON s.menu_Id = m.menu_Id " +
-	        "JOIN MENUC mc ON m.menuCategory_Id = mc.menuCategory_Id " +
-	        "JOIN REVENUE r ON s.revenue_Id = r.revenue_Id " +
-	        "WHERE mc.bId = ? " +
-	        "AND r.revenueDate >= TO_DATE(?, 'YYYY-MM-DD') " +
-	        "AND r.revenueDate < TO_DATE(?, 'YYYY-MM-DD')";
+	   String sql = Query.GET_MONTHLY_REVENUE;
+	     
 
 	    try (
 	        Connection conn = DBCP.getConnection();
-	        PreparedStatement stmt = conn.prepareStatement(sql)
+	        PreparedStatement stmt = conn.prepareStatement(sql);
 	    ) {
 	        stmt.setString(1, bId);
 	        stmt.setString(2, startDate);
@@ -134,12 +111,15 @@ public class revenueDAO {
 	}
 	
 	public List<userInfoVO> checkMemberByVO(String bId, String name, String pw) throws ClassNotFoundException {
-		String sql = "SELECT bId, name, storeName, storeType, pw FROM USERINFO " +
-				"WHERE bId = ? AND name = ? AND pw = ?";
+		String sql = Query.CHECK_MEMBER_BY_VO;
+		
 		List<userInfoVO> list = new ArrayList<>();
 
+		
+		
 		try (Connection conn = DBCP.getConnection();
-				PreparedStatement stmt = conn.prepareStatement(sql)) {
+				PreparedStatement stmt = conn.prepareStatement(sql);
+				) {
 
 			stmt.setString(1, bId);
 			stmt.setString(2, name);

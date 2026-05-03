@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.kostaErp.model.DBCP;
+import com.kostaErp.model.Query;
 import com.kostaErp.model.VO.userInfoVO;
 
 public class userDAO {
@@ -24,9 +25,7 @@ public class userDAO {
 
 		int result = 0;
 
-		String sql = "INSERT INTO USERINFO (bid,name,phone,email,storeName, "
-				+ "storeType,storeCategory,pw,signDate,agreementDate,marketingDate) " 
-				+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+		String sql = Query.REGISTER;
 
 		try{
 			Connection conn = DBCP.getConnection();
@@ -58,8 +57,7 @@ public class userDAO {
 
 	// 2. �α���
 	public userInfoVO checkMemberByVO(String bId, String name, String pw) throws ClassNotFoundException {
-		String sql = "SELECT bId, name, pw FROM USERINFO " +
-				"WHERE bId = ? AND name = ? AND pw = ?";
+		String sql = Query.CHECK_MEMBER_BY_VO;
 
 		try (Connection conn = DBCP.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -88,7 +86,7 @@ public class userDAO {
 
 		int result = 0;
 
-		String sql = "UPDATE USERINFO SET pw = ? WHERE bId = ? AND NAME = ? AND PHONE = ?";
+		String sql = Query.SET_PW;
 		Connection conn;
 
 		try{
@@ -114,7 +112,7 @@ public class userDAO {
 
 	public boolean checkPwFindUser(String bId, String name, String phone) {
 		boolean flag = false;
-		String sql = "SELECT bId FROM USERINFO WHERE bId = ? AND name = ? AND phone = ?";
+		String sql = Query.CHECK_PW_FIND_USER;
 		Connection conn;
 		
 
@@ -145,7 +143,7 @@ public class userDAO {
 
 	// 4. ������ ����
 	public List<userInfoVO> getMarketingMembers() throws ClassNotFoundException {
-		String sql = "SELECT bid, name, phone, email, marketingDate FROM USERINFO WHERE marketingDate IS NOT NULL";
+		String sql = Query.GET_MARKETING_MEMBERS;
 		List<userInfoVO> list = new ArrayList<>();
 
 		try (Connection conn = DBCP.getConnection();
@@ -177,8 +175,7 @@ public class userDAO {
 	public Map<String,Object> login(String bId, String pw) {
 		Map<String, Object> tmp = new HashMap<>();
 		
-		String sql = "SELECT  bId, name FROM USERINFO" 
-				+ " WHERE bId = ?  AND pw = ? ";
+		String sql = Query.LOGIN;
 	
 		Connection conn;
 		try {
@@ -212,8 +209,7 @@ public class userDAO {
 	//휴대폰인증
 	public boolean getPhoneCheck(String phone) {
 		boolean flag = true;
-		String sql = "SELECT bId, name, phone FROM USERINFO" 
-				+ " WHERE phone = ? ";
+		String sql = Query.GET_PHONE_CHECK;
 		
 		Connection conn;
 		try {
@@ -249,7 +245,7 @@ public class userDAO {
 	
 	public boolean getBid(String bId) {
 		boolean flag = false;
-		String sql = "SELECT bId FROM USERINFO WHERE bId = ?";
+		String sql = Query.GET_BID;
 		
 		Connection conn;
 		try {
