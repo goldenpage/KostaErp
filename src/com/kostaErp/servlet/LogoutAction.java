@@ -4,12 +4,17 @@ import java.io.IOException;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
-public class revenueStatisticsUIAction implements Action {
+public class LogoutAction implements Action {
 
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
-		return new revenueStatisticsAction().execute(request);
+		HttpSession session = request.getSession(false);
+		if(session != null){
+			session.invalidate();
+		}
+		return "/jsp/login.jsp";
 	}
 
 }

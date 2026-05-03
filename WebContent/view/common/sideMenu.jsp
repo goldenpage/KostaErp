@@ -19,12 +19,21 @@
 .sideMenu>ul>li:hover {
 	opacity: 0.5
 }
+
+.sideMenu > img {
+	margin-left: 40px;
+	width:100px;
+	heigth:30px;
+	cursor:pointer
+}
+
+
 </style>
 </head>
 <body>
 
 	<div class="sideMenu">
-
+		<img alt="logo" src="${pageContext.request.contextPath}/view/asset/image.png" onclick="location.href='controller?cmd=foodMaterialAction'">
 		<ul>
 			<li>식자재관리</li>
 			<li onclick="location.href='controller?cmd=addFoodMaterialUIAction'">식자재입력</li>

@@ -50,7 +50,7 @@ ul {
 }
 
 .content_item .disposal_price {
-	border: 3px solid blue;
+
 }
 
 .disposal_price ul {
@@ -59,11 +59,11 @@ ul {
 }
 
 .content_item .disposal_ratio {
-	border: 3px solid red;
+	
 }
 
 .content_item .disposal_solid_liquid {
-	border: 3px solid green;
+	
 }
 
 .page {
