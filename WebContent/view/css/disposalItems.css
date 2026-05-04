@@ -1,7 +1,5 @@
 ul {
 	list-style: none;
-	margin: 0;
-	padding: 0;
 }
 
 li{
@@ -16,7 +14,6 @@ body {
 .container {
 	display: flex;
 	min-height: 100vh;
-	border: 3px solid #000;
 }
 
 .sideMenu {
@@ -30,7 +27,6 @@ body {
 }
 
 .content_item {
-	border: 2px solid 
 	padding: 15px;
 }
 
