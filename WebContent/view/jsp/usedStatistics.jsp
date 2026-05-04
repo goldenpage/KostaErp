@@ -10,12 +10,13 @@
 <title>지출통계</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+
 <link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/usedStatistics.css">
 
 </head>
 <body>
 	<div class="container">
-		<section class="sideMenu">
+		<section >
 			<jsp:include page="../common/sideMenu.jsp" />
 		</section>
 
