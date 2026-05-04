@@ -20,18 +20,15 @@ ul {
 .container {
 	display: flex;
 	gap: 30px;
-	border: 5px solid;
 	height: 100vh;
 }
 
 .sideMenu {
 	height: 100vh;
-	border: 1px solid;
 	width: 300px;
 }
 
 .main {
-	border: 1px solid;
 	width: 100%;
 }
 

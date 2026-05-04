@@ -17,19 +17,16 @@ ul {
 .container {
 	display: flex;
 	gap: 30px;
-	border: 5px solid;
 	min-height: 100vh;
 	height: auto;
 }
 
 .sideMenu {
 	height: 100vh;
-	border: 1px solid;
 	width: 300px;
 }
 
 .main {
-	border: 1px solid;
 	width: calc(100% - 330px);
 	min-width: 0;
 	padding: 20px;
