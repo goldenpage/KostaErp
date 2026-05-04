@@ -3,35 +3,35 @@ package com.kostaErp.model;
 public interface Query {
 
 
-	public static final   String addMenu1 =
+	public static final String ADD_MENU1 =
 			"INSERT INTO MENUS(menuName, menuPrice, menuCategory_Id) VALUES(?, ?, ?)";
 
-	public static final    String addMenu2 =
+	public static final String ADD_MENU2 =
 			"SELECT menu_Id FROM MENUS WHERE menuName = ? AND menuCategory_Id = ? " +
 					"ORDER BY menu_Id DESC";
 
-	public static final   String addMenuCategory1 =
+	public static final String ADD_MENU_CATEGORY1 =
 			"SELECT COUNT(*) FROM MENUC WHERE menuCategory = ? AND bId = ?";
 
-	public static final  String addMenuCategory2 = "INSERT INTO MENUC(menuCategory, bId) VALUES(?, ?)";
+	public static final  String ADD_MENU_CATEGORY2 = "INSERT INTO MENUC(menuCategory, bId) VALUES(?, ?)";
 
-	public static final  String deleteMenuCategory =
+	public static final  String DELETE_MENU_CATEGORY =
 			"DELETE FROM MENUC WHERE menuCategory = ?";
 
-	public static final  String addUsedMaterial =
+	public static final  String ADD_USED_MATERIAL =
 			"INSERT INTO USED(usedCount, foodMaterial_Id, menu_Id) VALUES(?, ?, ?)";
 
-	public static final  String deleteUsedMaterial =
+	public static final  String DELETE_USED_MATERIAL =
 			"DELETE FROM USED WHERE usedMaterial_Id = ?";
 
-	public static final  String getMenuList =
+	public static final  String GET_MENU_LIST =
 			"SELECT m.menu_Id, m.menuName, mc.menuCategory, m.menuPrice " +
 					"FROM MENUS m " +
 					"JOIN MENUC mc ON m.menuCategory_Id = mc.menuCategory_Id " +
 					"WHERE mc.bId = ? " +
 					"ORDER BY m.menuName ASC";
 
-	public static final String getMenuDetail =
+	public static final String GET_MENU_DETAIL =
 			"SELECT m.menu_Id, m.menuName, m.menuPrice, " +
 					" f.foodMaterialName, u.usedCount, " +
 					" f.foodMaterialPrice, f.foodMaterialCountAll, " +
@@ -42,7 +42,7 @@ public interface Query {
 					"WHERE m.menu_Id = ? " +
 					"ORDER BY f.foodMaterialName ASC";
 
-	public static final  String updateFoodMaterialAfterSale =
+	public static final  String UPDATE_FOODMATERIALAFTERSALE =
 			"UPDATE FOODM f " +
 					"SET f.foodMaterialCountAll = f.foodMaterialCountAll - ( " +
 					"    SELECT SUM(u.usedCount) * ? " +
@@ -70,18 +70,18 @@ public interface Query {
 					"      AND f2.foodMaterialCountAll < need.needCount " +
 					")";
 
-	public static final String getMenuCategoryList =
+	public static final String GET_MENU_CATEGORY_LIST =
 			"SELECT menuCategory_Id, menuCategory FROM MENUC WHERE bId = ?";
 
-	public static final String hasMenuByCategory =
+	public static final String HAS_MENU_BY_CATEGORY =
 			"SELECT COUNT(*) FROM MENUS m " +
 					"JOIN MENUC mc ON m.menuCategory_Id = mc.menuCategory_Id " +
 					"WHERE mc.menuCategory = ?";
 
-	public static final String hasMenuCheck =
+	public static final String HAS_MENU_CHECK =
 			"SELECT menuName FROM MENUS WHERE menuName = ?";
 
-	public static final String getCategoryId =
+	public static final String GET_MENU_CATEGORY_ID =
 			"SELECT menuCategory_Id FROM MENUC WHERE menuCategory = ?";
 
 	public static final String GET_DISPOSALS = "SELECT " +
@@ -185,6 +185,8 @@ public interface Query {
 			"WHERE f.bId = ? " +
 			"AND d.disposalDate >= TO_DATE(?, 'YYYY-MM-DD') " +
 			"AND d.disposalDate < TO_DATE(?, 'YYYY-MM-DD')";
+	
+	
 	public static final String GET_TOP3_DISPOSALITEMS = "SELECT * " +
 			"FROM ( " +
 			"    SELECT " +
@@ -201,6 +203,8 @@ public interface Query {
 			"    ORDER BY totalDisposalPrice DESC, f.foodMaterial_Id ASC " +
 			") " +
 			"WHERE ROWNUM <= 3";
+	
+	
 	public static final String GET_DISPOSAL_REASON_RATIO = "SELECT " +
 			"    r.reason_Id, " +
 			"    r.reason, " +
@@ -421,8 +425,10 @@ public interface Query {
 					+ "FROM FOODM f JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id "
 					+ "WHERE f.bId = ? ORDER BY f.foodMaterialName ASC";
 
-	public static final String GET_CATEGORY_ID =
+	public static final String GET_FOOD_CATEGORY_ID =
 			"SELECT foodCategory_Id FROM FOODC "
 					+ "WHERE foodCategory = ?";
+	
+	
 }
 

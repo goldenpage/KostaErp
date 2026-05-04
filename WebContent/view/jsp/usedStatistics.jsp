@@ -17,28 +17,46 @@ ul {
 .container {
 	display: flex;
 	gap: 30px;
-	border: 5px solid;
+	
 	min-height: 100vh;
 	height: auto;
 }
 
 .sideMenu {
 	height: 100vh;
-	border: 1px solid;
 	width: 300px;
 }
 
 .main {
-	border: 1px solid;
+	
 	width: calc(100% - 330px);
 	min-width: 0;
 	padding: 20px;
 	overflow-x: hidden;
 }
 
+.main > table {
+	margin-top: 20px;
+}
+
 .profile {
 	display: flex;
 	justify-content: end;
+}
+
+.top_area {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.summary {
+	margin-bottom: 20px;
+	padding: 14px 16px;
+	font-size: 20px;
+	font-weight: bold;
+	
 }
 
 .content_item {
@@ -81,22 +99,67 @@ ul {
 	display: flex;
 	gap: 24px;
 	width: 100%;
+	padding: 16px;
+	box-sizing: border-box;
+	margin-bottom: 24px;
+	background-color: #f8fafc;
+	border: 1px solid #e2e8f0;
+	border-radius: 6px;
 }
 
 .chart_box {
 	width: 50%;
 	height: 320px;
+	padding: 14px;
+	box-sizing: border-box;
+	background-color: white;
+	border: 1px solid #cbd5e1;
+	border-radius: 6px;
+}
+
+.chart_box h3 {
+	margin-top: 0;
+	padding-bottom: 8px;
+	border-bottom: 1px solid #e2e8f0;
 }
 
 .chart_box canvas {
 	width: 100% !important;
 	height: 260px !important;
 }
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0;
+	margin-top: 20px;
+	background-color: white;
+	font-size: 14px;
+	line-height: 1.4;
+}
+
+th,
+td {
+	border: 1px solid #cbd5e1;
+	padding: 10px 12px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+th {
+	background-color: #f1f5f9;
+	font-weight: bold;
+	color: #1e293b;
+}
+
+tbody tr:hover {
+	background-color: #f8fafc;
+}
 </style>
 </head>
 <body>
 	<div class="container">
-		<section class="sideMenu">
+		<section >
 			<jsp:include page="../common/sideMenu.jsp" />
 		</section>
 

@@ -18,13 +18,12 @@ ul {
 .container {
 	display: flex;
 	gap: 30px;
-	border: 5px solid;
 	min-height: 100vh;
 }
 
 .sideMenu {
 	height: 100vh;
-	border: 1px solid;
+
 	width: 300px;
 }
 
@@ -33,6 +32,10 @@ ul {
 	width: calc(100% - 330px);
 	min-width: 0;
 	padding: 20px;
+}
+
+.main > table {
+	margin-top: 20px;
 }
 
 .profile {
@@ -89,12 +92,41 @@ th {
 button {
 	cursor: pointer;
 }
+
+
+
+.chart_area {
+	padding: 16px;
+	box-sizing: border-box;
+	background-color: #f8fafc;
+	border: 1px solid #e2e8f0;
+	border-radius: 6px;
+}
+
+.chart_box {
+	padding: 14px;
+	box-sizing: border-box;
+	background-color: white;
+	border: 1px solid #cbd5e1;
+	border-radius: 6px;
+}
+
+.chart_box h3 {
+	margin-top: 0;
+	padding-bottom: 8px;
+	border-bottom: 1px solid #e2e8f0;
+}
+
+.main > table {
+	margin-top: 20px;
+	background-color: white;
+}
 </style>
 </head>
 
 <body>
 	<div class="container">
-		<section class="sideMenu">
+		<section >
 			<jsp:include page="../common/sideMenu.jsp" />
 		</section>
 

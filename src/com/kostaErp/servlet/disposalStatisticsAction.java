@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +25,14 @@ public class disposalStatisticsAction implements Action {
 
 		HttpSession session = request.getSession();
 		String bId = (String) session.getAttribute("loginOK");
-
+		
+		SimpleDateFormat monthFormat = new SimpleDateFormat("yyyy-MM");
+		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		monthFormat.setLenient(false);
+		dateFormat.setLenient(false);
+		Calendar selectedCal = Calendar.getInstance();
+		String selectedMonth = request.getParameter("month");
+		
 		String startDate = "2026-04-01";
 		String endDate = "2026-05-01";
 
