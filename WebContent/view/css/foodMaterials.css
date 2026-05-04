@@ -35,11 +35,36 @@ ul {
 }
 
 .list_container {
-   display: flex;
-   justify-content: center;
-   height: 100%;
+   display: table;
+   width: 100%;
+   height: auto;
+   border-collapse: collapse;
+   border-spacing: 0;
    font-size: 14px;
-   line-height: 14px;
+   line-height: 1.4;
+   background-color: white;
+}
+
+.list_container th,
+.list_container td {
+   border: 1px solid #cbd5e1;
+   padding: 10px 8px;
+   text-align: center;
+   vertical-align: middle;
+}
+
+.list_container th {
+   background-color: #f1f5f9;
+   font-weight: bold;
+}
+
+.list_container tr.foodRow:hover {
+   background-color: #f8fafc;
+}
+
+.list_container .emptyRow td {
+   padding: 24px;
+   text-align: center;
 }
 
 table {

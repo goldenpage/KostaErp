@@ -36,6 +36,35 @@ ul {
    padding: 10px;
    margin: 10px;
 }
+.menu_list table,
+#ingredientDetail {
+   width: 100%;
+   border-collapse: collapse;
+   border-spacing: 0;
+   background-color: white;
+   font-size: 14px;
+}
+
+.menu_list table th,
+.menu_list table td,
+#ingredientDetail th,
+#ingredientDetail td {
+   border: 1px solid #cbd5e1;
+   padding: 10px 12px;
+   text-align: center;
+   vertical-align: middle;
+}
+
+.menu_list table th,
+#ingredientDetail th {
+   background-color: #f1f5f9;
+   font-weight: bold;
+}
+
+.menu_list table tr:hover,
+#ingredientDetail tr:hover {
+   background-color: #f8fafc;
+}
 
 .content_right {
    width: 300px;

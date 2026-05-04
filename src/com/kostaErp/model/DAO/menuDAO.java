@@ -22,7 +22,7 @@ public class menuDAO {
 		
 		try{
 			Connection conn = DBCP.getConnection();
-			PreparedStatement stmt = conn.prepareStatement(Query.addMenu1);
+			PreparedStatement stmt = conn.prepareStatement(Query.ADD_MENU1);
 
 			stmt.setString(1, menuName);
 			stmt.setInt(2, menuPrice);
@@ -32,7 +32,7 @@ public class menuDAO {
 			stmt.close();
 			
 			
-			PreparedStatement Stmt2 = conn.prepareStatement(Query.addMenu2);
+			PreparedStatement Stmt2 = conn.prepareStatement(Query.ADD_MENU2);
 				Stmt2.setString(1, menuName);
 				Stmt2.setString(2, menuCategoryId);
 				ResultSet rs = Stmt2.executeQuery();
@@ -54,7 +54,7 @@ public class menuDAO {
 
 		try{
 			Connection conn = DBCP.getConnection();
-			PreparedStatement checkStmt = conn.prepareStatement(Query.addMenuCategory1);
+			PreparedStatement checkStmt = conn.prepareStatement(Query.ADD_MENU_CATEGORY1);
 
 			checkStmt.setString(1, menuCategory);
 			checkStmt.setString(2, bId);
@@ -69,7 +69,7 @@ public class menuDAO {
 			rs.close();
 			checkStmt.close();
 
-			PreparedStatement insertStmt = conn.prepareStatement(Query.addMenuCategory2);
+			PreparedStatement insertStmt = conn.prepareStatement(Query.ADD_MENU_CATEGORY2);
 			insertStmt.setString(1, menuCategory);
 			insertStmt.setString(2, bId);
 			int result = insertStmt.executeUpdate();
@@ -89,7 +89,7 @@ public class menuDAO {
 
 		try{
 			Connection conn = DBCP.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(Query.deleteMenuCategory);
+            PreparedStatement stmt = conn.prepareStatement(Query.DELETE_MENU_CATEGORY);
             		
 			stmt.setString(1, menuCategory);
             
@@ -107,7 +107,7 @@ public class menuDAO {
 
 		try{
 			Connection conn = DBCP.getConnection();
-			PreparedStatement stmt = conn.prepareStatement(Query.addUsedMaterial);
+			PreparedStatement stmt = conn.prepareStatement(Query.ADD_USED_MATERIAL);
 
 			stmt.setInt(1, usedCount);
 			stmt.setString(2, foodMaterialId);
@@ -127,7 +127,7 @@ public class menuDAO {
 
 		try{
 			Connection conn = DBCP.getConnection();
-			PreparedStatement stmt = conn.prepareStatement(Query.deleteUsedMaterial);
+			PreparedStatement stmt = conn.prepareStatement(Query.DELETE_USED_MATERIAL);
 
 			stmt.setString(1, usedMaterialId);
 			
@@ -145,7 +145,7 @@ public class menuDAO {
 
         try {
             Connection conn = DBCP.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(Query.getMenuList);
+            PreparedStatement stmt = conn.prepareStatement(Query.GET_MENU_LIST);
 
             stmt.setString(1, bId);
 
@@ -178,7 +178,7 @@ public class menuDAO {
 
         try {
             Connection conn = DBCP.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(Query.getMenuDetail);
+            PreparedStatement stmt = conn.prepareStatement(Query.GET_MENU_DETAIL);
 
             stmt.setString(1, menuId);
 
@@ -215,7 +215,7 @@ public class menuDAO {
 
         try {
             Connection conn = DBCP.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(Query.updateFoodMaterialAfterSale);
+            PreparedStatement stmt = conn.prepareStatement(Query.UPDATE_FOODMATERIALAFTERSALE);
 
             stmt.setInt(1, saleCount);
             stmt.setString(2, menuId);
@@ -244,7 +244,7 @@ public class menuDAO {
 		List<menuCategoryVO> list = new ArrayList<>();
 		try {
 			Connection conn = DBCP.getConnection();
-			PreparedStatement stmt = conn.prepareStatement(Query.getMenuCategoryList);
+			PreparedStatement stmt = conn.prepareStatement(Query.GET_MENU_CATEGORY_LIST);
 			
 			stmt.setString(1, bId);
 			
@@ -272,7 +272,7 @@ public class menuDAO {
 		int count = 0;
 		try{
 			Connection conn = DBCP.getConnection();
-			PreparedStatement stmt = conn.prepareStatement(Query.hasMenuByCategory);
+			PreparedStatement stmt = conn.prepareStatement(Query.HAS_MENU_BY_CATEGORY);
 			
 			stmt.setString(1, menuCategory);
 			ResultSet rs = stmt.executeQuery();
@@ -296,7 +296,7 @@ public class menuDAO {
 		boolean result = false;
 		try{
 			Connection conn = DBCP.getConnection();
-			PreparedStatement stmt = conn.prepareStatement(Query.hasMenuCheck);
+			PreparedStatement stmt = conn.prepareStatement(Query.HAS_MENU_CHECK);
 			
 			stmt.setString(1, menuName);
 			ResultSet rs = stmt.executeQuery();
@@ -320,7 +320,7 @@ public class menuDAO {
 
         try{
         	Connection conn = DBCP.getConnection();
-            PreparedStatement stmt = conn.prepareStatement(Query.getCategoryId);
+            PreparedStatement stmt = conn.prepareStatement(Query.GET_MENU_CATEGORY_ID);
             stmt.setString(1, menuCategory);
             ResultSet rs = stmt.executeQuery();
             String categoryId = null;
@@ -338,4 +338,6 @@ public class menuDAO {
         }
         return null;
     }
+	
+	
 }

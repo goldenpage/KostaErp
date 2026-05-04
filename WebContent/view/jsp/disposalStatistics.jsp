@@ -20,19 +20,52 @@ ul {
 .container {
 	display: flex;
 	gap: 30px;
-	border: 5px solid;
 	height: 100vh;
 }
 
 .sideMenu {
 	height: 100vh;
-	border: 1px solid;
 	width: 300px;
 }
 
 .main {
-	border: 1px solid;
 	width: 100%;
+}
+
+.main table {
+	width: 100%;
+	border-collapse: collapse;
+	border-spacing: 0;
+	margin-top: 12px;
+	background-color: white;
+	font-size: 14px;
+	line-height: 1.4;
+}
+
+.main table th, .main table td {
+	border: 1px solid #cbd5e1;
+	padding: 10px 12px;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.main table th {
+	background-color: #f1f5f9;
+	font-weight: bold;
+	color: #1e293b;
+}
+
+.main table tbody tr:hover {
+	background-color: #f8fafc;
+}
+
+.main table td[colspan] {
+	padding: 24px;
+	color: #64748b;
+}
+
+.disposal_price table {
+	min-width: 420px;
 }
 
 .profile {
@@ -42,15 +75,23 @@ ul {
 
 .content_item {
 	display: flex;
+	gap: 16px;
 	width: 100%;
-	height: 100%;
-	padding: 12px 0px;
-	justify-content: space-between;
-	border: 3px solid;
+	padding: 16px;
+	box-sizing: border-box;
+	align-items: flex-start;
+	background-color: #f8fafc;
+	border: 1px solid #e2e8f0;
 }
 
-.content_item .disposal_price {
-
+.content_item>div {
+	flex: 1;
+	min-width: 0;
+	padding: 16px;
+	box-sizing: border-box;
+	background-color: white;
+	border: 1px solid #cbd5e1;
+	border-radius: 6px;
 }
 
 .disposal_price ul {
@@ -58,12 +99,13 @@ ul {
 	gap: 8px;
 }
 
-.content_item .disposal_ratio {
-	
-}
-
-.content_item .disposal_solid_liquid {
-	
+.disposal_price>div:first-child, .disposal_ratio>div:first-child,
+	.disposal_solid_liquid>div:first-child {
+	margin-bottom: 12px;
+	padding-bottom: 8px;
+	border-bottom: 1px solid #e2e8f0;
+	font-weight: bold;
+	color: #1e293b;
 }
 
 .page {
@@ -88,12 +130,12 @@ th, td {
 }
 
 .chart_box {
-	width: 360px;
+	width: 100%;
 	height: 300px;
 }
 
 canvas {
-	width: 360px !important;
+	width: 100% !important;
 	height: 300px !important;
 }
 </style>
@@ -101,7 +143,7 @@ canvas {
 
 <body>
 	<div class="container">
-		<section class="sideMenu">
+		<section>
 			<jsp:include page="../common/sideMenu.jsp" />
 		</section>
 
@@ -110,7 +152,16 @@ canvas {
 				<jsp:include page="../common/userName.jsp" />
 			</div>
 
-			<h1>폐기통계</h1>
+			<div class="top_area">
+				<h1>폐기통계</h1>
+
+				<form method="get"
+					action="${pageContext.request.contextPath}/controller">
+					<input type="hidden" name="cmd" value="disposalStatisticUIAction">
+					<input type="month" name="month" value="${selectedMonth}">
+					<button type="submit">조회</button>
+				</form>
+			</div>
 
 			<div class="content_item">
 				<div class="disposal_price">
@@ -141,10 +192,8 @@ canvas {
 										<td>${status.count}</td>
 										<td>${item.foodMaterialName}</td>
 										<td>${item.disposalCount}</td>
-										<td>
-											<fmt:formatNumber value="${item.totalDisposalPrice}" pattern="#,###" />
-											원
-										</td>
+										<td><fmt:formatNumber value="${item.totalDisposalPrice}"
+												pattern="#,###" /> 원</td>
 									</tr>
 								</c:forEach>
 
@@ -181,33 +230,38 @@ canvas {
 	<script type="application/json" id="reasonValuesJson">${reasonValuesJson}</script>
 
 	<script>
-	function readJson(id) {
-		const text = document.getElementById(id).textContent.trim();
-		return JSON.parse(text || "[]");
-	}
-
-	const dailyLabels = readJson("dailyLabelsJson");
-	const dailyDatasets = readJson("dailyDatasetsJson");
-	const reasonLabels = readJson("reasonLabelsJson");
-	const reasonValues = readJson("reasonValuesJson");
-
-	new Chart(document.querySelector("#dailyDisposalChart"), {
-		type: "line",
-		data: {
-			labels: dailyLabels,
-			datasets: dailyDatasets
+		function readJson(id) {
+			const
+			text = document.getElementById(id).textContent.trim();
+			return JSON.parse(text || "[]");
 		}
-	});
 
-	new Chart(document.querySelector("#reasonChart"), {
-		type: "doughnut",
-		data: {
-			labels: reasonLabels,
-			datasets: [{
-				data: reasonValues
-			}]
-		}
-	});
+		const
+		dailyLabels = readJson("dailyLabelsJson");
+		const
+		dailyDatasets = readJson("dailyDatasetsJson");
+		const
+		reasonLabels = readJson("reasonLabelsJson");
+		const
+		reasonValues = readJson("reasonValuesJson");
+
+		new Chart(document.querySelector("#dailyDisposalChart"), {
+			type : "line",
+			data : {
+				labels : dailyLabels,
+				datasets : dailyDatasets
+			}
+		});
+
+		new Chart(document.querySelector("#reasonChart"), {
+			type : "doughnut",
+			data : {
+				labels : reasonLabels,
+				datasets : [ {
+					data : reasonValues
+				} ]
+			}
+		});
 	</script>
 </body>
 

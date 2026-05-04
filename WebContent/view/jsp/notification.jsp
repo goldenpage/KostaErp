@@ -18,18 +18,10 @@ ul {
 .container {
 	display: flex;
 	gap: 30px;
-	border: 5px solid;
 	height: 100vh;
-}
-
-.sideMenu {
-	height: 100vh;
-	border: 1px solid;
-	width: 300px;
 }
 
 .main {
-	border: 1px solid;
 	width: 100%;
 	height: 100vh;
 	overflow: hidden;
@@ -41,7 +33,7 @@ ul {
 }
 
 .content_item {
-	border: 3px solid blue;
+
 	height: calc(100vh - 230px);
 	overflow: hidden;
 }
@@ -51,7 +43,7 @@ ul {
 	width: 100%;
 	max-height: 100%;
 	overflow-y: auto;
-	border: 3px solid red;
+
 	font-size: 14px;
 	line-height: 14px;
 }
@@ -65,7 +57,7 @@ ul {
 	display: flex;
 	gap: 25px;
 	padding: 15px;
-	border: 2px solid #333;
+	border: 2px solid;
 	margin-bottom: 15px;
 	font-size: 15px;
 	font-weight: bold;
@@ -84,7 +76,7 @@ button {
 	<div class="container">
 
 		<!-- 사이드 메뉴 -->
-		<section class="sideMenu">
+		<section >
 			<jsp:include page="../common/sideMenu.jsp" />
 		</section>
 
