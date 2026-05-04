@@ -493,7 +493,7 @@ public class foodMaterialDAO {
 	}
 	//카테고리 id 불러오기
 	public String getCategoryId(String foodCategory){
-		String sql = Query.GET_CATEGORY_ID;
+		String sql = Query.GET_FOOD_CATEGORY_ID;
 
         try{
         	Connection conn = DBCP.getConnection();

@@ -17,7 +17,7 @@
 	<div class="container">
 
 		<!-- 사이드 메뉴 -->
-		<section class="sideMenu">
+		<section >
 			<jsp:include page="../common/sideMenu.jsp" />
 		</section>
 

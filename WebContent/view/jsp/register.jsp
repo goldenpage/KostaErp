@@ -10,8 +10,7 @@
 
 </head>
 <script src="
-https://cdn.jsdelivr.net/npm/jquery@4.0.0/dist/jquery.min.js
-"></script>
+https://cdn.jsdelivr.net/npm/jquery@4.0.0/dist/jquery.min.js"></script>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/register.css">
 <body>
 	<form method="post"
