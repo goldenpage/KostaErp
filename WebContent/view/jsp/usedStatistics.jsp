@@ -9,87 +9,9 @@
 <meta charset="UTF-8">
 <title>지출통계</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<style>
-ul {
-	list-style: none;
-}
 
-.container {
-	display: flex;
-	gap: 30px;
-	min-height: 100vh;
-	height: auto;
-}
+<link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/usedStatistics.css">
 
-.sideMenu {
-	height: 100vh;
-	width: 300px;
-}
-
-.main {
-	width: calc(100% - 330px);
-	min-width: 0;
-	padding: 20px;
-	overflow-x: hidden;
-}
-
-.profile {
-	display: flex;
-	justify-content: end;
-}
-
-.content_item {
-	display: flex;
-	width: 100%;
-	height: 100%;
-	padding: 12px 0px;
-	justify-content: space-between;
-	border: 3px solid;
-}
-
-.content_item .disposal_price {
-	border: 3px solid blue;
-}
-
-.disposal_price ul {
-	display: flex;
-	gap: 8px;
-}
-
-.content_item .disposal_ratio {
-	border: 3px solid red;
-}
-
-.content_item .disposal_solid_liquid {
-	border: 3px solid green;
-}
-
-.page {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	gap: 16px;
-	width: 100%;
-	font-size: 18px;
-	line-height: 18px;
-}
-
-.chart_area {
-	display: flex;
-	gap: 24px;
-	width: 100%;
-}
-
-.chart_box {
-	width: 50%;
-	height: 320px;
-}
-
-.chart_box canvas {
-	width: 100% !important;
-	height: 260px !important;
-}
-</style>
 </head>
 <body>
 	<div class="container">

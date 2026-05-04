@@ -1,0 +1,79 @@
+ul {
+	list-style: none;
+}
+
+.container {
+	display: flex;
+	gap: 30px;
+	height: 100vh;
+}
+
+.sideMenu {
+	height: 100vh;
+	width: 300px;
+}
+
+.main {
+	width: 100%;
+}
+
+.profile {
+	display: flex;
+	justify-content: end;
+}
+
+.content_item {
+	display: flex;
+	width: 100%;
+	height: 100%;
+	padding: 12px 0px;
+	justify-content: space-between;
+}
+
+.content_item .disposal_price {
+
+}
+
+.disposal_price ul {
+	display: flex;
+	gap: 8px;
+}
+
+.content_item .disposal_ratio {
+	
+}
+
+.content_item .disposal_solid_liquid {
+	
+}
+
+.page {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	gap: 16px;
+	width: 100%;
+	font-size: 18px;
+	line-height: 18px;
+}
+
+table {
+	border-collapse: collapse;
+	margin-top: 10px;
+}
+
+th, td {
+	border: 1px solid #999;
+	padding: 8px 12px;
+	text-align: center;
+}
+
+.chart_box {
+	width: 360px;
+	height: 300px;
+}
+
+canvas {
+	width: 360px !important;
+	height: 300px !important;
+}

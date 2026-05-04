@@ -1,0 +1,75 @@
+ul {
+	list-style: none;
+}
+
+.container {
+	display: flex;
+	gap: 30px;
+	min-height: 100vh;
+}
+
+.sideMenu {
+	height: 100vh;
+	width: 300px;
+}
+
+.main {
+	width: calc(100% - 330px);
+	min-width: 0;
+	padding: 20px;
+}
+
+.profile {
+	display: flex;
+	justify-content: end;
+}
+
+.top_area {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 20px;
+}
+
+.summary {
+	margin-bottom: 20px;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.chart_area {
+	display: flex;
+	gap: 24px;
+	width: 100%;
+	margin-bottom: 24px;
+}
+
+.chart_box {
+	width: 50%;
+	height: 320px;
+}
+
+.chart_box canvas {
+	width: 100% !important;
+	height: 260px !important;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	margin-top: 10px;
+}
+
+th, td {
+	border: 1px solid #999;
+	padding: 8px 12px;
+	text-align: center;
+}
+
+th {
+	background-color: #f3f4f6;
+}
+
+button {
+	cursor: pointer;
+}
