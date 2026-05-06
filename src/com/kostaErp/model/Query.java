@@ -96,8 +96,11 @@ public interface Query {
 			"JOIN FOODC fc ON f.foodCategory_Id = fc.foodCategory_Id " +
 			"JOIN REASON r ON d.reason_Id = r.reason_Id " +
 			"ORDER BY d.disposal_Id DESC";
+	
 	public static final String GET_FOODMATERIALNAMES = "SELECT f.foodMaterialName FROM DISPOSALS d JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id";
+	
 	public static final String GET_CATEGORIES = "SELECT fc.foodCategory FROM DISPOSALS d JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id JOIN FOODC fc ON f.foodCategory_Id = fc.foodCategory_Id"; 
+	
 	public static final String GET_DISPOSALS_FILTERED_PAGING =
 			"SELECT * FROM ( " +
 					"   SELECT d.disposal_Id, " +
@@ -114,6 +117,7 @@ public interface Query {
 					"   JOIN FOODC fc ON f.foodCategory_Id = fc.foodCategory_Id " +
 					"   JOIN REASON r ON d.reason_Id = r.reason_Id " +
 					"   WHERE f.BID = ? ";
+	
 	public static final String GET_DISPOSALS_PAGING = "SELECT * FROM ( " +
 			" SELECT d.disposal_Id, f.foodMaterialName, fc.foodCategory, d.disposalCountAll, " +
 			"        f.foodMaterialType, d.disposalPrice, d.disposalDate, r.reason, " +
@@ -123,7 +127,9 @@ public interface Query {
 			" JOIN FOODC fc ON f.foodCategory_Id = fc.foodCategory_Id " +
 			" JOIN REASON r ON d.reason_Id = r.reason_Id " +
 			" WHERE f.BID = ? ";
+	
 	public static final String GET_REASONS = "SELECT reason FROM REASON";
+	
 	public static final String GET_DISPOSALS_BY_CATEGORY_AND_BID = "SELECT d.disposal_Id, f.foodMaterialName, fc.foodCategory, " +
 			"d.disposalCountAll, f.foodMaterialType, d.disposalPrice, " +
 			"d.disposalDate, r.reason_Id, r.reason " +
@@ -133,6 +139,7 @@ public interface Query {
 			"JOIN REASON r ON d.reason_Id = r.reason_Id " +
 			"WHERE fc.foodCategory = ? AND f.bId = ? " +
 			"ORDER BY d.disposal_Id DESC";
+	
 	public static final String GET_DISPOSALS_PAGING1 = "SELECT * FROM ( " +
 			"    SELECT " +
 			"        d.disposal_Id, " +
@@ -151,6 +158,7 @@ public interface Query {
 			"    JOIN REASON r ON d.reason_Id = r.reason_Id " +
 			"    WHERE f.bId = ? " +
 			") WHERE rn BETWEEN ? AND ?";
+	
 	public static final String GET_DISPOSAL_COUNT = 
 			"SELECT COUNT(*) " +
 					"FROM DISPOSALS d " +
@@ -158,6 +166,7 @@ public interface Query {
 					"JOIN FOODC fc ON f.foodCategory_Id = fc.foodCategory_Id " +
 					"JOIN REASON r ON d.reason_Id = r.reason_Id " +
 					"WHERE f.BID = ? ";
+	
 	public static final String GET_TOTAL_COUNT =
 			"SELECT COUNT(*) " +
 					"FROM DISPOSALS d " +
@@ -165,26 +174,29 @@ public interface Query {
 					"JOIN FOODC fc ON f.foodCategory_Id = fc.foodCategory_Id " +
 					"JOIN REASON r ON d.reason_Id = r.reason_Id " +
 					"WHERE f.BID = ? ";
+	
 	public static final String UPDATE_REASON = "UPDATE DISPOSALS SET reason_Id = ? WHERE disposal_Id = ?";
+	
 	public static final String GET_EXPIRED_DISPOSALSIDS = "SELECT d.disposal_Id " +
 			"FROM DISPOSALS d " +
 			"JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id " +
 			"WHERE f.bId = ? " +
 			"AND f.expirationDate < SYSDATE";
+	
 	public static final String GET_DISPOSAL_RATE = "SELECT NVL(ROUND(SUM(d.disposalCountAll) * 100 / NULLIF(SUM(f.foodMaterialCountAll), 0), 2), 0) AS disposalRate " +
 			"FROM DISPOSALS d " +
 			"JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id " +
 			"WHERE f.bId = ? " +
 			"AND d.disposalDate >= TO_DATE(?, 'YYYY-MM-DD') " +
 			"AND d.disposalDate < TO_DATE(?, 'YYYY-MM-DD')";
+	
 	public static final String GET_TOTAL_DISPOSALPRICE = "SELECT NVL(SUM(d.disposalPrice), 0) AS totalDisposalPrice " +
 			"FROM DISPOSALS d " +
 			"JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id " +
 			"WHERE f.bId = ? " +
 			"AND d.disposalDate >= TO_DATE(?, 'YYYY-MM-DD') " +
 			"AND d.disposalDate < TO_DATE(?, 'YYYY-MM-DD')";
-	
-	
+
 	public static final String GET_TOP3_DISPOSALITEMS = "SELECT * " +
 			"FROM ( " +
 			"    SELECT " +
@@ -202,7 +214,6 @@ public interface Query {
 			") " +
 			"WHERE ROWNUM <= 3";
 	
-	
 	public static final String GET_DISPOSAL_REASON_RATIO = "SELECT " +
 			"    r.reason_Id, " +
 			"    r.reason, " +
@@ -219,7 +230,9 @@ public interface Query {
 			"AND d.disposalDate < TO_DATE(?, 'YYYY-MM-DD') " +
 			"GROUP BY r.reason_Id, r.reason " +
 			"ORDER BY reasonRatio DESC";
+	
 	public static final String SELECT_DAILY_DISPOSAL_AMOUNT = "SELECT TRUNC(disposalDate) AS disposalDay,COUNT(disposal_Id) AS disposalCount,NVL(SUM(disposalPrice), 0) AS totalDisposalPriceFROM DISPOSALSWHERE bId = ?AND disposalDate >= TO_DATE(?, 'YYYY-MM-DD')AND disposalDate < TO_DATE(?, 'YYYY-MM-DD')GROUP BY TRUNC(disposalDate)ORDER BY disposalDay";
+	
 	public static final String SELECT_DAILY_DISPOSAL_BY_TYPE = "SELECT " +
 			"    TRUNC(d.disposalDate) AS disposalDay, " +
 			"    f.foodMaterialType, " +
@@ -234,6 +247,7 @@ public interface Query {
 			"ORDER BY disposalDay, f.foodMaterialType";
 
 	public static final String INSERT_NOTICE = "INSERT INTO DISPOSAL_NOTICE (notice_id, disposal_id, notice_date, read_yn) VALUES (?, ?, SYSDATE, 'N')";
+	
 	public static final String GET_NOTICELIST = "SELECT " +
 			" f.foodMaterialName, " +
 			" fc.foodCategory, " +
@@ -248,36 +262,42 @@ public interface Query {
 			"AND f.expirationDate < SYSDATE " +
 			"AND NVL(d.disposalCountAll, 0) > 0 " + 
 			"ORDER BY f.expirationDate DESC";
+	
 	public static final String DELETE_ALL = "DELETE FROM DISPOSAL_NOTICE";
+	
 	public static final String UPDATE_READYN = "UPDATE DISPOSAL_NOTICE SET read_yn = 'Y' WHERE notice_id = ?";
+	
 	public static final String GET_EXPIRED_DISPOSALIDS = "SELECT d.disposal_Id " +
 			"FROM DISPOSALS d " +
 			"JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id " +
 			"WHERE f.bId = ? " +
 			"AND f.expirationDate < SYSDATE";
+	
 	public static final String GET_EXPIRED_COUNT = "SELECT COUNT(*) AS cnt " +
 			"FROM FOODM f " +
 			"LEFT JOIN DISPOSALS d ON f.foodMaterial_Id = d.foodMaterial_Id " +
 			"WHERE f.bId = ? " +
 			"AND f.expirationDate < SYSDATE " +
 			"AND NVL(d.disposalCountAll, 0) > 0";
+	
 	public static final String GET_SOLID_TOTAL = "SELECT NVL(SUM(d.disposalCountAll),0) total " +
 			"FROM DISPOSALS d " +
 			"JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id " +
 			"WHERE f.bId = ? " +
 			"AND f.foodMaterialType = '고체'" + 
 			"AND f.expirationDate < SYSDATE";
+	
 	public static final String GET_LIQUID_TOTAL = "SELECT NVL(SUM(d.disposalCountAll),0) total " +
 			"FROM DISPOSALS d " +
 			"JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id " +
 			"WHERE f.bId = ? " +
 			"AND f.foodMaterialType = '액체'" +
 			"AND f.expirationDate < SYSDATE";
+	
 	public static final String GET_MAX_OVERDAY = "SELECT NVL(MAX(TRUNC(SYSDATE - expirationDate)),0) AS max_day " +
 			"FROM FOODM " +
 			"WHERE bId = ? " +
 			"AND expirationDate < SYSDATE";
-
 
 	public static final String GET_Monthly_MENU_SALE_RANK = "SELECT " +
 			"    RANK() OVER (ORDER BY SUM(s.saleMenuCount) DESC) AS ranking, " +
@@ -315,6 +335,7 @@ public interface Query {
 			+ "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
 	public static final String SET_PW = "UPDATE USERINFO SET pw = ? WHERE bId = ? AND NAME = ? AND PHONE = ?";
+	
 	public static final String CHECK_PW_FIND_USER ="SELECT bId FROM USERINFO WHERE bId = ? AND name = ? AND phone = ?";
 
 	public static final String LOGIN = "SELECT  bId, name FROM USERINFO" 
@@ -426,6 +447,4 @@ public interface Query {
 	public static final String GET_FOOD_CATEGORY_ID =
 			"SELECT foodCategory_Id FROM FOODC "
 					+ "WHERE foodCategory = ?";
-	
-	
 }

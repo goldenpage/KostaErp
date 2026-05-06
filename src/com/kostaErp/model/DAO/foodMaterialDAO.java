@@ -1,24 +1,24 @@
 package com.kostaErp.model.DAO;
 
 import java.sql.Connection;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Date;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import com.kostaErp.model.DBCP;
+import com.kostaErp.model.Query;
 import com.kostaErp.model.VO.foodMaterialCategoryVO;
 import com.kostaErp.model.VO.foodMaterialVO;
 import com.kostaErp.model.VO.userInfoVO;
 
-import java.sql.Date;
-import com.kostaErp.model.Query;
-public class foodMaterialDAO {
-	
+public class foodMaterialDAO {	
 	public foodMaterialDAO(){}
-
+	
+	//1. 다수의 식자재 항목을 데이터베이스에 일괄 등록
 	public int addFoodMaterial(List<foodMaterialVO> list, String bId){
 		int successCount = 0;
 		String sql = Query.ADD_FOOD_MATERIAL;
@@ -45,10 +45,8 @@ public class foodMaterialDAO {
 		}
 		return successCount;
 	}
-
 	
-	
-	 // 2. 카테고리 추가
+	//2. 카테고리 추가
     public int addFoodCategory(String foodCategory){
     	String sql = Query.CHECK_FOOD_CATEGORY_EXISTS;
     	String sql2 = Query.ADD_FOOD_CATEGORY;
@@ -56,61 +54,52 @@ public class foodMaterialDAO {
         	Connection conn = DBCP.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, foodCategory);
-            ResultSet rs = stmt.executeQuery();
-            
+            ResultSet rs = stmt.executeQuery();      
             if (rs.next() && rs.getInt(1) > 0) {
                 rs.close();
                 stmt.close();
                 conn.close();
-                
                 return 0;
             }
-            
             rs.close();
             stmt.close();
-            
             PreparedStatement stmt2 = conn.prepareStatement(sql2);
             stmt2.setString(1, foodCategory);
             int result = stmt2.executeUpdate();
             stmt2.close();
             conn.close();
-            
             return result;
-
         }catch(Exception e){
             e.printStackTrace();
         }
         return -1;
     }
 
+    //3. 기존 식자재 카테고리 삭제
 	public int deleteFoodCategory(String foodCategory) {
 		int result = 0;
 		String sql = Query.DELETE_FOOD_CATEGORY;
 		try{
 			Connection conn = DBCP.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(sql);
-
 			stmt.setString(1, foodCategory);
-
 			result = stmt.executeUpdate();
-
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return result;
 	}
 
+	//4. 식자재 이름 키워드 검색
 	public List<foodMaterialVO> getFoodMaterialByName(String foodMaterialName, String bId) {
 		List<foodMaterialVO> list = new ArrayList<>();
 		String sql = Query.GET_FOOD_MATERIAL_BY_NAME;
 		try{
 			Connection conn = DBCP.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(sql);
-
 			stmt.setString(1, "%" + foodMaterialName + "%");
 			stmt.setString(2, bId);
 			ResultSet rs = stmt.executeQuery();
-
 			while (rs.next()) {
 				foodMaterialVO foodMaterial = new foodMaterialVO();
 				foodMaterial.setFoodMaterialName(rs.getString("foodMaterialName"));
@@ -119,25 +108,22 @@ public class foodMaterialDAO {
 				foodMaterial.setFoodMaterialType(rs.getString("foodMaterialType"));
 				list.add(foodMaterial);
 			}
-			
 			rs.close();
 			stmt.close();
 			conn.close();
-
 		}catch(Exception e){
 			e.printStackTrace();
 		}
 		return list;
 	}
 
+	//5. 마케팅 수신에 동의한 회원 정보 목록 조회
 	public List<userInfoVO> getMarketingMembers() throws ClassNotFoundException {
 		String sql = Query.GET_MARKETING_MEMBERS;
 		List<userInfoVO> list = new ArrayList<>();
-
 		try (Connection conn = DBCP.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(sql);
 				ResultSet rs = stmt.executeQuery()) {
-
 			while (rs.next()) {
 				userInfoVO member = new userInfoVO();
 				member.setbId(rs.getString("bid"));
@@ -145,7 +131,6 @@ public class foodMaterialDAO {
 				member.setPhone(rs.getString("phone"));
 				member.setEmail(rs.getString("email"));
 				member.setMarketingDate(rs.getString("marketingDate")); 
-
 				list.add(member);
 			}
 		} catch (SQLException e) {
@@ -154,56 +139,42 @@ public class foodMaterialDAO {
 		return list;
 	}
 
-
+	//6. 특정 사업자가 보유한 총 식자재 품목 수 조회
 	public int getFoodMaterialCount(String bId) {
 		int count = 0;
-
-		String sql = Query.GET_FOOD_MATERIAL_COUNT;
-		
+		String sql = Query.GET_FOOD_MATERIAL_COUNT;	
 		try {
 			Connection conn = DBCP.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(sql);
-
 			stmt.setString(1, bId);
-
 			ResultSet rs = stmt.executeQuery();
-
 			if (rs.next()) {
 				count = rs.getInt(1);
 			}
-
 			rs.close();
 			stmt.close();
 			conn.close();
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return count;
 	}
 
+	//7. 정렬 조건 및 페이징 처리가 적용된 식자재 목록 조회
 	public List<foodMaterialVO> getFoodMaterialList(String bId, String sortType, int page, int pageSize) {
 		List<foodMaterialVO> list = new ArrayList<foodMaterialVO>();
-
 		int startRow = (page - 1) * pageSize + 1;
 		int endRow = page * pageSize;
-
 		String sql = getFoodListSql(sortType);
-
 		try {
 			Connection conn = DBCP.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(sql);
-
 			stmt.setString(1, bId);
 			stmt.setInt(2, startRow);
 			stmt.setInt(3, endRow);
-
 			ResultSet rs = stmt.executeQuery();
-
 			while (rs.next()) {
 				foodMaterialVO vo = new foodMaterialVO();
-
 				vo.setFoodMaterialId(rs.getString("foodMaterial_Id"));
 				vo.setFoodMaterialName(rs.getString("foodMaterialName"));
 				vo.setFoodCategory(rs.getString("foodCategory"));
@@ -214,43 +185,33 @@ public class foodMaterialDAO {
 				vo.setIncomeDate(rs.getDate("incomeDate"));
 				vo.setExpirationDate(rs.getDate("expirationDate"));
 				vo.setFoodMaterialType(rs.getString("foodMaterialType"));
-
 				list.add(vo);
 			}
-
 			rs.close();
 			stmt.close();
 			conn.close();
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return list;
 	}
 
+	//8. 특정 식자재의 상세 정보 조회
 	public foodMaterialVO getFoodMaterialDetail(String foodMaterialId) {
 		foodMaterialVO vo = null;
-
-		String sql =
-				"SELECT f.foodMaterial_Id, f.foodMaterialName, c.foodCategory, " +
+		String sql = "SELECT f.foodMaterial_Id, f.foodMaterialName, c.foodCategory, " +
 						" f.foodMaterialCount, f.foodMaterialCountAll, f.foodMaterialPrice, " +
 						" f.foodMaterialType, f.vender, f.incomeDate, f.expirationDate, f.bId " +
 						"FROM FOODM f " +
 						"JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id " +
 						"WHERE f.foodMaterial_Id = ?";
-
 		try {
 			Connection conn = DBCP.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(sql);
-
 			stmt.setString(1, foodMaterialId);
-
 			ResultSet rs = stmt.executeQuery();
-
 			if (rs.next()) {
 				vo = new foodMaterialVO();
-
 				vo.setFoodMaterialId(rs.getString("foodMaterial_Id"));
 				vo.setFoodMaterialName(rs.getString("foodMaterialName"));
 				vo.setFoodCategory(rs.getString("foodCategory"));
@@ -263,21 +224,18 @@ public class foodMaterialDAO {
 				vo.setExpirationDate(rs.getDate("expirationDate"));
 				vo.setbId(rs.getString("bId"));
 			}
-
 			rs.close();
 			stmt.close();
 			conn.close();
-
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
 		return vo;
 	}
 
+	//9. (내부 메서드) 정렬 타입에 따른 SQL 정렬 문구 생성
 	private String getFoodListSql(String sortType) {
 		String orderBy = "f.foodMaterial_Id DESC";
-
 		if ("idAsc".equals(sortType)) {
 			orderBy = "f.foodMaterial_Id ASC";
 		} else if ("idDesc".equals(sortType)) {
@@ -287,45 +245,35 @@ public class foodMaterialDAO {
 		} else if ("expDesc".equals(sortType)) {
 			orderBy = "f.expirationDate DESC";
 		}
-
 		return String.format(Query.GET_FOOD_MATERIAL_LIST, orderBy);
 	}
 	
+	//10. 식자재 삭제
 	public int deleteFoodMaterial(String foodMaterialId, String bId) {
 		 int result = 0;
-
 		 Connection conn = null;
 		 PreparedStatement stmt1 = null;
 		 PreparedStatement stmt2 = null;
 		 PreparedStatement stmt3 = null;
-
 		 String sql1 = Query.DELETE_USED_BY_FOOD_MATERIAL;
 		 String sql2 = Query.DELETE_DISPOSALS_BY_FOOD_MATERIAL;
 		 String sql3 = Query.DELETE_FOOD_MATERIAL;
-
 		 try {
 		  conn = DBCP.getConnection();
 		  conn.setAutoCommit(false);
-
 		  stmt1 = conn.prepareStatement(sql1);
 		  stmt1.setString(1, foodMaterialId);
 		  stmt1.executeUpdate();
-
 		  stmt2 = conn.prepareStatement(sql2);
 		  stmt2.setString(1, foodMaterialId);
 		  stmt2.executeUpdate();
-
 		  stmt3 = conn.prepareStatement(sql3);
 		  stmt3.setString(1, foodMaterialId);
 		  stmt3.setString(2, bId);
-
 		  result = stmt3.executeUpdate();
-
 		  conn.commit();
-
 		 } catch (Exception e) {
 		  e.printStackTrace();
-
 		  try {
 		   if (conn != null) {
 		    conn.rollback();
@@ -333,13 +281,11 @@ public class foodMaterialDAO {
 		  } catch (Exception e2) {
 		   e2.printStackTrace();
 		  }
-
 		 } finally {
 		  try {
 		   if (stmt3 != null) stmt3.close();
 		   if (stmt2 != null) stmt2.close();
 		   if (stmt1 != null) stmt1.close();
-
 		   if (conn != null) {
 		    conn.setAutoCommit(true);
 		    conn.close();
@@ -348,15 +294,12 @@ public class foodMaterialDAO {
 		   e.printStackTrace();
 		  }
 		 }
-
 		 return result;
 		}
 	
-
-	// 월별 총지출액
+	//11. 월별 총지출액
 	public int getFoodMaterialTotalAmount(String bId, String startDate, String endDate) {
 		String sql = Query.GET_FOOD_MATERIAL_TOTAL_AMOUNT;
-		
 	    try (
 	        Connection conn = DBCP.getConnection();
 	        PreparedStatement stmt = conn.prepareStatement(sql)
@@ -364,28 +307,23 @@ public class foodMaterialDAO {
 	        stmt.setString(1, bId);
 	        stmt.setString(2, startDate);
 	        stmt.setString(3, endDate);
-
 	        try (ResultSet rs = stmt.executeQuery()) {
 	            if (rs.next()) {
 	                return rs.getInt("totalAmount");
 	            }
 	        }
-
 	    } catch (ClassNotFoundException e) {
 	        e.printStackTrace();
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
-
 	    return 0;
 	}
 	
-	// 월별 지출 식자재 순위
+	//12. 월별 지출 식자재 순위
 	public List<foodMaterialVO> getFoodMaterialSpendingRank(String bId, String startDate, String endDate) {
 		String sql = Query.GET_FOOD_MATERIAL_SPENDING_RANK;
-		
 	    List<foodMaterialVO> list = new ArrayList<>();
-
 	    try (
 	        Connection conn = DBCP.getConnection();
 	        PreparedStatement stmt = conn.prepareStatement(sql)
@@ -393,11 +331,9 @@ public class foodMaterialDAO {
 	        stmt.setString(1, bId);
 	        stmt.setString(2, startDate);
 	        stmt.setString(3, endDate);
-
 	        try (ResultSet rs = stmt.executeQuery()) {
 	            while (rs.next()) {
 	                foodMaterialVO vo = new foodMaterialVO();
-
 	                vo.setRanking(rs.getInt("ranking"));
 	                vo.setFoodMaterialId(rs.getString("foodMaterial_Id"));
 	                vo.setFoodMaterialName(rs.getString("foodMaterialName"));
@@ -406,25 +342,21 @@ public class foodMaterialDAO {
 	                vo.setTotalExpense(rs.getInt("totalExpense"));
 	                vo.setIncomeDate(rs.getDate("incomeDate"));
 	                vo.setbId(rs.getString("bId"));
-
 	                list.add(vo);
 	            }
 	        }
-
 	    } catch (ClassNotFoundException e) {
 	        e.printStackTrace();
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
-
 	    return list;
 	}
 	
-	// 식자재 카테고리 전체 검색(추가)
+	//13. 식자재 카테고리 전체 검색(추가)
 	public List<foodMaterialCategoryVO> getFoodCategoryList(){
 		List<foodMaterialCategoryVO> list = new ArrayList<>();
 		String sql = Query.GET_FOOD_CATEGORY_LIST;
-		
 		try{
 			Connection conn = DBCP.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -444,11 +376,10 @@ public class foodMaterialDAO {
 		return list;
 	}
 	
-	//카테고리 삭제시, 이용하고 있는 식자재가 있는지 검색(추가)
+	//14.카테고리 삭제시, 이용하고 있는 식자재가 있는지 검색(추가)
 	public boolean hasFoodMaterialByCategory(String foodCategory){
 		int count = 0;
 		String sql = Query.HAS_FOOD_MATERIAL_BY_CATEGORY;
-		
 		try{
 			Connection conn = DBCP.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -466,11 +397,10 @@ public class foodMaterialDAO {
 		return count > 0;
 	}
 	
-	//식재료 선택 시, 사용할 전체 식자재 목록 불러오기(추가)
+	//15. 식재료 선택 시, 사용할 전체 식자재 목록 불러오기(추가)
 	public List<foodMaterialVO> getFoodMaterialListAll(String bId){
 		List<foodMaterialVO> list = new ArrayList<>();
 		String sql = Query.GET_FOOD_MATERIAL_LIST_ALL;
-		
 		try{
 			Connection conn = DBCP.getConnection();
 			PreparedStatement stmt = conn.prepareStatement(sql);
@@ -491,24 +421,21 @@ public class foodMaterialDAO {
 		}
 		return list;
 	}
-	//카테고리 id 불러오기
+	
+	//16. 카테고리 id 불러오기
 	public String getCategoryId(String foodCategory){
 		String sql = Query.GET_FOOD_CATEGORY_ID;
-
         try{
         	Connection conn = DBCP.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql);
             stmt.setString(1, foodCategory);
             ResultSet rs = stmt.executeQuery();
             String categoryId = null;
-            
             if (rs.next()) 
             	categoryId = rs.getString("foodCategory_Id");
-            
             rs.close();
             stmt.close();
             conn.close();
-
             return categoryId;
         }catch(Exception e){
             e.printStackTrace();
