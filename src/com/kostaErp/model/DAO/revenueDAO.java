@@ -74,10 +74,7 @@ public class revenueDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-	
-        
+		        
 		return 0;
 	}
 	
