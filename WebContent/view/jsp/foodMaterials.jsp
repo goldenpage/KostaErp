@@ -28,7 +28,7 @@
    <div class="errorMessage">${errorMessage}</div>
 
    <div class="container">
-      <section class="sideMenu">
+      <section >
          <jsp:include page="../common/sideMenu.jsp" />
       </section>
 

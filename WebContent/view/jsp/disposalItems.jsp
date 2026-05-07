@@ -61,10 +61,8 @@
 </head>
 <body>
 	<div class="container">
-		<section class="sideMenu">
-
+		<section >
 			<jsp:include page="../common/sideMenu.jsp" />
-
 		</section>
 		<div class="main">
 			<div>

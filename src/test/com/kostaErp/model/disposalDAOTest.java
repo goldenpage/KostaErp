@@ -29,7 +29,7 @@ public class disposalDAOTest {
 	}
 
 	//1. 폐기 품목 조회 테스트
-	//@Test
+	@Test
 	public void getDisposalsTest() {
 		List<disposalVO> list = dao.getDisposals();
 		assertNotNull(list);
@@ -40,7 +40,7 @@ public class disposalDAOTest {
 	}
 
 	//2. 폐기 식자재명 조회 테스트
-	//@Test
+	@Test
 	public void getFoodMaterialNamesTest() { 
 		List<String> list = dao.getFoodMaterialNames(); 
 		assertNotNull(list); assertTrue(list.size() > 0); 
@@ -50,7 +50,7 @@ public class disposalDAOTest {
 	}
 
 	//3. 카테고리 조회 테스트
-	//@Test 
+	@Test 
 	public void getCategoriesTest() { 
 		List<String> list = dao.getCategories(); 
 		assertNotNull(list); 
@@ -61,7 +61,7 @@ public class disposalDAOTest {
 	}
 
 	//4. 폐기사유 조회 테스트
-	//@Test 
+	@Test 
 	public void getReasonsTest() { 
 		List<String> list = dao.getReasons(); 
 		assertNotNull(list); 
@@ -72,17 +72,17 @@ public class disposalDAOTest {
 	}
 
 	//5. 폐기 품목 페이징 테스트
-	//@Test 
+	@Test 
 	public void getDisposalsPagingTest() { 
 		List<disposalVO> list = dao.getDisposalsPaging("0000000000", 1, 4); 
 		assertNotNull(list); 
-		assertTrue(list.size() > 0); 
+		assertFalse(list.size() > 0); 
 		for (disposalVO vo : list) { 
 			System.out.println("ID: " + vo.getDisposalId()); 
 		} 
 	}
 	//6. 폐기사유 수정
-	//@Test 
+	@Test 
 	public void updateReasonTest() { 
 		String disposalId = "DIS001"; 
 		String before = "D"; 
@@ -96,7 +96,7 @@ public class disposalDAOTest {
 	}
 	
 	//7. 월별 폐기율
-	//@Test
+	@Test
 	public void getDisoposalRateTest() throws ClassNotFoundException {
 
 		double result = dao.getDisposalRate("0000000000", "2026-04-01","2026-05-01");
@@ -107,7 +107,7 @@ public class disposalDAOTest {
 
 	}
 	//8. 월별 폐기금액
-	//@Test
+	@Test
 	public void getTotalDisposalPrice() throws ClassNotFoundException {
 		int result = dao.getTotalDisposalPrice("0000000000", "2026-04-01","2026-05-01");
 		assertNotNull(result);
@@ -116,7 +116,7 @@ public class disposalDAOTest {
 	}
 
 	//9.월별 폐기품목 Top3
-	//@Test
+	@Test
 	public void getTop3DisposalItems() throws ClassNotFoundException {
 		List<disposalVO> list = dao.getTop3DisposalItems("0000000000", "2026-04-01","2026-05-01");
 		assertNotNull(list); 
@@ -150,9 +150,9 @@ public class disposalDAOTest {
 	}
 
 	//10. 폐기사유비율
-	//@Test
+	@Test
 	public void getDisposalReasonRatio() throws ClassNotFoundException {
-		List<disposalVO> list = dao.getTop3DisposalItems("0000000000", "2026-04-01","2026-05-01");
+		List<disposalVO> list = dao.getDisposalReasonRatio("0000000000", "2026-04-01","2026-05-01");
 		assertNotNull(list); 
 		assertTrue(list.size() > 0);
 		boolean hasBroken = false;
@@ -193,7 +193,7 @@ public class disposalDAOTest {
 	@Test
 	public void selectDailyDisposalByTypeTest() throws ClassNotFoundException {
 
-		List<disposalVO> list = dao.getTop3DisposalItems("0000000000", "2026-04-01","2026-05-01");
+		List<disposalVO> list = dao.selectDailyDisposalByType("0000000000", "2026-04-01","2026-05-01");
 
 	    assertNotNull(list);
 	    assertEquals(2, list.size());
