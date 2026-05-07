@@ -1,8 +1,5 @@
-<style>
 ul {
 	list-style: none;
-	margin: 0;
-	padding: 0;
 }
 
 li{
@@ -17,7 +14,6 @@ body {
 .container {
 	display: flex;
 	min-height: 100vh;
-	
 }
 
 .sideMenu {
@@ -31,7 +27,6 @@ body {
 }
 
 .content_item {
-	border: 2px solid 
 	padding: 15px;
 }
 
@@ -53,10 +48,6 @@ body {
 .list_container th, .list_container td {
 	border-bottom: 1px solid #ddd;
 	padding: 10px 8px;
-}
-
-.list_container th {
-	
 }
 
 .center {
@@ -85,4 +76,3 @@ body {
 	color: white;
 	border-color: #2f49ff;
 }
-</style>

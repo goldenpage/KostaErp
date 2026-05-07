@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,7 +13,8 @@ import com.kostaErp.model.Query;
 import com.kostaErp.model.VO.noticeVO;
 
 public class noticeDAO {
-	// 알림 추가
+	
+	//1. 새로운 알림 추가 (폐기 ID와 매칭하여 등록)
 	public boolean insertNotice(String noticeId, String disposalId) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -38,7 +40,7 @@ public class noticeDAO {
         return false;
     }
 
-    // 알림 목록 조회
+	//2. 사업자별 알림 목록 조회 (식자재명, 카테고리, 유통기한 등 포함)
 	public ArrayList<noticeVO> getNoticeList(String bId) {
 	    ArrayList<noticeVO> list = new ArrayList<>();
 	    try (
@@ -63,7 +65,7 @@ public class noticeDAO {
 	    return list;
 	}
 
- // 전체 삭제 (롤백 포함)
+	//3. 전체 삭제 (롤백 포함)
     public boolean deleteAll() {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -92,7 +94,7 @@ public class noticeDAO {
         return false;
     }
     
- // 읽음 처리
+    //4. 특정 알림의 읽음 상태 업데이트 (읽음 처리)
     public boolean updateReadYn(String noticeId) {
         Connection conn = null;
         PreparedStatement pstmt = null;
@@ -117,6 +119,7 @@ public class noticeDAO {
         return false;
     }
     
+    //5. 유통기한이 만료된 폐기 항목의 ID 목록 조회
     public List<String> getExpiredDisposalIds(String bId) {
         List<String> list = new ArrayList<>();
         try (
@@ -134,6 +137,7 @@ public class noticeDAO {
         return list;
     }
 
+    //6. 유통기한 만료 항목의 총 개수 조회
     public int getExpiredCount(String bId) {
         try (
             Connection conn = DBCP.getConnection();
@@ -150,6 +154,7 @@ public class noticeDAO {
         return 0;
     }
 
+    //7. 고체 형태 식자재의 총 폐기 수량 조회
     public int getSolidTotal(String bId) {
         try (
             Connection conn = DBCP.getConnection();
@@ -165,7 +170,7 @@ public class noticeDAO {
         }
         return 0;
     }
-
+    //8. 액체 형태 식자재의 총 폐기 수량 조회
     public int getLiquidTotal(String bId) {
         try (
             Connection conn = DBCP.getConnection();
@@ -182,6 +187,7 @@ public class noticeDAO {
         return 0;
     }
 
+    //9. 유통기한 경과일 중 가장 오래된 경과일수(최대 경과일) 조회
     public int getMaxOverDay(String bId) {
         try (
             Connection conn = DBCP.getConnection();
