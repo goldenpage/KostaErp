@@ -14,6 +14,7 @@
 
 li {
 	cursor: pointer;
+	list-style: none;
 }
 
 li:hover{

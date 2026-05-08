@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="noticeMapper">
+	<insert id="insertNotice" parameterType="com.kostaErp.model.VO.noticeVO">
+		INSERT INTO
+		DISPOSAL_NOTICE (notice_id, disposal_id, notice_date,
+		read_yn) VALUES
+		(#{noticeId}, #{disposalId}, SYSDATE, 'N')
+	</insert>
+
+	<select id="getNoticeList" resultType="com.kostaErp.model.VO.noticeVO">
+	 <![CDATA[
+		SELECT f.foodMaterialName, fc.foodCategory, NVL(d.disposalCountAll, 0) AS disposalCountAll, f.foodMaterialType, f.expirationDate, d.disposal_Id
+		FROM FOODM f
+		JOIN FOODC fc ON f.foodCategory_Id = fc.foodCategory_Id
+		LEFT JOIN DISPOSALS d ON f.foodMaterial_Id = d.foodMaterial_Id
+		WHERE f.bId = #{bId} AND f.expirationDate < SYSDATE AND NVL(d.disposalCountAll, 0) > 0
+		ORDER BY f.expirationDate DESC
+		]]>
+	</select>
+
+
+	<delete id="deleteNoticeAll" parameterType="com.kostaErp.model.VO.noticeVO">
+		DELETE FROM
+		DISPOSAL_NOTICE
+	</delete>
+
+
+	<update id="updateReadYn" parameterType="com.kostaErp.model.VO.noticeVO">
+		UPDATE DISPOSAL_NOTICE
+		SET read_yn = 'Y' WHERE notice_id = #{noticeId}
+	</update>
+
+
+	<select id="getExpiredIdList" resultType="com.kostaErp.model.VO.noticeVO">
+		<![CDATA[
+		SELECT d.disposal_Id
+		FROM DISPOSALS d
+		JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id
+		WHERE f.bId = #{bId}
+		AND f.expirationDate < SYSDATE
+		]]>
+	</select>
+
+
+	<select id="getExpiredCount" resultType="int">
+			<![CDATA[
+			SELECT COUNT(*) AS cnt
+			FROM FOODM f
+			LEFT JOIN DISPOSALS d ON f.foodMaterial_Id = d.foodMaterial_Id
+			WHERE f.bId = #{bId}
+			AND f.expirationDate < SYSDATE
+			AND NVL(d.disposalCountAll, 0) > 0
+			]]>
+	</select>
+
+
+	<select id="getSolidTotal" resultType="com.kostaErp.model.VO.noticeVO">
+			<![CDATA[
+			SELECT NVL(SUM(d.disposalCountAll),0) total
+			FROM DISPOSALS d
+			JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id
+			WHERE f.bId = #{bId}
+			AND f.foodMaterialType = '고체'
+			AND f.expirationDate < SYSDATE
+			]]>
+	</select>
+
+
+	<select id="getLiquidTotal" resultType="com.kostaErp.model.VO.noticeVO">
+			<![CDATA[
+			SELECT NVL(SUM(d.disposalCountAll),0) total
+			FROM DISPOSALS d
+			JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id
+			WHERE f.bId =  #{bId}
+			AND f.foodMaterialType = '액체'
+			AND f.expirationDate < SYSDATE
+			]]>
+	</select>
+
+
+
+	<select id="getMaxOverDay" resultType="com.kostaErp.model.VO.noticeVO">
+			<![CDATA[
+			SELECT NVL(MAX(TRUNC(SYSDATE - expirationDate)),0) AS max_day 
+			FROM FOODM 
+			WHERE bId = #{bId}
+			AND expirationDate < SYSDATE
+			]]>
+	</select>
+
+</mapper>
