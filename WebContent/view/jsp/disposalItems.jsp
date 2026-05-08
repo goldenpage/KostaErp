@@ -78,7 +78,7 @@
 							<option>정육</option>
 							<option>가공식품</option>
 							<option>유제품</option>
-							<option>양념</option>
+							<option>소스/양념</option>
 					</select></li>
 					<li>사유</li>
 					<li><select id="reasonFilter" onchange="loadData(1)">
