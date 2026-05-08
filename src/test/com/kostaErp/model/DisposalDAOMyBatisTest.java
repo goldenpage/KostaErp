@@ -10,14 +10,14 @@ import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Test;
 
-import com.kostaErp.model.DBCPMyBatis;
+import com.kostaErp.model.DBCPMybatis;
 import com.kostaErp.model.VO.disposalVO;
 
 public class DisposalDAOMyBatisTest {
 	//1
 	//@Test
 	public void getDisposalsTest(){
-		SqlSessionFactory factory = DBCPMyBatis.getSqlSessionFactory();
+		SqlSessionFactory factory = DBCPMybatis.getSqlSessionFactory();
 		SqlSession session = factory.openSession();
 		try {
 			List<disposalVO> list = session.selectList("DisposalMapper.getDisposals");
@@ -36,7 +36,7 @@ public class DisposalDAOMyBatisTest {
 	//2
 	//@Test
 	public void getFoodMaterialNamesTest() {
-		SqlSessionFactory factory = DBCPMyBatis.getSqlSessionFactory();
+		SqlSessionFactory factory = DBCPMybatis.getSqlSessionFactory();
 		SqlSession session = factory.openSession();
 		try {
 			List<String> nameList = session.selectList("DisposalMapper.getFoodMaterialNames");
@@ -55,7 +55,7 @@ public class DisposalDAOMyBatisTest {
 	//3
 	//@Test
 	public void getCategoriesTest(){
-		SqlSessionFactory factory = DBCPMyBatis.getSqlSessionFactory();
+		SqlSessionFactory factory = DBCPMybatis.getSqlSessionFactory();
 		SqlSession session = factory.openSession();
 		try{
 			List<String> categoriesList = session.selectList("DisposalMapper.getCategories");
@@ -74,7 +74,7 @@ public class DisposalDAOMyBatisTest {
 	//4
 	//@Test
 	public void getDisposalsFilteredPagingTest() {
-		SqlSessionFactory factory = DBCPMyBatis.getSqlSessionFactory();
+		SqlSessionFactory factory = DBCPMybatis.getSqlSessionFactory();
 		SqlSession session = factory.openSession();
 
 		try {
@@ -109,7 +109,7 @@ public class DisposalDAOMyBatisTest {
 	//5
 	//@Test
 	public void getDisposalCountTest() {
-		SqlSessionFactory factory = DBCPMyBatis.getSqlSessionFactory();
+		SqlSessionFactory factory = DBCPMybatis.getSqlSessionFactory();
 		SqlSession session = factory.openSession();
 
 		try {
@@ -137,7 +137,7 @@ public class DisposalDAOMyBatisTest {
 	//6
 	//@Test
 	public void getTotalCountTest(){
-		SqlSessionFactory factory = DBCPMyBatis.getSqlSessionFactory();
+		SqlSessionFactory factory = DBCPMybatis.getSqlSessionFactory();
 		SqlSession session = factory.openSession();
 		
 		try{
@@ -164,7 +164,7 @@ public class DisposalDAOMyBatisTest {
 	//7
 	//@Test
 	public void getReasonsTest(){
-		SqlSessionFactory factory = DBCPMyBatis.getSqlSessionFactory();
+		SqlSessionFactory factory = DBCPMybatis.getSqlSessionFactory();
 		SqlSession session = factory.openSession();
 		
 		try {
@@ -186,7 +186,7 @@ public class DisposalDAOMyBatisTest {
 	//8
 	//@Test
 	public void getDisposalsByCategoryAndBIdTest(){
-		SqlSessionFactory factory = DBCPMyBatis.getSqlSessionFactory();
+		SqlSessionFactory factory = DBCPMybatis.getSqlSessionFactory();
 	    SqlSession session = factory.openSession();
 
 	    try {
@@ -216,7 +216,7 @@ public class DisposalDAOMyBatisTest {
 	//9
 	//@Test
 	public void getDisposalsPagingTest(){
-		SqlSessionFactory factory = DBCPMyBatis.getSqlSessionFactory();
+		SqlSessionFactory factory = DBCPMybatis.getSqlSessionFactory();
 	    SqlSession session = factory.openSession();
 
 	    try {
@@ -253,7 +253,7 @@ public class DisposalDAOMyBatisTest {
 	//10
 	//@Test
 	public void updateReasonTest(){
-		SqlSessionFactory factory = DBCPMyBatis.getSqlSessionFactory();
+		SqlSessionFactory factory = DBCPMybatis.getSqlSessionFactory();
 		SqlSession session = factory.openSession();
 		
 		try{
@@ -285,7 +285,7 @@ public class DisposalDAOMyBatisTest {
 	//11
 	//@Test
 	public void getExpiredDisposalIdsTest() {
-	    SqlSessionFactory factory = DBCPMyBatis.getSqlSessionFactory();
+	    SqlSessionFactory factory = DBCPMybatis.getSqlSessionFactory();
 	    SqlSession session = factory.openSession();
 
 	    try {
@@ -315,7 +315,7 @@ public class DisposalDAOMyBatisTest {
 	//12
 	//@Test
 	public void getDisposalRateTest() {
-	    SqlSessionFactory factory = DBCPMyBatis.getSqlSessionFactory();
+	    SqlSessionFactory factory = DBCPMybatis.getSqlSessionFactory();
 	    SqlSession session = factory.openSession();
 
 	    try {
@@ -347,7 +347,7 @@ public class DisposalDAOMyBatisTest {
 	//13
 	//@Test
 	public void getTotalDisposalPriceTest() {
-	    SqlSessionFactory factory = DBCPMyBatis.getSqlSessionFactory();
+	    SqlSessionFactory factory = DBCPMybatis.getSqlSessionFactory();
 	    SqlSession session = factory.openSession();
 
 	    try {
@@ -379,7 +379,7 @@ public class DisposalDAOMyBatisTest {
 	//14
 	//@Test
 	public void getTop3DisposalItemsTest() {
-	    SqlSessionFactory factory = DBCPMyBatis.getSqlSessionFactory();
+	    SqlSessionFactory factory = DBCPMybatis.getSqlSessionFactory();
 	    SqlSession session = factory.openSession();
 
 	    try {
@@ -416,7 +416,7 @@ public class DisposalDAOMyBatisTest {
 	//15
 	//@Test
 	public void getDisposalReasonRatioTest() {
-	    SqlSessionFactory factory = DBCPMyBatis.getSqlSessionFactory();
+	    SqlSessionFactory factory = DBCPMybatis.getSqlSessionFactory();
 	    SqlSession session = factory.openSession();
 
 	    try {
@@ -452,7 +452,7 @@ public class DisposalDAOMyBatisTest {
 	//16
 	//@Test
 	public void selectDailyDisposalAmountTest() {
-	    SqlSessionFactory factory = DBCPMyBatis.getSqlSessionFactory();
+	    SqlSessionFactory factory = DBCPMybatis.getSqlSessionFactory();
 	    SqlSession session = factory.openSession();
 
 	    try {
@@ -488,7 +488,7 @@ public class DisposalDAOMyBatisTest {
 	//17
 	@Test
 	public void selectDailyDisposalByTypeTest() {
-	    SqlSessionFactory factory = DBCPMyBatis.getSqlSessionFactory();
+	    SqlSessionFactory factory = DBCPMybatis.getSqlSessionFactory();
 	    SqlSession session = factory.openSession();
 
 	    try {

@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 import org.apache.ibatis.session.SqlSession;
 
-import com.kostaErp.model.DBCPMyBatis;
+import com.kostaErp.model.DBCPMybatis;
 import com.kostaErp.model.DAO.Interface.DisposalDAOInterface;
 import com.kostaErp.model.VO.disposalVO;
 
@@ -16,7 +16,7 @@ public class DisposalDAOMyBatis implements DisposalDAOInterface{
 	//1
 	@Override
 	public List<disposalVO> getDisposals() {
-		SqlSession session = DBCPMyBatis.getSqlSessionFactory().openSession();
+		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		List<disposalVO> list = session.selectList("DisposalMapper.getDisposals");
 		session.close();
 		return list;
@@ -25,7 +25,7 @@ public class DisposalDAOMyBatis implements DisposalDAOInterface{
 	//2
 	@Override
 	public List<String> getFoodMaterialNames() {
-		SqlSession session = DBCPMyBatis.getSqlSessionFactory().openSession();
+		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		List<String> list = session.selectList("DisposalMapper.getFoodMaterialNames");
 		session.close();
 		return list;
@@ -34,7 +34,7 @@ public class DisposalDAOMyBatis implements DisposalDAOInterface{
 	//3
 	@Override
 	public List<String> getCategories() {
-		SqlSession session = DBCPMyBatis.getSqlSessionFactory().openSession();
+		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		List<String> list = session.selectList("DisposalMapper.getCategories");
 		session.close();
 		return list;
@@ -43,7 +43,7 @@ public class DisposalDAOMyBatis implements DisposalDAOInterface{
 	//4
 	@Override
 	public List<disposalVO> getDisposalsFilteredPaging(String bId, String category, String reason, int start, int end) {
-		SqlSession session = DBCPMyBatis.getSqlSessionFactory().openSession();
+		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		Map<String, Object> map = new HashMap<>();
 		map.put("bId", bId);
 		map.put("category", category);
@@ -59,7 +59,7 @@ public class DisposalDAOMyBatis implements DisposalDAOInterface{
 	//5
 	@Override
 	public int getDisposalCount(String bId, String category, String reason) {
-		SqlSession session = DBCPMyBatis.getSqlSessionFactory().openSession();
+		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		Map<String, Object> map = new HashMap<>();
 		map.put("bId", bId);
 		map.put("category", category);
@@ -73,7 +73,7 @@ public class DisposalDAOMyBatis implements DisposalDAOInterface{
 	//6
 	@Override
 	public int getTotalCount(String bId, String category, String reason) {
-		SqlSession session = DBCPMyBatis.getSqlSessionFactory().openSession();
+		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		 Map<String, Object> map = new HashMap<>();
 		 map.put("bId", bId);
 		 map.put("category", category);
@@ -87,7 +87,7 @@ public class DisposalDAOMyBatis implements DisposalDAOInterface{
 	//7
 	@Override
 	public List<String> getReasons() {
-		SqlSession session = DBCPMyBatis.getSqlSessionFactory().openSession();
+		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		List<String> list = session.selectList("DisposalMapper.getReason");
 		session.close();
 		return list;
@@ -96,7 +96,7 @@ public class DisposalDAOMyBatis implements DisposalDAOInterface{
 	//8
 	@Override
 	public List<disposalVO> getDisposalsByCategoryAndBId(String category, String bId) {
-		SqlSession session = DBCPMyBatis.getSqlSessionFactory().openSession();
+		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		Map<String, Object> map = new HashMap<>();
 		map.put("category", category);
 		map.put("bId", bId);
@@ -109,7 +109,7 @@ public class DisposalDAOMyBatis implements DisposalDAOInterface{
 	//9
 	@Override
 	public List<disposalVO> getDisposalsPaging(String bId, int start, int end) {
-		SqlSession session = DBCPMyBatis.getSqlSessionFactory().openSession();
+		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		Map<String, Object> map = new HashMap<>();
 		map.put("bId", bId);
 		map.put("start", start);
@@ -123,7 +123,7 @@ public class DisposalDAOMyBatis implements DisposalDAOInterface{
 	//10
 	@Override
 	public boolean updateReason(String disposalId, String reasonId) {
-		SqlSession session = DBCPMyBatis.getSqlSessionFactory().openSession();
+		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		Map<String, Object> map = new HashMap<>();
 		map.put("disposalId",  disposalId);
 		map.put("reasonId",  reasonId);
@@ -141,7 +141,7 @@ public class DisposalDAOMyBatis implements DisposalDAOInterface{
 	//11
 	@Override
 	public List<String> getExpiredDisposalIds(String bId) {
-		SqlSession session = DBCPMyBatis.getSqlSessionFactory().openSession();
+		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		List<String> list = session.selectList("DisposalMapper.getExpiredDisposalIds", bId);
 		session.close();
 		return list;
@@ -150,7 +150,7 @@ public class DisposalDAOMyBatis implements DisposalDAOInterface{
 	//12
 	@Override
 	public double getDisposalRate(String bId, String startDate, String endDate) {
-		SqlSession session = DBCPMyBatis.getSqlSessionFactory().openSession();
+		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		
 		Map<String, Object> map = new HashMap<>();
 		map.put("bId", bId);
@@ -164,7 +164,7 @@ public class DisposalDAOMyBatis implements DisposalDAOInterface{
 	//13
 	@Override
 	public int getTotalDisposalPrice(String bId, String startDate, String endDate) {
-		SqlSession session = DBCPMyBatis.getSqlSessionFactory().openSession();
+		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		
 		Map<String, String> map = new HashMap<>();
 		map.put("bId", bId);
@@ -179,7 +179,7 @@ public class DisposalDAOMyBatis implements DisposalDAOInterface{
 	//14
 	@Override
 	public List<disposalVO> getTop3DisposalItems(String bId, String startDate, String endDate) {
-		SqlSession session = DBCPMyBatis.getSqlSessionFactory().openSession();
+		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		
 		Map<String, String> map = new HashMap<>();
 		map.put("bId", bId);
@@ -194,7 +194,7 @@ public class DisposalDAOMyBatis implements DisposalDAOInterface{
 	//15
 	@Override
 	public List<disposalVO> getDisposalReasonRatio(String bId, String startDate, String endDate) {
-		SqlSession session = DBCPMyBatis.getSqlSessionFactory().openSession();
+		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		
 		Map<String, String> map = new HashMap<>();
 		map.put("bId", bId);
@@ -209,7 +209,7 @@ public class DisposalDAOMyBatis implements DisposalDAOInterface{
 	//16
 	@Override
 	public List<disposalVO> selectDailyDisposalAmount(String bId, String startDate, String endDate) {
-		SqlSession session = DBCPMyBatis.getSqlSessionFactory().openSession();
+		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		
 		Map<String, String> map = new HashMap<>();
 		map.put("bId", bId);
@@ -224,7 +224,7 @@ public class DisposalDAOMyBatis implements DisposalDAOInterface{
 	//17
 	@Override
 	public List<disposalVO> selectDailyDisposalByType(String bId, String startDate, String endDate) {
-		SqlSession session = DBCPMyBatis.getSqlSessionFactory().openSession();
+		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		
 		Map<String, String> map = new HashMap<>();
 		map.put("bId", bId);
