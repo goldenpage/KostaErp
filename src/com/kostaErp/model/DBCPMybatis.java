@@ -21,7 +21,6 @@ public class DBCPMybatis {
 			try {
 				in=Resources.getResourceAsStream(resource); 
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 				throw new NullPointerException("환경설정오류");
 			} 
