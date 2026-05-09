@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.ibatis.session.SqlSession;
 
 import com.kostaErp.model.DBCPMybatis;
+import com.kostaErp.model.Interface.MenuDAOInterface;
 import com.kostaErp.model.VO.MenuCategoryVOMybatis;
 import com.kostaErp.model.VO.MenuVOMybatis;
 import com.kostaErp.model.VO.UsedVOMybatis;
@@ -109,7 +110,7 @@ public class MenuDAOMybatis implements MenuDAOInterface{
 		return result;
 	}
 
-	// 8
+	// 8. 식자재 차감
 	@Override
 	public boolean updateFoodMaterialAfterSale(String menuId, int saleCount, String bId) {
 		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
@@ -126,7 +127,7 @@ public class MenuDAOMybatis implements MenuDAOInterface{
 		return result > 0;
 	}
 
-	// 9
+	// 9. 메뉴 카테고리 전체 가져오기
 	@Override
 	public List<MenuCategoryVOMybatis> getMenuCategoryList(String bId) {
 		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
@@ -138,7 +139,7 @@ public class MenuDAOMybatis implements MenuDAOInterface{
 		return result;
 	}
 
-	// 10
+	// 10. 메뉴 카테고리 중복체크
 	@Override
 	public boolean hasMenuByCategory(String menuCategory) {
 		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
@@ -149,7 +150,7 @@ public class MenuDAOMybatis implements MenuDAOInterface{
 		return result;
 	}
 
-	// 11
+	// 11. 메뉴 중복체크
 	@Override
 	public boolean hasMenuCheck(String menuName) {
 		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
@@ -161,7 +162,7 @@ public class MenuDAOMybatis implements MenuDAOInterface{
 		return result;
 	}
 	
-	// 12
+	// 12. 메뉴 카테고리id가져오기
 	@Override
 	public String getCategoryId(String menuCategory) {
 		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
