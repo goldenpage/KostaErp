@@ -48,7 +48,7 @@
 		SELECT *
 		FROM (
 			SELECT ROW_NUMBER() OVER (ORDER BY ${orderBy}) AS rn,
-			f.foodMaterial_Id, f.foodMaterialName, c.foodCategory,
+			f.foodMaterial_Id AS foodMaterialId, f.foodMaterialName, c.foodCategory,
 			f.foodMaterialCount, f.foodMaterialCountAll, f.foodMaterialPrice,
 			f.vender, f.incomeDate, f.expirationDate, f.foodMaterialType
 			FROM FOODM f
@@ -59,7 +59,7 @@
 	</select>
 
 	<select id="getFoodMaterialDetail" parameterType="String" resultType="com.kostaErp.model.VO.foodMaterialVO">
-		SELECT f.foodMaterial_Id, f.foodMaterialName, c.foodCategory,
+		SELECT f.foodMaterial_Id AS foodMaterialId, f.foodMaterialName, c.foodCategory,
 		f.foodMaterialCount, f.foodMaterialCountAll, f.foodMaterialPrice,
 		f.foodMaterialType, f.vender, f.incomeDate, f.expirationDate, f.bId
 		FROM FOODM f
