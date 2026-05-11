@@ -5,7 +5,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.kostaErp.model.DAO.DisposalDAOMyBatis;
 import com.kostaErp.model.DAO.disposalDAO;
+import com.kostaErp.model.DAO.Interface.DisposalDAOInterface;
 import com.kostaErp.model.VO.disposalVO;
 
 public class disposalUIAction implements Action {
@@ -24,7 +26,8 @@ public class disposalUIAction implements Action {
             return "/jsp/login.jsp"; 
         }
         
-        disposalDAO dao = new disposalDAO();
+        //disposalDAO dao = new disposalDAO();
+        DisposalDAOInterface dao = new DisposalDAOMyBatis();
         String disposalId = request.getParameter("disposalId");
         String reasonId = request.getParameter("reasonId");
 

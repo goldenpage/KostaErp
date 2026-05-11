@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DisposalMapper">
+	<select id="getDisposals" resultType="com.kostaErp.model.VO.disposalVO">
+		SELECT d.disposal_Id,
+		f.foodMaterialName, fc.foodCategory,
+		d.disposalCountAll,
+		d.disposalPrice, d.disposalDate, r.reason_Id,
+		r.reason
+		FROM DISPOSALS d
+		JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id
+		JOIN FOODC fc ON
+		f.foodCategory_Id = fc.foodCategory_Id
+		JOIN REASON r ON d.reason_Id =
+		r.reason_Id
+		ORDER BY d.disposal_Id DESC
+	</select>
+	<select id="getFoodMaterialNames" resultType="String">
+		SELECT
+		f.foodMaterialName
+		FROM DISPOSALS d
+		JOIN FOODM f ON d.foodMaterial_Id =
+		f.foodMaterial_Id
+	</select>
+	<select id="getCategories" resultType="String">
+		SELECT fc.foodCategory
+		FROM DISPOSALS d
+		JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id
+		JOIN FOODC fc ON f.foodCategory_Id = fc.foodCategory_Id
+	</select>
+	<select id="getDisposalsFilteredPaging" resultType="com.kostaErp.model.VO.disposalVO">
+		SELECT * FROM (
+		SELECT
+		d.disposal_Id as disposalId, f.foodMaterialName, fc.foodCategory, f.foodMaterialType,
+		d.disposalCountAll, d.disposalPrice, d.disposalDate, r.reason,
+		ROW_NUMBER() OVER (ORDER BY d.disposal_Id DESC) as rn
+		FROM DISPOSALS d
+		JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id
+		JOIN FOODC fc ON f.foodCategory_Id = fc.foodCategory_Id
+		JOIN REASON r ON d.reason_Id = r.reason_Id
+		WHERE f.bId = #{bId}
+		<if test="category != null and category != '' and category != '전체'">
+			AND fc.foodCategory = #{category}
+		</if>
+		<if test="reason != null and reason != '' and reason != '전체'">
+			AND r.reason = #{reason}
+		</if>
+		) WHERE rn BETWEEN #{start} AND #{end}
+	</select>
+	<select id="getDisposalCount" resultType="int">
+		SELECT COUNT(*)
+		FROM DISPOSALS d
+		JOIN FOODM f ON d.foodMaterial_Id =
+		f.foodMaterial_Id
+		JOIN FOODC fc ON f.foodCategory_Id =
+		fc.foodCategory_Id
+		JOIN REASON r ON d.reason_Id = r.reason_Id
+		WHERE
+		f.BID = #{bId}
+		<if test="category != null and category != '' and category != '전체'">
+			AND fc.foodCategory = #{category}
+		</if>
+		<if test="reason != null and reason != '' and reason != '전체'">
+			AND r.reason = #{reason}
+		</if>
+	</select>
+	<select id="getTotalCount" resultType="int">
+		SELECT COUNT(*)
+		FROM DISPOSALS d
+		JOIN FOODM f ON d.foodMaterial_Id =
+		f.foodMaterial_Id
+		JOIN FOODC fc ON f.foodCategory_Id =
+		fc.foodCategory_Id
+		JOIN REASON r ON d.reason_Id = r.reason_Id
+		WHERE
+		f.BID = #{bId}
+		<if test="category != null and category != '' and category != '전체'">
+			AND fc.foodCategory = #{category}
+		</if>
+		<if test="reason != null and reason != '' and reason != '전체'">
+			AND r.reason = #{reason}
+		</if>
+	</select>
+	<select id="getReason" resultType="String">
+		SELECT reason FROM REASON
+	</select>
+	<select id="getDisposalsByCategoryAndBId" resultType="com.kostaErp.model.VO.disposalVO">
+		SELECT
+		d.disposal_Id, f.foodMaterialName, fc.foodCategory,
+		f.foodMaterialType, d.disposalCountAll, d.disposalPrice,
+		d.disposalDate, r.reason
+		FROM DISPOSALS d
+		JOIN FOODM f ON
+		d.foodMaterial_Id = f.foodMaterial_Id
+		JOIN FOODC fc ON
+		f.foodCategory_Id = fc.foodCategory_Id
+		JOIN REASON r ON d.reason_Id =
+		r.reason_Id
+		WHERE fc.foodCategory = #{category} AND f.bId = #{bId}
+	</select>
+	<select id="getDisposalsPaging" resultType="com.kostaErp.model.VO.disposalVO">
+		SELECT * FROM (
+		SELECT d.*, f.foodMaterialName, fc.foodCategory, r.reason, ROWNUM as rn
+		FROM DISPOSALS d
+		JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id
+		JOIN FOODC fc ON f.foodCategory_Id = fc.foodCategory_Id
+		JOIN REASON r ON d.reason_Id = r.reason_Id
+		WHERE f.bId = #{bId}
+		ORDER BY d.disposal_Id DESC
+		) WHERE rn BETWEEN #{start} AND #{end}
+	</select>
+	<update id="updateReason">
+		UPDATE DISPOSALS SET reason_Id = #{reasonId} WHERE disposal_Id =
+		#{disposalId}
+	</update>
+	<select id="getExpiredDisposalIds" resultType="String">
+		SELECT d.disposal_Id
+		FROM DISPOSALS d
+		JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id
+		WHERE f.bId = #{bId}
+		AND f.expirationDate &lt; SYSDATE
+	</select>
+	<select id="getDisposalRate" resultType="double">
+		SELECT 
+        NVL(ROUND(SUM(d.disposalCountAll) * 100 / NULLIF(SUM(f.foodMaterialCountAll), 0), 2), 0) AS disposalRate
+    FROM DISPOSALS d
+    JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id
+    WHERE f.bId = #{bId}
+      AND d.disposalDate &gt;= TO_DATE(#{startDate}, 'YYYY-MM-DD')
+      AND d.disposalDate &lt; TO_DATE(#{endDate}, 'YYYY-MM-DD')     
+	</select>
+	<select id="getTotalDisposalPrice" resultType="int">
+		SELECT
+        NVL(SUM(d.disposalPrice), 0) as totalDisposalPrice
+    FROM DISPOSALS d
+    JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id
+    WHERE f.bId = #{bId} 
+      AND d.disposalDate BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD') AND TO_DATE(#{endDate}, 'YYYY-MM-DD')
+	</select>
+	<select id="getTop3DisposalItems" resultType="com.kostaErp.model.VO.disposalVO">
+		SELECT * FROM (
+		SELECT f.foodMaterial_Id, f.foodMaterialName, SUM(d.disposalPrice) as
+		totalDisposalPrice, SUM(d.disposalCountAll) as disposalCount
+		FROM DISPOSALS d
+		JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id
+		WHERE f.bId = #{bId} AND d.disposalDate BETWEEN #{startDate} AND #{endDate}
+		GROUP BY f.foodMaterial_Id, f.foodMaterialName
+		ORDER BY totalDisposalPrice DESC
+		) WHERE ROWNUM &lt;= 3
+	</select>
+	<select id="getDisposalReasonRatio" resultType="com.kostaErp.model.VO.disposalVO">
+		SELECT r.reason_Id, r.reason, COUNT(*) as disposalCount,
+		(COUNT(*) / SUM(COUNT(*)) OVER()) * 100 as reasonRatio
+		FROM DISPOSALS d
+		JOIN REASON r ON d.reason_Id = r.reason_Id
+		JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id
+		WHERE f.bId = #{bId} AND d.disposalDate BETWEEN #{startDate} AND #{endDate}
+		GROUP BY r.reason_Id, r.reason
+	</select>
+	<select id="selectDailyDisposalAmount" resultType="com.kostaErp.model.VO.disposalVO">
+		SELECT 
+        d.disposalDate as disposalDay, 
+        SUM(d.disposalCountAll) as disposalCount,
+        SUM(d.disposalPrice) as totalDisposalPrice
+    FROM DISPOSALS d
+    JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id
+    WHERE f.bId = #{bId} 
+      AND d.disposalDate BETWEEN TO_DATE(#{startDate}, 'YYYY-MM-DD') AND TO_DATE(#{endDate}, 'YYYY-MM-DD')
+    GROUP BY d.disposalDate
+    ORDER BY d.disposalDate
+	</select>
+	<select id="selectDailyDisposalByType" resultType="com.kostaErp.model.VO.disposalVO">
+		SELECT d.disposalDate as disposalDay, f.foodMaterialType,
+		SUM(d.disposalCountAll) as disposalCount, SUM(d.disposalPrice) as
+		totalDisposalPrice
+		FROM DISPOSALS d
+		JOIN FOODM f ON d.foodMaterial_Id = f.foodMaterial_Id
+		WHERE f.bId = #{bId} AND d.disposalDate BETWEEN #{startDate} AND #{endDate}
+		GROUP BY d.disposalDate, f.foodMaterialType
+		ORDER BY d.disposalDate
+	</select>
+
+</mapper>
