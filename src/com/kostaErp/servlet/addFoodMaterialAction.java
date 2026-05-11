@@ -9,6 +9,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.kostaErp.model.DAO.foodMaterialDAO;
+import com.kostaErp.model.DAO.Mybatis.FoodMaterialDAOMybatis;
+import com.kostaErp.model.Interface.FoodMaterialDAOInterface;
 import com.kostaErp.model.VO.foodMaterialCategoryVO;
 import com.kostaErp.model.VO.foodMaterialVO;
 
@@ -25,7 +27,8 @@ public class addFoodMaterialAction implements Action {
 			return "/jsp/login.jsp";
 		}
  
-		foodMaterialDAO dao = new foodMaterialDAO();
+		//foodMaterialDAO dao = new foodMaterialDAO();
+		FoodMaterialDAOInterface dao = new FoodMaterialDAOMybatis();
  
 		String[] foodMaterialNames = request.getParameterValues("foodMaterialName");
  

@@ -108,16 +108,16 @@
 		</ul>
 		<ul>
 			<li>폐기관리</li>
-			<li onclick="location.href='/KostaErp/controller?cmd=disposalUIAction'">폐기품목확인</li>
+			<li onclick="location.href='controller?cmd=disposalUIAction'">폐기품목확인</li>
 		</ul>
 		<ul>
 			<li>통계</li>
 			<li
-				onclick="location.href='/KostaErp/controller?cmd=revenueStatisticsUIAction'">매출통계</li>
+				onclick="location.href='controller?cmd=revenueStatisticsUIAction'">매출통계</li>
 			<li
-				onclick="location.href='/KostaErp/controller?cmd=usedStatisticsUIAction'">지출통계</li>
+				onclick="location.href='controller?cmd=usedStatisticsUIAction'">지출통계</li>
 			<li
-				onclick="location.href='/KostaErp/controller?cmd=disposalStatisticUIAction'">폐기통계</li>
+				onclick="location.href='controller?cmd=disposalStatisticUIAction'">폐기통계</li>
 		</ul>
 	</div>
 
