@@ -55,7 +55,7 @@
 	</select>
 
 
-	<select id="getSolidTotal" resultType="com.kostaErp.model.VO.noticeVO">
+	<select id="getSolidTotal" resultType="int">
 			<![CDATA[
 			SELECT NVL(SUM(d.disposalCountAll),0) total
 			FROM DISPOSALS d
@@ -67,7 +67,7 @@
 	</select>
 
 
-	<select id="getLiquidTotal" resultType="com.kostaErp.model.VO.noticeVO">
+	<select id="getLiquidTotal" resultType="int">
 			<![CDATA[
 			SELECT NVL(SUM(d.disposalCountAll),0) total
 			FROM DISPOSALS d
@@ -80,7 +80,7 @@
 
 
 
-	<select id="getMaxOverDay" resultType="com.kostaErp.model.VO.noticeVO">
+	<select id="getMaxOverDay" resultType="int">
 			<![CDATA[
 			SELECT NVL(MAX(TRUNC(SYSDATE - expirationDate)),0) AS max_day 
 			FROM FOODM 
