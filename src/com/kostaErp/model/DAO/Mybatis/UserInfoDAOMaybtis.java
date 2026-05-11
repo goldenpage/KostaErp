@@ -86,13 +86,16 @@ public class UserInfoDAOMaybtis implements UserInfoDAOInterface{
 	}
 
 	@Override
-	public Map<String, Object> login(String bId, String pw) {
-		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
-		Map<String, String> param = new HashMap<>();
-		param.put("userInfoMapper.login", bId);
-		param.put("userInfoMapper.login", pw);
-		Map<String, Object> result = session.selectOne("userInfoMapper.login");
-		return result;
+	public userInfoVO login(String bId, String pw){
+	    SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
+	    Map<String,Object> param = new HashMap<>();
+	    param.put("bId", bId);
+	    param.put("pw", pw);
+
+	    userInfoVO result = session.selectOne("userInfoMapper.login", param);
+
+	    session.close();
+	    return result;
 	}
 
 	@Override

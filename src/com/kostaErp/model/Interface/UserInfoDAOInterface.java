@@ -14,7 +14,7 @@ public interface UserInfoDAOInterface {
 	int setPw(String pw, String bId, String name, String phone);
 	boolean checkPwFindUser(String bId, String name, String phone);
 	List<userInfoVO> getMarketingMembers();
-	Map<String,Object> login(String bId, String pw);
+	userInfoVO login(String bId, String pw);
 	boolean getPhoneCheck(String phone);
 	boolean getBid(String bId);
 }
