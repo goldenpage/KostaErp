@@ -9,7 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>메뉴 입력</title>
 <link rel="stylesheet"
-	href="KostaErp/view/css/addMenu.css">
+	href="view/css/addMenu.css">
 </head>
 
 <body>

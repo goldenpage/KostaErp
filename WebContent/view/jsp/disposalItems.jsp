@@ -56,7 +56,7 @@
 <head>
 <meta charset="UTF-8">
 <title>폐기품목 관리</title>
-<link rel="stylesheet" href="KostaErp/view/css/disposalItems.css">
+<link rel="stylesheet" href="view/css/disposalItems.css">
 
 </head>
 <body>
@@ -164,6 +164,6 @@
 			</div>
 		</div>
 	</div>
-	<script src="/KostaErp/view/js/disposalItems.js"></script>
+	<script src="view/js/disposalItems.js"></script>
 </body>
 </html>
