@@ -11,7 +11,7 @@
 </head>
 <script src="
 https://cdn.jsdelivr.net/npm/jquery@4.0.0/dist/jquery.min.js"></script>
-<link rel="stylesheet" href="/KostaErp/view/css/register.css">
+<link rel="stylesheet" href="view/css/register.css">
 <body>
 	<form method="post"
 		action="/KostaErp/controller?cmd=addUserAction"
