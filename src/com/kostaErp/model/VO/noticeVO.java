@@ -28,6 +28,18 @@ public class noticeVO {
     	this.foodMaterialType = foodMaterialType;
     }
     
+    
+	public noticeVO(String noticeId, String disposalId) {
+		this.noticeId = noticeId;
+		this.disposalId = disposalId;
+	}
+	
+	
+
+	public noticeVO(String readYn) {
+		this.readYn = readYn;
+	}
+
 	public String getNoticeId() {
 		return noticeId;
 	}

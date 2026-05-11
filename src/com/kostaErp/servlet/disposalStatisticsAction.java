@@ -32,10 +32,15 @@ public class disposalStatisticsAction implements Action {
 		dateFormat.setLenient(false);
 		Calendar selectedCal = Calendar.getInstance();
 		String selectedMonth = request.getParameter("month");
-		
-		String startDate = "2026-04-01";
+
+		if (selectedMonth == null || selectedMonth.equals("")) {
+			selectedMonth = "2026-04";
+		}
+
+		String startDate = selectedMonth + "-01";
 		String endDate = "2026-05-01";
 
+		request.setAttribute("selectedMonth", selectedMonth);
 		Gson gson = new Gson();
 
 		request.setAttribute("dailyLabelsJson", "[]");

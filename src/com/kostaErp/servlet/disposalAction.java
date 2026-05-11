@@ -5,9 +5,9 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import com.kostaErp.model.DAO.DisposalDAOMyBatis;
 import com.kostaErp.model.DAO.disposalDAO;
-import com.kostaErp.model.DAO.Interface.DisposalDAOInterface;
+import com.kostaErp.model.DAO.Mybatis.DisposalDAOMyBatis;
+import com.kostaErp.model.Interface.DisposalDAOInterface;
 import com.kostaErp.model.VO.disposalVO;
 
 public class disposalAction implements Action {
