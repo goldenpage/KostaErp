@@ -11,7 +11,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
-<link rel="stylesheet" href="/KostaErp/view/css/usedStatistics.css">
+<link rel="stylesheet" href="view/css/usedStatistics.css">
 
 </head>
 <body>

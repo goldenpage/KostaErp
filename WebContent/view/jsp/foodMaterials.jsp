@@ -203,6 +203,8 @@
       var sortType = "${sortType}";
       var currentPage = "${currentPage}";
    </script>
-   <script src="/KostaErp/view/js/foodMaterials.js"></script>
+   <script src="view
+   
+   /js/foodMaterials.js"></script>
 </body>
 </html>

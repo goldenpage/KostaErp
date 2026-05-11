@@ -9,7 +9,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>매출통계</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="/KostaErp/view/css/revenueStatistics.css">
+<link rel="stylesheet" href="view/css/revenueStatistics.css">
 
 </head>
 
