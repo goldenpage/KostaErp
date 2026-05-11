@@ -41,7 +41,7 @@ public class UsedVOMybatis {
 		return menuId;
 	}
 
-	public void setMenu_Id(String menuId) {
+	public void setMenuId(String menuId) {
 		this.menuId = menuId;
 	}
 }

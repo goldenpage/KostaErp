@@ -101,23 +101,23 @@
 		<img alt="logo" src="/KostaErp/view/asset/image.png" onclick="location.href='/KostaErp/controller?cmd=foodMaterialAction'"/>
 		<ul>
 			<li>식자재관리</li>
-			<li onclick="location.href='/KostaErp/controller?cmd=addFoodMaterialUIAction'">식자재입력</li>
-			<li onclick="location.href='/KostaErp/controller?cmd=addMenuUIAction'">메뉴입력</li>
-			<li onclick="location.href='/KostaErp/controller?cmd=foodMaterialAction'">식자재조회</li>
-			<li onclick="location.href='/KostaErp/controller?cmd=menuAction'">메뉴상세조회</li>
+			<li onclick="location.href='controller?cmd=addFoodMaterialUIAction'">식자재입력</li>
+			<li onclick="location.href='controller?cmd=addMenuUIAction'">메뉴입력</li>
+			<li onclick="location.href='controller?cmd=foodMaterialAction'">식자재조회</li>
+			<li onclick="location.href='controller?cmd=menuAction'">메뉴상세조회</li>
 		</ul>
 		<ul>
 			<li>폐기관리</li>
-			<li onclick="location.href='/KostaErp/controller?cmd=disposalUIAction'">폐기품목확인</li>
+			<li onclick="location.href='controller?cmd=disposalUIAction'">폐기품목확인</li>
 		</ul>
 		<ul>
 			<li>통계</li>
 			<li
-				onclick="location.href='/KostaErp/controller?cmd=revenueStatisticsUIAction'">매출통계</li>
+				onclick="location.href='controller?cmd=revenueStatisticsUIAction'">매출통계</li>
 			<li
-				onclick="location.href='/KostaErp/controller?cmd=usedStatisticsUIAction'">지출통계</li>
+				onclick="location.href='controller?cmd=usedStatisticsUIAction'">지출통계</li>
 			<li
-				onclick="location.href='/KostaErp/controller?cmd=disposalStatisticUIAction'">폐기통계</li>
+				onclick="location.href='controller?cmd=disposalStatisticUIAction'">폐기통계</li>
 		</ul>
 	</div>
 
