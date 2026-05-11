@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.kostaErp.model.DAO.foodMaterialDAO;
+import com.kostaErp.model.DAO.Mybatis.FoodMaterialDAOMybatis;
 import com.kostaErp.model.VO.foodMaterialVO;
 
 public class usedStatisticsAction implements Action {
@@ -67,7 +68,8 @@ public class usedStatisticsAction implements Action {
 			return url;
 		}
 
-		foodMaterialDAO dao = new foodMaterialDAO();
+//		foodMaterialDAO dao = new foodMaterialDAO();
+		FoodMaterialDAOMybatis dao = new FoodMaterialDAOMybatis();
 
 		int totalExpense = dao.getFoodMaterialTotalAmount(bId, startDate, endDate);
 		List<foodMaterialVO> rankList = dao.getFoodMaterialSpendingRank(bId, startDate, endDate);

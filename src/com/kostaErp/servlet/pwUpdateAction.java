@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.kostaErp.model.DAO.userDAO;
+import com.kostaErp.model.DAO.Mybatis.UserInfoDAOMybatis;
+import com.kostaErp.model.Interface.UserInfoDAOInterface;
 
 public class pwUpdateAction implements Action {
 
@@ -54,7 +56,8 @@ public class pwUpdateAction implements Action {
 		    return "/jsp/pwUdate.jsp";
 		}
 
-		userDAO dao = new userDAO();
+//		userDAO dao = new userDAO();
+		UserInfoDAOInterface dao = new UserInfoDAOMybatis();
 		int result = dao.setPw(pw, bId, name, phone);
 
 		if (result == 1) {
