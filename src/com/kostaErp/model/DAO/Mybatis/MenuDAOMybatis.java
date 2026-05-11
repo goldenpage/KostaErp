@@ -39,12 +39,16 @@ public class MenuDAOMybatis implements MenuDAOInterface{
 		MenuCategoryVOMybatis vo = new MenuCategoryVOMybatis(menuCategory, bId);
 		int count = session.selectOne("menuMapper.checkMenuCategoryExists", vo);
 		
-		if (count > 0) return 0;
-		int result = session.insert("menuMapper.addMenuCategory", vo);
-		if (result > 0) session.commit();
-		
-		session.close();
-		return result;
+		try {
+			if (count > 0) return 0;
+			
+			int result = session.insert("menuMapper.addMenuCategory", vo);
+			if (result > 0) session.commit();
+			
+			return result;
+		} finally {
+			session.close();
+		}
 	}
 
 	// 3. 메뉴 카테고리 삭제
