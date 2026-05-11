@@ -2,8 +2,7 @@
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="foodMaterialMapper">
 
-	<select id="getFoodMaterialCount" parameterType="String"
-		resultType="int">
+	<select id="getFoodMaterialCount" parameterType="String" resultType="int" >
 		SELECT COUNT(*) FROM FOODM WHERE bId = #{bId}
 	</select>
 
@@ -50,11 +49,9 @@
 		WHERE f.foodMaterialName LIKE '%' || #{foodMaterialName} || '%'
 		AND f.bId = #{bId}
 	</select>
+	
+	<select id="getFoodMaterialList" parameterType="map" resultType="com.kostaErp.model.VO.foodMaterialVO">
 
-	<select id="getFoodMaterialList" parameterType="map"
-		resultType="com.kostaErp.model.VO.foodMaterialVO">
-		SELECT *
-		FROM (
 		SELECT ROW_NUMBER() OVER (ORDER BY ${orderBy}) AS rn,
 		f.foodMaterial_Id AS foodMaterialId, f.foodMaterialName, c.foodCategory,
 		f.foodMaterialCount, f.foodMaterialCountAll, f.foodMaterialPrice,
@@ -66,14 +63,10 @@
 		WHERE rn BETWEEN #{startRow} AND #{endRow}
 	</select>
 
-	<select id="getFoodMaterialDetail" parameterType="String"
-		resultType="com.kostaErp.model.VO.foodMaterialVO">
-		SELECT f.foodMaterial_Id AS foodMaterialId, f.foodMaterialName,
-		c.foodCategory,
-		f.foodMaterialCount, f.foodMaterialCountAll,
-		f.foodMaterialPrice,
-		f.foodMaterialType, f.vender, f.incomeDate,
-		f.expirationDate, f.bId
+	<select id="getFoodMaterialDetail" parameterType="String" resultType="com.kostaErp.model.VO.foodMaterialVO">
+		SELECT f.foodMaterial_Id AS foodMaterialId, f.foodMaterialName, c.foodCategory,
+		f.foodMaterialCount, f.foodMaterialCountAll, f.foodMaterialPrice,
+		f.foodMaterialType, f.vender, f.incomeDate, f.expirationDate, f.bId
 		FROM FOODM f
 		JOIN FOODC c ON f.foodCategory_Id =
 		c.foodCategory_Id
@@ -154,7 +147,7 @@
 
 	<select id="getCategoryId" parameterType="String" resultType="String">
 		SELECT foodCategory_Id FROM FOODC
-		WHERE foodCategory = #{foodCategory}
+		WHERE foodCategory = #{foodCategory} AND ROWNUM = 1
 	</select>
 
 </mapper>

@@ -80,7 +80,7 @@ public class foodMaterialDAOMybatisTest {
 	public void deleteFoodCategory() {
 		FoodMaterialDAOInterface dao = new FoodMaterialDAOMybatis();
 
-		int result = dao.deleteFoodCategory("나무무무무");
+		int result = dao.deleteFoodCategory("가공");
 
 		assertTrue("삭제성공", result >= 0);
 
@@ -105,12 +105,8 @@ public class foodMaterialDAOMybatisTest {
 		foodMaterialVO test = new foodMaterialVO();
 		System.out.println(test.getFoodMaterialId());
 		for (foodMaterialVO vo : list) {
-			System.out.println(
-				vo.getFoodMaterialId() + " / " +
-				vo.getFoodMaterialName() + " / " +
-				vo.getFoodCategory() + " / " +
-				vo.getExpirationDate()
-			);
+			System.out.println(vo.getFoodMaterialId() + " / " + vo.getFoodMaterialName() + " / " + vo.getFoodCategory()
+					+ " / " + vo.getExpirationDate());
 		}
 
 		assertNotNull(list);
