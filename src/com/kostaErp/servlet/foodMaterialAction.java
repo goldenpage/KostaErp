@@ -7,6 +7,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
+import com.kostaErp.model.DAO.FoodMaterialDAOInterface;
+import com.kostaErp.model.DAO.FoodMaterialDAOMybatis;
 import com.kostaErp.model.DAO.foodMaterialDAO;
 import com.kostaErp.model.VO.foodMaterialVO;
 
@@ -39,7 +41,8 @@ public class foodMaterialAction implements Action {
 				session.setAttribute("bId", bId);
 			}
 
-			foodMaterialDAO dao = new foodMaterialDAO();
+			//foodMaterialDAO dao = new foodMaterialDAO();
+			FoodMaterialDAOInterface dao = new FoodMaterialDAOMybatis();
 
 			List<foodMaterialVO> foodList =
 					dao.getFoodMaterialList(bId, sortType, page, pageSize);

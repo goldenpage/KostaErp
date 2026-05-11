@@ -2,6 +2,7 @@
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="foodMaterialMapper">
 
+
 	<select id="getFoodMaterialCount" parameterType="String" resultType="int" >
 		SELECT COUNT(*) FROM FOODM WHERE bId = #{bId}
 	</select>
@@ -42,7 +43,8 @@
   			AND f.bId = #{bId}
 	</select>
 	
-		<select id="getFoodMaterialList" parameterType="map" resultType="com.kostaErp.model.VO.foodMaterialVO">
+	<select id="getFoodMaterialList" parameterType="map" resultType="com.kostaErp.model.VO.foodMaterialVO">
+		 <![CDATA[
 		SELECT *
 		FROM (
 			SELECT ROW_NUMBER() OVER (ORDER BY ${orderBy}) AS rn,
@@ -53,7 +55,7 @@
 			JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id
 			WHERE f.bId = #{bId}
 		)
-		WHERE rn BETWEEN #{startRow} AND #{endRow}
+		WHERE rn BETWEEN #{startRow} AND #{endRow}]]>
 	</select>
 
 	<select id="getFoodMaterialDetail" parameterType="String" resultType="com.kostaErp.model.VO.foodMaterialVO">
@@ -124,7 +126,7 @@
 
 	<select id="getCategoryId" parameterType="String" resultType="String">
 		SELECT foodCategory_Id FROM FOODC
-		WHERE foodCategory = #{foodCategory}
+		WHERE foodCategory = #{foodCategory} AND ROWNUM = 1
 	</select>
 	
 </mapper>

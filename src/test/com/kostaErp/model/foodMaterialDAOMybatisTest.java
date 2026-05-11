@@ -86,12 +86,8 @@ public class foodMaterialDAOMybatisTest {
 		List<foodMaterialVO> list = dao.getFoodMaterialList("0000000000", "idDesc", 1, 5);
 
 		for (foodMaterialVO vo : list) {
-			System.out.println(
-				vo.getFoodMaterialId() + " / " +
-				vo.getFoodMaterialName() + " / " +
-				vo.getFoodCategory() + " / " +
-				vo.getExpirationDate()
-			);
+			System.out.println(vo.getFoodMaterialId() + " / " + vo.getFoodMaterialName() + " / " + vo.getFoodCategory()
+					+ " / " + vo.getExpirationDate());
 		}
 
 		assertNotNull(list);
@@ -120,7 +116,7 @@ public class foodMaterialDAOMybatisTest {
 		assertNotNull(list);
 	}
 	
-	//@Test
+	@Test
 	public void getFoodMaterialDetailTest() {
 		FoodMaterialDAOInterface dao = new FoodMaterialDAOMybatis();
 
@@ -224,7 +220,7 @@ public class foodMaterialDAOMybatisTest {
 		System.out.println("카테고리 사용 여부 : " + result);
 	}
 	
-	//@Test
+	@Test
 	public void getCategoryIdTest() {
 		FoodMaterialDAOInterface dao = new FoodMaterialDAOMybatis();
 
