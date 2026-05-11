@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>메뉴 조회</title>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/menuList.css">
+<link rel="stylesheet" href="KostaErp/view/css/menuList.css">
 </head>
 
 <body>
@@ -55,7 +55,7 @@
 
                            <td>
                               <a
-                                 href="${pageContext.request.contextPath}/controller?cmd=menuAction&menuId=${menu.menuId}">
+                                 href="/KostaErp/controller?cmd=menuAction&menuId=${menu.menuId}">
                                  ${menu.menuName}
                               </a>
                            </td>
@@ -102,7 +102,7 @@
 
                <div class="sale_form_area">
                   <form method="post"
-                     action="${pageContext.request.contextPath}/controller?cmd=salesAction">
+                     action="/KostaErp/controller?cmd=salesAction">
                      <input type="hidden" name="menuId" value="${selectedMenuId}">
                      판매수량:
                      <input type="number" name="saleCount" value="1" min="1">

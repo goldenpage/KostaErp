@@ -11,7 +11,7 @@ import com.kostaErp.model.DBCPMybatis;
 import com.kostaErp.model.Interface.UserInfoDAOInterface;
 import com.kostaErp.model.VO.userInfoVO;
 
-public class UserInfoDAOMaybtis implements UserInfoDAOInterface{
+public class UserInfoDAOMybatis implements UserInfoDAOInterface{
 	private static SqlSessionFactory factory;
 	private SqlSession session;
 
@@ -45,7 +45,7 @@ public class UserInfoDAOMaybtis implements UserInfoDAOInterface{
 	@Override
 	public userInfoVO checkMemberByVO(String bId, String name, String pw) {
 		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
-	
+
 		Map<String, String> param = new HashMap<>();
 		param.put("bId", bId);
 		param.put("name", name);
@@ -58,10 +58,10 @@ public class UserInfoDAOMaybtis implements UserInfoDAOInterface{
 	public int setPw(String pw, String bId, String name, String phone) {
 		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		Map<String, String> param = new HashMap<>();
-		param.put("userInfoMapper.setPw",pw);
-		param.put("userInfoMapper.setPw", bId);
-		param.put("userInfoMapper.setPw",name);
-		param.put("userInfoMapper.setPw",phone);
+		param.put("pw",pw);
+		param.put("bId", bId);
+		param.put("name",name);
+		param.put("phone",phone);
 
 		return session.update("userInfoMapper.setPw", param); 
 
@@ -71,11 +71,11 @@ public class UserInfoDAOMaybtis implements UserInfoDAOInterface{
 	public boolean checkPwFindUser(String bId, String name, String phone) {
 		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		Map<String, String> param = new HashMap<>();
-		param.put("userInfoMapper.checkPwFindUser", bId);
-		param.put("userInfoMapper.checkPwFindUser", name);
-		param.put("userInfoMapper.checkPwFindUser", phone);
+		param.put("bId", bId);
+		param.put("name", name);
+		param.put("phone", phone);
 		boolean result = session.selectOne("userInfoMapper.checkPwFindUser", param);
-		 return result;
+		return result;
 	}
 
 	@Override
@@ -89,28 +89,26 @@ public class UserInfoDAOMaybtis implements UserInfoDAOInterface{
 	public Map<String, Object> login(String bId, String pw) {
 		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		Map<String, String> param = new HashMap<>();
-		param.put("userInfoMapper.login", bId);
-		param.put("userInfoMapper.login", pw);
-		Map<String, Object> result = session.selectOne("userInfoMapper.login");
+		param.put("bId", bId);
+		param.put("pw", pw);
+		Map<String, Object> result = session.selectOne("userInfoMapper.login",param);
 		return result;
 	}
 
 	@Override
 	public boolean getPhoneCheck(String phone) {
 		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
-		Map<String, String> param = new HashMap<>();
-		param.put("userInfoMapper.login", phone);
-		boolean result =session.selectOne("userInfoMapper.login", param);
-		return result;
+		int result = session.selectOne("userInfoMapper.getPhoneCheck", phone);
+		System.out.println(result);
+		return result > 0;
 	}
 
 	@Override
 	public boolean getBid(String bId) {
 		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
-		Map<String, String> param = new HashMap<>();
-		param.put("userInfoMapper.login", bId);
-		boolean result = session.selectOne("userInfoMapper.login", bId);
-		return result;
+		int result = session.selectOne("userInfoMapper.getBidCheck", bId);
+		System.out.println(result);
+		return result > 0;
 	}
 
 }

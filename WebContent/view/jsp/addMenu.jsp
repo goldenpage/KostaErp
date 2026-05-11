@@ -9,7 +9,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>메뉴 입력</title>
 <link rel="stylesheet"
-	href="${pageContext.request.contextPath}/view/css/addMenu.css">
+	href="KostaErp/view/css/addMenu.css">
 </head>
 
 <body>
@@ -59,7 +59,7 @@
 					</div>
 
 					<form method="post"
-						action="${pageContext.request.contextPath}/controller?cmd=addMenuAction"
+						action="/KostaErp/controller?cmd=addMenuAction"
 						class="addMenu">
 						<input type="hidden" id="selectedCategoryId" name="_dummy"
 							value="">
@@ -165,7 +165,7 @@
 	<script>
 		var contextPath = '${pageContext.request.contextPath}';
 	</script>
-	<script src="${pageContext.request.contextPath}/view/js/addMenu.js"></script>
+	<script src="/KostaErp/view/js/addMenu.js"></script>
 </body>
 
 </html>

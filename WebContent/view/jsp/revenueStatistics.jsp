@@ -1,15 +1,15 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 
 <!DOCTYPE html>
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-<title>¸ÅÃâÅë°è</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>ë§¤ì¶œí†µê³„</title>
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/revenueStatistics.css">
+<link rel="stylesheet" href="/KostaErp/view/css/revenueStatistics.css">
 
 </head>
 
@@ -23,30 +23,30 @@
 			<jsp:include page="../common/userName.jsp" />
 
 			<div class="top_area">
-				<h1>¸ÅÃâÅë°è</h1>
+				<h1>ë§¤ì¶œí†µê³„</h1>
 
 				<form method="get"
-					action="${pageContext.request.contextPath}/controller">
+					action="/controller">
 					<input type="hidden" name="cmd" value="revenueStatisticsUIAction">
 					<input type="month" name="month" value="${selectedMonth}">
-					<button type="submit">Á¶È¸</button>
+					<button type="submit">ì¡°íšŒ</button>
 				</form>
 			</div>
 
 			<div class="summary">
-				${selectedMonth} ÃÑ ¸ÅÃâ:
+				${selectedMonth} ì´ ë§¤ì¶œ:
 				<fmt:formatNumber value="${totalRevenue}" pattern="#,###" />
-				¿ø
+				ì›
 			</div>
 
 			<div class="chart_area">
 				<div class="chart_box">
-					<h3>¸Ş´ºº° ¸ÅÃâ ¼øÀ§</h3>
+					<h3>ë©”ë‰´ë³„ ë§¤ì¶œ ìˆœìœ„</h3>
 					<canvas id="rankChart"></canvas>
 				</div>
 
 				<div class="chart_box">
-					<h3>ÃÖ±Ù 6°³¿ù ¸ÅÃâ</h3>
+					<h3>ìµœê·¼ 6ê°œì›” ë§¤ì¶œ</h3>
 					<canvas id="monthlyChart"></canvas>
 				</div>
 			</div>
@@ -54,11 +54,11 @@
 			<table>
 				<thead>
 					<tr>
-						<th>¼øÀ§</th>
-						<th>¸Ş´º¸í</th>
-						<th>´Ü°¡</th>
-						<th>ÆÇ¸Å¼ö·®</th>
-						<th>ÃÑ¸ÅÃâ</th>
+						<th>ìˆœìœ„</th>
+						<th>ë©”ë‰´ëª…</th>
+						<th>ë‹¨ê°€</th>
+						<th>íŒë§¤ìˆ˜ëŸ‰</th>
+						<th>ì´ë§¤ì¶œ</th>
 					</tr>
 				</thead>
 
@@ -69,19 +69,19 @@
 							<td>${item.menuName}</td>
 							<td>
 								<fmt:formatNumber value="${item.menuPrice}" pattern="#,###" />
-								¿ø
+								ì›
 							</td>
 							<td>${item.totalSaleCount}</td>
 							<td>
 								<fmt:formatNumber value="${item.totalSalesAmount}" pattern="#,###" />
-								¿ø
+								ì›
 							</td>
 						</tr>
 					</c:forEach>
 
 					<c:if test="${empty rankList}">
 						<tr>
-							<td colspan="5">¸ÅÃâ µ¥ÀÌÅÍ°¡ ¾ø½À´Ï´Ù.</td>
+							<td colspan="5">ë§¤ì¶œ ë°ì´í„°ê°€ ì—†ìŠµë‹ˆë‹¤.</td>
 						</tr>
 					</c:if>
 				</tbody>
@@ -102,7 +102,7 @@
 		}
 
 		function won(value) {
-			return Number(value).toLocaleString() + "¿ø";
+			return Number(value).toLocaleString() + "ì›";
 		}
 
 		var rankLabels = readJson("rankLabelsJson");
@@ -116,7 +116,7 @@
 			data : {
 				labels : rankLabels,
 				datasets : [ {
-					label : "¸ÅÃâ",
+					label : "ë§¤ì¶œ",
 					data : rankSalesAmount,
 					backgroundColor : "#2563eb"
 				} ]
@@ -133,7 +133,7 @@
 						callbacks : {
 							label : function(context) {
 								var index = context.dataIndex;
-								return "¸ÅÃâ: " + won(context.raw) + " / ÆÇ¸Å¼ö·®: "
+								return "ë§¤ì¶œ: " + won(context.raw) + " / íŒë§¤ìˆ˜ëŸ‰: "
 										+ rankSaleCount[index];
 							}
 						}
@@ -156,7 +156,7 @@
 			data : {
 				labels : monthlyLabels,
 				datasets : [ {
-					label : "¿ùº° ¸ÅÃâ",
+					label : "ì›”ë³„ ë§¤ì¶œ",
 					data : monthlyRevenue,
 					backgroundColor : "#16a34a"
 				} ]
@@ -171,7 +171,7 @@
 					tooltip : {
 						callbacks : {
 							label : function(context) {
-								return "¸ÅÃâ: " + won(context.raw);
+								return "ë§¤ì¶œ: " + won(context.raw);
 							}
 						}
 					}
