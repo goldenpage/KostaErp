@@ -2,15 +2,20 @@
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="foodMaterialMapper">
 
-	<select id="getFoodMaterialCount" parameterType="String" resultType="int" >
+	<select id="getFoodMaterialCount" parameterType="String"
+		resultType="int">
 		SELECT COUNT(*) FROM FOODM WHERE bId = #{bId}
 	</select>
 
-	<insert id="addFoodMaterial" parameterType="com.kostaErp.model.VO.foodMaterialVO"> 
-		INSERT INTO FOODM(foodMaterialName, foodCategory_Id, foodMaterialCount, foodMaterialCountAll,
-		foodMaterialPrice, foodMaterialType, vender, incomeDate, expirationDate, bId)
-		VALUES(#{foodMaterialName}, #{foodCategory}, #{foodMaterialCount}, #{foodMaterialCountAll}, 
-		#{foodMaterialPrice}, #{foodMaterialType}, #{vender}, #{incomeDate}, #{expirationDate}, #{bId}) 
+	<insert id="addFoodMaterial" parameterType="com.kostaErp.model.VO.foodMaterialVO">
+		INSERT INTO FOODM(foodMaterialName, foodCategory_Id, foodMaterialCount,
+		foodMaterialCountAll,
+		foodMaterialPrice, foodMaterialType, vender,
+		incomeDate, expirationDate, bId)
+		VALUES(#{foodMaterialName},
+		#{foodCategory}, #{foodMaterialCount}, #{foodMaterialCountAll},
+		#{foodMaterialPrice}, #{foodMaterialType}, #{vender}, #{incomeDate},
+		#{expirationDate}, #{bId})
 	</insert>
 
 	<select id="addFoodCategory" parameterType="String" resultType="int">
@@ -18,60 +23,72 @@
 	</select>
 
 	<insert id="addFoodCategory1" parameterType="String">
-		INSERT INTO FOODC(foodCategory) VALUES(#{foodCategory})
+		INSERT INTO
+		FOODC(foodCategory) VALUES(#{foodCategory})
 	</insert>
 
 	<delete id="deleteFoodCategory" parameterType="String">
-    	DELETE FROM FOODM
-    	WHERE foodCategory_Id IN (
-        SELECT foodCategory_Id
-        FROM FOODC
-        WHERE foodCategory = #{foodCategory}
-    	)
+		DELETE FROM FOODM
+		WHERE foodCategory_Id IN (
+		SELECT foodCategory_Id
+		FROM FOODC
+		WHERE foodCategory = #{foodCategory}
+		)
 	</delete>
 
 	<delete id="deleteFoodCategory1" parameterType="String">
-		DELETE FROM FOODC WHERE foodCategory = #{foodCategory}
+		DELETE FROM FOODC
+		WHERE foodCategory = #{foodCategory}
 	</delete>
 
-	<select id="getFoodMaterialByName" parameterType="map" resultType="com.kostaErp.model.VO.foodMaterialVO">
-		SELECT f.foodMaterialName, c.foodCategory, f.vender, f.foodMaterialType 
-		FROM FOODM f 
-		JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id 
-		WHERE f.foodMaterialName LIKE '%' || #{foodMaterialName} || '%' 
-  			AND f.bId = #{bId}
+	<select id="getFoodMaterialByName" parameterType="map"
+		resultType="com.kostaErp.model.VO.foodMaterialVO">
+		SELECT f.foodMaterialName, c.foodCategory, f.vender,
+		f.foodMaterialType
+		FROM FOODM f
+		JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id
+		WHERE f.foodMaterialName LIKE '%' || #{foodMaterialName} || '%'
+		AND f.bId = #{bId}
 	</select>
-	
-		<select id="getFoodMaterialList" parameterType="map" resultType="com.kostaErp.model.VO.foodMaterialVO">
+
+	<select id="getFoodMaterialList" parameterType="map"
+		resultType="com.kostaErp.model.VO.foodMaterialVO">
 		SELECT *
 		FROM (
-			SELECT ROW_NUMBER() OVER (ORDER BY ${orderBy}) AS rn,
-			f.foodMaterial_Id, f.foodMaterialName, c.foodCategory,
-			f.foodMaterialCount, f.foodMaterialCountAll, f.foodMaterialPrice,
-			f.vender, f.incomeDate, f.expirationDate, f.foodMaterialType
-			FROM FOODM f
-			JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id
-			WHERE f.bId = #{bId}
+		SELECT ROW_NUMBER() OVER (ORDER BY ${orderBy}) AS rn,
+		f.foodMaterial_Id AS foodMaterialId, f.foodMaterialName, c.foodCategory,
+		f.foodMaterialCount, f.foodMaterialCountAll, f.foodMaterialPrice,
+		f.vender, f.incomeDate, f.expirationDate, f.foodMaterialType
+		FROM FOODM f
+		JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id
+		WHERE f.bId = #{bId}
 		)
 		WHERE rn BETWEEN #{startRow} AND #{endRow}
 	</select>
 
-	<select id="getFoodMaterialDetail" parameterType="String" resultType="com.kostaErp.model.VO.foodMaterialVO">
-		SELECT f.foodMaterial_Id, f.foodMaterialName, c.foodCategory,
-		f.foodMaterialCount, f.foodMaterialCountAll, f.foodMaterialPrice,
-		f.foodMaterialType, f.vender, f.incomeDate, f.expirationDate, f.bId
+	<select id="getFoodMaterialDetail" parameterType="String"
+		resultType="com.kostaErp.model.VO.foodMaterialVO">
+		SELECT f.foodMaterial_Id AS foodMaterialId, f.foodMaterialName,
+		c.foodCategory,
+		f.foodMaterialCount, f.foodMaterialCountAll,
+		f.foodMaterialPrice,
+		f.foodMaterialType, f.vender, f.incomeDate,
+		f.expirationDate, f.bId
 		FROM FOODM f
-		JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id
+		JOIN FOODC c ON f.foodCategory_Id =
+		c.foodCategory_Id
 		WHERE f.foodMaterial_Id = #{foodMaterialId}
 	</select>
 
 	<delete id="deleteUsedByFoodMaterial" parameterType="String">
-		DELETE FROM USED
+		DELETE FROM
+		USED
 		WHERE foodMaterial_Id = #{foodMaterialId}
 	</delete>
 
 	<delete id="deleteDisposalsByFoodMaterial" parameterType="String">
-		DELETE FROM DISPOSALS
+		DELETE
+		FROM DISPOSALS
 		WHERE foodMaterial_Id = #{foodMaterialId}
 	</delete>
 
@@ -81,44 +98,57 @@
 		AND bId = #{bId}
 	</delete>
 
-	<select id="getFoodMaterialTotalAmount" parameterType="map" resultType="int">
+	<select id="getFoodMaterialTotalAmount" parameterType="map"
+		resultType="int">
 		SELECT NVL(SUM(foodMaterialPrice), 0) AS totalAmount
-		FROM FOODM
+		FROM
+		FOODM
 		WHERE bId = #{bId}
-		AND incomeDate >= TO_DATE(#{startDate}, 'YYYY-MM-DD')
+		AND incomeDate >= TO_DATE(#{startDate},
+		'YYYY-MM-DD')
 		AND incomeDate &lt; TO_DATE(#{endDate}, 'YYYY-MM-DD')
 	</select>
 
-	<select id="getFoodMaterialSpendingRank" parameterType="map" resultType="com.kostaErp.model.VO.foodMaterialVO">
+	<select id="getFoodMaterialSpendingRank" parameterType="map"
+		resultType="com.kostaErp.model.VO.foodMaterialVO">
 		SELECT
-		    RANK() OVER (ORDER BY foodMaterialPrice * foodMaterialCount DESC) AS ranking,
-		    foodMaterial_Id,
-		    foodMaterialName,
-		    foodMaterialPrice,
-		    foodMaterialCount,
-		    foodMaterialPrice * foodMaterialCount AS totalExpense,
-		    incomeDate,
-		    bId
+		RANK() OVER (ORDER BY foodMaterialPrice * foodMaterialCount DESC) AS
+		ranking,
+		foodMaterial_Id,
+		foodMaterialName,
+		foodMaterialPrice,
+		foodMaterialCount,
+		foodMaterialPrice * foodMaterialCount AS totalExpense,
+		incomeDate,
+		bId
 		FROM FOODM
 		WHERE bId = #{bId}
-		AND incomeDate >= TO_DATE(#{startDate}, 'YYYY-MM-DD')
+		AND incomeDate >= TO_DATE(#{startDate},
+		'YYYY-MM-DD')
 		AND incomeDate &lt; TO_DATE(#{endDate}, 'YYYY-MM-DD')
 		ORDER BY totalExpense DESC
 	</select>
 
 	<select id="getFoodCategoryList" resultType="com.kostaErp.model.VO.foodMaterialCategoryVO">
-		SELECT foodCategory_Id, foodCategory FROM FOODC
+		SELECT
+		foodCategory_Id, foodCategory FROM FOODC
 	</select>
 
-	<select id="hasFoodMaterialByCategory" parameterType="String" resultType="int">
+	<select id="hasFoodMaterialByCategory" parameterType="String"
+		resultType="int">
 		SELECT COUNT(*)
-		FROM FOODM f JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id
-		WHERE c.foodCategory = #{foodCategory}
+		FROM FOODM f JOIN FOODC c ON
+		f.foodCategory_Id = c.foodCategory_Id
+		WHERE c.foodCategory =
+		#{foodCategory}
 	</select>
 
-	<select id="getFoodMaterialListAll" parameterType="String" resultType="com.kostaErp.model.VO.foodMaterialVO">
-		SELECT f.foodMaterial_Id, f.foodMaterialName, c.foodCategory
-		FROM FOODM f JOIN FOODC c ON f.foodCategory_Id = c.foodCategory_Id
+	<select id="getFoodMaterialListAll" parameterType="String"
+		resultType="com.kostaErp.model.VO.foodMaterialVO">
+		SELECT f.foodMaterial_Id, f.foodMaterialName,
+		c.foodCategory
+		FROM FOODM f JOIN FOODC c ON f.foodCategory_Id =
+		c.foodCategory_Id
 		WHERE f.bId = #{bId} ORDER BY f.foodMaterialName ASC
 	</select>
 
@@ -126,5 +156,5 @@
 		SELECT foodCategory_Id FROM FOODC
 		WHERE foodCategory = #{foodCategory}
 	</select>
-	
+
 </mapper>

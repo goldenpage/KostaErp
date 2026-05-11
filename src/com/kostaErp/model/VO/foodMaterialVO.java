@@ -14,8 +14,6 @@ public class foodMaterialVO {
 	private String foodMaterialType;
 	private Date incomeDate;
 	private Date expirationDate;
-	private String bid;
-
 	private String bId;
 	private int ranking;
 	private int totalExpense;
@@ -24,7 +22,7 @@ public class foodMaterialVO {
 
 	public foodMaterialVO(String foodMaterialName, String foodCategory, int foodMaterialCount, 
 			int foodMaterialCountAll, int foodMaterialPrice, String vender, String foodMaterialType, 
-			Date incomeDate, Date expirationDate, String bid) {
+			Date incomeDate, Date expirationDate, String bId) {
 		this.foodMaterialName = foodMaterialName;
 		this.foodCategory = foodCategory;
 		this.foodMaterialCount = foodMaterialCount;
@@ -34,7 +32,7 @@ public class foodMaterialVO {
 		this.foodMaterialType = foodMaterialType;
 		this.incomeDate = incomeDate;
 		this.expirationDate = expirationDate;
-		this.bid = bid;
+		this.bId = bId;
 	}
 	
     public String getFoodMaterialId() {
