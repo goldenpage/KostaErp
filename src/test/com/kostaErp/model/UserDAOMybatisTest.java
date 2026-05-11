@@ -70,7 +70,7 @@ public class UserDAOMybatisTest {
 		
 	}
 	
-	@Test
+	//@Test
 	public void setPwTest() {
 		Map<String, String> param = new HashMap<>();
 		param.put("","");

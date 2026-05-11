@@ -20,7 +20,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>식자재 조회</title>
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/foodMaterials.css">
+<link rel="stylesheet" href="KostaErp/view/css/foodMaterials.css">
 </head>
 
 <body>
@@ -67,7 +67,7 @@
 
             <div>
                <form method="post"
-                  action="${pageContext.request.contextPath}/controller?cmd=deleteFoodMaterialAction">
+                  action="controller?cmd=deleteFoodMaterialAction">
 
                   <table class="list_container">
 
@@ -76,13 +76,13 @@
                            <c:choose>
                               <c:when test="${sortType == 'idAsc'}">
                                  <a
-                                    href="${pageContext.request.contextPath}/controller?cmd=foodMaterialAction&sortType=idDesc&page=1">
+                                    href="/KostaErp/controller?cmd=foodMaterialAction&sortType=idDesc&page=1">
                                     번호 ▲
                                  </a>
                               </c:when>
                               <c:otherwise>
                                  <a
-                                    href="${pageContext.request.contextPath}/controller?cmd=foodMaterialAction&sortType=idAsc&page=1">
+                                    href="/KostaErp/controller?cmd=foodMaterialAction&sortType=idAsc&page=1">
                                     번호 ▼
                                  </a>
                               </c:otherwise>
@@ -101,13 +101,13 @@
                            <c:choose>
                               <c:when test="${sortType == 'expAsc'}">
                                  <a
-                                    href="${pageContext.request.contextPath}/controller?cmd=foodMaterialAction&sortType=expDesc&page=1">
+                                    href="/KostaErp/controller?cmd=foodMaterialAction&sortType=expDesc&page=1">
                                     유통기한 ▲
                                  </a>
                               </c:when>
                               <c:otherwise>
                                  <a
-                                    href="${pageContext.request.contextPath}/controller?cmd=foodMaterialAction&sortType=expAsc&page=1">
+                                    href="/KostaErp/controller?cmd=foodMaterialAction&sortType=expAsc&page=1">
                                     유통기한 ▼
                                  </a>
                               </c:otherwise>
@@ -161,7 +161,7 @@
                      <c:if test="${currentPage > 1}">
                         <li>
                            <a
-                              href="${pageContext.request.contextPath}/controller?cmd=foodMaterialAction&sortType=${sortType}&page=${currentPage - 1}">
+                              href="/KostaErp/controller?cmd=foodMaterialAction&sortType=${sortType}&page=${currentPage - 1}">
                               &lt;
                            </a>
                         </li>
@@ -170,7 +170,7 @@
                      <c:forEach begin="1" end="${totalPage}" var="i">
                         <li>
                            <a
-                              href="${pageContext.request.contextPath}/controller?cmd=foodMaterialAction&sortType=${sortType}&page=${i}">
+                              href="/KostaErp/controller?cmd=foodMaterialAction&sortType=${sortType}&page=${i}">
                               <c:choose>
                                  <c:when test="${i == currentPage}">
                                     <strong>${i}</strong>
@@ -186,7 +186,7 @@
                      <c:if test="${currentPage < totalPage}">
                         <li>
                            <a
-                              href="${pageContext.request.contextPath}/controller?cmd=foodMaterialAction&sortType=${sortType}&page=${currentPage + 1}">
+                              href="/KostaErp/controller?cmd=foodMaterialAction&sortType=${sortType}&page=${currentPage + 1}">
                               &gt;
                            </a>
                         </li>
@@ -203,6 +203,6 @@
       var sortType = "${sortType}";
       var currentPage = "${currentPage}";
    </script>
-   <script src="${pageContext.request.contextPath}/view/js/foodMaterials.js"></script>
+   <script src="/KostaErp/view/js/foodMaterials.js"></script>
 </body>
 </html>

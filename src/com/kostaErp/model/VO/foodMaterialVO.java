@@ -14,8 +14,6 @@ public class foodMaterialVO {
 	private String foodMaterialType;
 	private Date incomeDate;
 	private Date expirationDate;
-	private String bid;
-
 	private String bId;
 	private int ranking;
 	private int totalExpense;

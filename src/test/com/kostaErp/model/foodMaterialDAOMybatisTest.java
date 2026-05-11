@@ -5,8 +5,12 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
+import com.kostaErp.model.DBCPMybatis;
 import com.kostaErp.model.DAO.Mybatis.FoodMaterialDAOMybatis;
 import com.kostaErp.model.Interface.FoodMaterialDAOInterface;
 import com.kostaErp.model.VO.foodMaterialVO;
@@ -14,6 +18,19 @@ import com.kostaErp.model.VO.foodMaterialCategoryVO;
 
 public class foodMaterialDAOMybatisTest {
 
+	private SqlSession session;
+	
+	@Before
+	public void setUp() throws Exception {
+		session = DBCPMybatis.getSqlSessionFactory().openSession(false);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		session.rollback();
+		session.close();
+	}
+	
 	@Test
 	public void getFoodMaterialCount_테스트(){
 		FoodMaterialDAOInterface dao = new FoodMaterialDAOMybatis();
@@ -82,9 +99,11 @@ public class foodMaterialDAOMybatisTest {
 	@Test
 	public void getFoodMaterialListTest() {
 		FoodMaterialDAOInterface dao = new FoodMaterialDAOMybatis();
-
+	
 		List<foodMaterialVO> list = dao.getFoodMaterialList("0000000000", "idDesc", 1, 5);
-
+		
+		foodMaterialVO test = new foodMaterialVO();
+		System.out.println(test.getFoodMaterialId());
 		for (foodMaterialVO vo : list) {
 			System.out.println(vo.getFoodMaterialId() + " / " + vo.getFoodMaterialName() + " / " + vo.getFoodCategory()
 					+ " / " + vo.getExpirationDate());

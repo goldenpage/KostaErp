@@ -11,10 +11,10 @@
 </head>
 <script src="
 https://cdn.jsdelivr.net/npm/jquery@4.0.0/dist/jquery.min.js"></script>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/register.css">
+<link rel="stylesheet" href="/KostaErp/view/css/register.css">
 <body>
 	<form method="post"
-		action="${pageContext.request.contextPath}/controller?cmd=addUserAction"
+		action="/KostaErp/controller?cmd=addUserAction"
 		onsubmit="return checkPassword()" class="signup-box">
 
 		<h1 class="main-title">회원가입</h1>
@@ -125,7 +125,7 @@ https://cdn.jsdelivr.net/npm/jquery@4.0.0/dist/jquery.min.js"></script>
 		<div class="btn-group">
 			<button type="submit" class="submitbutton">회원가입 완료</button>
 			<button type="button" class="submitbutton"
-				onclick="location.href='${pageContext.request.contextPath}/controller?cmd=loginUIAction'">기존
+				onclick="location.href='/controller?cmd=loginUIAction'">기존
 				계정으로 로그인</button>
 		</div>
 	</form>

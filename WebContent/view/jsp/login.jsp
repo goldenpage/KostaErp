@@ -6,11 +6,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>로그인</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/login.css">
+<link rel="stylesheet" href="/KostaErp/view/css/login.css">
 </head>
 <body>
 	
-    <form action="${pageContext.request.contextPath}/controller?cmd=loginAction" class="login-box" method="post">
+    <form action="controller?cmd=loginAction" class="login-box" method="post">
         <h1 class="main-title">로그인</h1>
 
         <div class="form-group">
@@ -26,8 +26,8 @@
         <button type="submit" value="로그인" class="submitbutton">로그인</button>
 
         <div class="auth-links">
-            <a href="${pageContext.request.contextPath}/controller?cmd=addUserUIAction">회원가입</a> | 
-            <a href="${pageContext.request.contextPath}/controller?cmd=pwFindUIAction">비밀번호 찾기</a>
+            <a href="/KostaErp/controller?cmd=addUserUIAction">회원가입</a> | 
+            <a href="/KostaErp/controller?cmd=pwFindUIAction">비밀번호 찾기</a>
         </div>
     </form>
     

@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.kostaErp.model.DAO.userDAO;
+import com.kostaErp.model.DAO.Mybatis.UserInfoDAOMybatis;
+import com.kostaErp.model.Interface.UserInfoDAOInterface;
 
 public class phoneSendAction implements Action {
 
@@ -15,7 +17,8 @@ public class phoneSendAction implements Action {
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
 		String phone = request.getParameter("phone");
 		
-		userDAO dao = new userDAO();
+//		userDAO dao = new userDAO();
+		UserInfoDAOInterface dao = new UserInfoDAOMybatis();
 		
 		boolean check = dao.getPhoneCheck(phone);
 		System.out.println("phone=[" + phone + "]");
