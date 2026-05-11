@@ -6,26 +6,35 @@ import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.kostaErp.model.DBCPMybatis;
-import com.kostaErp.model.DAO.MenuDAOMybatis;
+import com.kostaErp.model.DAO.Mybatis.MenuDAOMybatis;
 import com.kostaErp.model.Interface.MenuDAOInterface;
-import com.kostaErp.model.VO.MenuCategoryVOMybatis;
-import com.kostaErp.model.VO.MenuVOMybatis;
+import com.kostaErp.model.VO.Mybatis.MenuCategoryVOMybatis;
+import com.kostaErp.model.VO.Mybatis.MenuVOMybatis;
 
 public class MenuMyBatisTest {
+	
+	private SqlSession session;
+	
+	@Before
+	public void setUp() throws Exception {
+		session = DBCPMybatis.getSqlSessionFactory().openSession(false);
+	}
 
 	// 1. 메뉴 추가
-//	@Test
+	@Test
 	public void addMenu() {
 		MenuDAOInterface dao = new MenuDAOMybatis();
 		
-		System.out.println(dao.addMenu("충무김밥", 10000, "M001"));
+		System.out.println(dao.addMenu("기본김밥", 10000, "M001"));
 	}
 	
 	// 2. 메뉴카테고리 추가
-//	@Test
+	@Test
 	public void addMenuCategory() {
 		MenuDAOInterface dao = new MenuDAOMybatis();
 		
@@ -33,7 +42,7 @@ public class MenuMyBatisTest {
 	}
 	
 	// 3. 메뉴 카테고리 삭제
-//	@Test
+	@Test
 	public void deleteMenuCategory() {
 		MenuDAOInterface dao = new MenuDAOMybatis();
 		
@@ -41,7 +50,7 @@ public class MenuMyBatisTest {
 	}
 
 	// 4. 사용 식자재 추가
-//	@Test
+	@Test
 	public void addUsedMaterial() {
 		MenuDAOInterface dao = new MenuDAOMybatis();
 		
@@ -49,14 +58,14 @@ public class MenuMyBatisTest {
 	}
 	
 	// 5. 사용 식자재 삭제
-//	@Test
+	@Test
 	public void deleteUsedMaterial() {
 		MenuDAOInterface dao = new MenuDAOMybatis();
 		System.out.println(dao.deleteUsedMaterial("U024"));
 	}
 
 	// 6. 메뉴리스트 전체 가져오기
-//	@Test
+	@Test
 	public void getMenuList() {
 		MenuDAOInterface dao = new MenuDAOMybatis();
 		List<MenuVOMybatis> list = dao.getMenuList("0000000000");
@@ -68,7 +77,7 @@ public class MenuMyBatisTest {
 	}
 	
 	// 7. 메뉴 사용 식자재 가져오기
-//	@Test
+	@Test
 	public void getMenuDetail() {
 		MenuDAOInterface dao = new MenuDAOMybatis();
 		List<MenuVOMybatis> list = dao.getMenuDetail("MI002");
@@ -84,7 +93,7 @@ public class MenuMyBatisTest {
 	}
 	
 	// 8. 식자재 차감
-//	@Test
+	@Test
 	public void updateFoodMaterialAfterSale() {
 		MenuDAOInterface dao = new MenuDAOMybatis();
 		
@@ -93,7 +102,7 @@ public class MenuMyBatisTest {
 	}
 	
 	// 9. 메뉴 카테고리 전체 가져오기
-//	@Test
+	@Test
 	public void getMenuCategoryList() {
 		MenuDAOInterface dao = new MenuDAOMybatis();
 		List<MenuCategoryVOMybatis> list = dao.getMenuCategoryList("0000000000");
@@ -106,23 +115,29 @@ public class MenuMyBatisTest {
 	}
 	
 	// 10. 메뉴 카테고리 중복체크
-//	@Test
+	@Test
 	public void hasMenuByCategory(){
 		MenuDAOInterface dao = new MenuDAOMybatis();
 		System.out.println(dao.hasMenuByCategory("김밥류"));
 	}
 	
 	// 11. 메뉴 중복체크
-//	@Test
+	@Test
 	public void hasMenuCheck(){
 		MenuDAOInterface dao = new MenuDAOMybatis();
 		System.out.println(dao.hasMenuCheck("치즈김밥"));
 	}
 	
 	// 12. 메뉴 카테고리id가져오기
-//	@Test
+	@Test
 	public void getCategoryId(){
 		MenuDAOInterface dao = new MenuDAOMybatis();
 		System.out.println(dao.getCategoryId("1"));
+	}
+	
+	@After
+	public void tearDown() throws Exception {
+		session.rollback();
+		session.close();
 	}
 }

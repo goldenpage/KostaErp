@@ -2,10 +2,10 @@ package com.kostaErp.model.Interface;
 
 import java.util.List;
 
-import com.kostaErp.model.VO.MenuVOMybatis;
 import com.kostaErp.model.VO.menuCategoryVO;
-import com.kostaErp.model.VO.MenuCategoryVOMybatis;
 import com.kostaErp.model.VO.menuVO;
+import com.kostaErp.model.VO.Mybatis.MenuCategoryVOMybatis;
+import com.kostaErp.model.VO.Mybatis.MenuVOMybatis;
 
 public interface MenuDAOInterface {
 	String addMenu(String menuName, int menuPrice, String menuCategoryId);

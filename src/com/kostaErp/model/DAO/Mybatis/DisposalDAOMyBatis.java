@@ -1,4 +1,4 @@
-package com.kostaErp.model.DAO;
+package com.kostaErp.model.DAO.Mybatis;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -8,7 +8,7 @@ import java.util.HashMap;
 import org.apache.ibatis.session.SqlSession;
 
 import com.kostaErp.model.DBCPMybatis;
-import com.kostaErp.model.DAO.Interface.DisposalDAOInterface;
+import com.kostaErp.model.Interface.DisposalDAOInterface;
 import com.kostaErp.model.VO.disposalVO;
 
 public class DisposalDAOMyBatis implements DisposalDAOInterface{

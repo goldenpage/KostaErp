@@ -9,6 +9,8 @@ import javax.servlet.http.HttpSession;
 
 import com.kostaErp.model.DAO.foodMaterialDAO;
 import com.kostaErp.model.DAO.menuDAO;
+import com.kostaErp.model.DAO.Mybatis.MenuDAOMybatis;
+import com.kostaErp.model.Interface.MenuDAOInterface;
 import com.kostaErp.model.VO.foodMaterialVO;
 import com.kostaErp.model.VO.menuCategoryVO;
 
@@ -24,13 +26,14 @@ public class deleteMenuCategoryAction implements Action {
 			return null;
 		}
 
-		menuDAO mDao = new menuDAO();
+//		menuDAO mDao = new menuDAO();
+		MenuDAOInterface dao = new MenuDAOMybatis();
 		String menuCategory = request.getParameter("menuCategory");
 
-		if (mDao.hasMenuByCategory(menuCategory)) {
+		if (dao.hasMenuByCategory(menuCategory)) {
 			request.setAttribute("ajaxResponse", "fail|'" + menuCategory + "' 카테고리에 등록된 메뉴가 있어 삭제할 수 없습니다.");
 		} else {
-			int result = mDao.deleteMenuCategory(menuCategory);
+			int result = dao.deleteMenuCategory(menuCategory);
 			if (result > 0) {
 				request.setAttribute("ajaxResponse", "success|'" + menuCategory + "' 카테고리가 삭제되었습니다.");
 			} else {

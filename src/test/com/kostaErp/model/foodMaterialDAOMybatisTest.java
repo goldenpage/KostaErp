@@ -7,8 +7,8 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.kostaErp.model.DAO.FoodMaterialDAOInterface;
-import com.kostaErp.model.DAO.FoodMaterialDAOMybatis;
+import com.kostaErp.model.DAO.Mybatis.FoodMaterialDAOMybatis;
+import com.kostaErp.model.Interface.FoodMaterialDAOInterface;
 import com.kostaErp.model.VO.foodMaterialVO;
 import com.kostaErp.model.VO.foodMaterialCategoryVO;
 
