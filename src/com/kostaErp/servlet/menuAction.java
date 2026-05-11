@@ -8,7 +8,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.kostaErp.model.DAO.menuDAO;
+import com.kostaErp.model.DAO.Mybatis.MenuDAOMybatis;
+import com.kostaErp.model.Interface.MenuDAOInterface;
 import com.kostaErp.model.VO.menuVO;
+import com.kostaErp.model.VO.Mybatis.MenuVOMybatis;
 
 public class menuAction implements Action {
 
@@ -27,16 +30,17 @@ public class menuAction implements Action {
 				session.setAttribute("bId", bId);
 			}
 
-			menuDAO dao = new menuDAO();
-
-			List<menuVO> menuList = dao.getMenuList(bId);
-
-			List<menuVO> detailList = null;
+//			menuDAO dao = new menuDAO();
+//			List<menuVO> menuList = dao.getMenuList(bId);
+//			List<menuVO> detailList = null;
+			MenuDAOInterface dao = new MenuDAOMybatis();
+			List<MenuVOMybatis> menuList = dao.getMenuList(bId);
+			List<MenuVOMybatis> detailList = null;
 
 			if ((menuId == null || menuId.equals("")) && menuList != null && menuList.size() > 0) {
 
-				for (menuVO menu : menuList) {
-					List<menuVO> tempList = dao.getMenuDetail(menu.getMenuId());
+				for (MenuVOMybatis menu : menuList) {
+					List<MenuVOMybatis> tempList = dao.getMenuDetail(menu.getMenuId());
 
 					if (tempList != null && tempList.size() > 0) {
 						menuId = menu.getMenuId();

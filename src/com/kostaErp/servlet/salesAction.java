@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.kostaErp.model.DAO.menuDAO;
+import com.kostaErp.model.DAO.Mybatis.MenuDAOMybatis;
+import com.kostaErp.model.Interface.MenuDAOInterface;
 
 public class salesAction implements Action {
 
@@ -38,7 +40,8 @@ public class salesAction implements Action {
 				return url;
 			}
 
-			menuDAO dao = new menuDAO();
+//			menuDAO dao = new menuDAO();
+			MenuDAOInterface dao = new MenuDAOMybatis();
 
 			boolean result = dao.updateFoodMaterialAfterSale(menuId, saleCount, bId);
 
