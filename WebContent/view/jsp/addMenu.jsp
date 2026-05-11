@@ -59,7 +59,7 @@
 					</div>
 
 					<form method="post"
-						action="/KostaErp/controller?cmd=addMenuAction"
+						action="/controller?cmd=addMenuAction"
 						class="addMenu">
 						<input type="hidden" id="selectedCategoryId" name="_dummy"
 							value="">

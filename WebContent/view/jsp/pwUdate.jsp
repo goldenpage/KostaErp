@@ -11,7 +11,7 @@
 <body>
 
 	<form method="post"
-		action="/KostaErp/controller?cmd=pwUpdateAction"
+		action="/controller?cmd=pwUpdateAction"
 		class="change-box" onsubmit="return checkPw()">
 		<h1 class="main-title">비밀번호 변경</h1>
 

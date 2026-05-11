@@ -15,7 +15,7 @@
         </section>
 
         <div class="main">
-        <form method="post" action="/KostaErp/controller?cmd=addFoodMaterialAction" class="addFood">
+        <form method="post" action="/controller?cmd=addFoodMaterialAction" class="addFood">
             <div>
                 <jsp:include page="../common/userName.jsp" />
             </div>
