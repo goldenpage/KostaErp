@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="menuMapper">
-	<resultMap id="menuVOResultMap" type="com.kostaErp.model.VO.MenuVOMybatis">
+	<resultMap id="menuVOResultMap" type="com.kostaErp.model.VO.Mybatis.MenuVOMybatis">
         <result property="menuId" column="menu_Id"/>
         <result property="menuName" column="menuName"/>
         <result property="menuCategory" column="menuCategory"/>
@@ -14,29 +14,29 @@
         <result property="menuCategoryId" column="menuCategory_Id"/>
     </resultMap>
  
-    <resultMap id="menuCategoryResultMap" type="com.kostaErp.model.VO.MenuCategoryVOMybatis">
+    <resultMap id="menuCategoryResultMap" type="com.kostaErp.model.VO.Mybatis.MenuCategoryVOMybatis">
         <result property="menuCategoryId" column="menuCategory_Id"/>
         <result property="menuCategory" column="menuCategory"/>
         <result property="bId" column="bId"/>
     </resultMap>
  
-    <insert id="addMenu" parameterType="com.kostaErp.model.VO.MenuVOMybatis">
+    <insert id="addMenu" parameterType="com.kostaErp.model.VO.Mybatis.MenuVOMybatis">
         INSERT INTO MENUS(menuName, menuPrice, menuCategory_Id)
         VALUES(#{menuName}, #{menuPrice}, #{menuCategoryId})
     </insert>
  
-    <select id="getNewMenuId" parameterType="com.kostaErp.model.VO.MenuVOMybatis" resultType="String">
+    <select id="getNewMenuId" parameterType="com.kostaErp.model.VO.Mybatis.MenuVOMybatis" resultType="String">
         SELECT menu_Id FROM MENUS
         WHERE menuName = #{menuName} AND menuCategory_Id = #{menuCategoryId}
         ORDER BY menu_Id DESC
     </select>
  
-    <select id="checkMenuCategoryExists" parameterType="com.kostaErp.model.VO.MenuCategoryVOMybatis" resultType="int">
+    <select id="checkMenuCategoryExists" parameterType="com.kostaErp.model.VO.Mybatis.MenuCategoryVOMybatis" resultType="int">
         SELECT COUNT(*) FROM MENUC
         WHERE menuCategory = #{menuCategory} AND bId = #{bId}
     </select>
  
-    <insert id="addMenuCategory" parameterType="com.kostaErp.model.VO.MenuCategoryVOMybatis">
+    <insert id="addMenuCategory" parameterType="com.kostaErp.model.VO.Mybatis.MenuCategoryVOMybatis">
         INSERT INTO MENUC(menuCategory, bId) VALUES(#{menuCategory}, #{bId})
     </insert>
  
@@ -44,7 +44,7 @@
         DELETE FROM MENUC WHERE menuCategory = #{menuCategory}
     </delete>
  
-    <insert id="addUsedMaterial" parameterType="com.kostaErp.model.VO.UsedVOMybatis">
+    <insert id="addUsedMaterial" parameterType="com.kostaErp.model.VO.Mybatis.UsedVOMybatis">
         INSERT INTO USED(usedCount, foodMaterial_Id, menu_Id)
         VALUES(#{usedCount}, #{foodMaterialId}, #{menuId})
     </insert>
