@@ -10,7 +10,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>메뉴 조회</title>
 
-<link rel="stylesheet" href="KostaErp/view/css/menuList.css">
+<link rel="stylesheet" href="view/css/menuList.css">
 </head>
 
 <body>
@@ -102,7 +102,7 @@
 
                <div class="sale_form_area">
                   <form method="post"
-                     action="/KostaErp/controller?cmd=salesAction">
+                     action="controller?cmd=salesAction">
                      <input type="hidden" name="menuId" value="${selectedMenuId}">
                      판매수량:
                      <input type="number" name="saleCount" value="1" min="1">
