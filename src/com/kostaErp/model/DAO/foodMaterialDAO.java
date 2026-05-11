@@ -15,7 +15,7 @@ import com.kostaErp.model.VO.foodMaterialCategoryVO;
 import com.kostaErp.model.VO.foodMaterialVO;
 import com.kostaErp.model.VO.userInfoVO;
 
-public class foodMaterialDAO {	
+public class foodMaterialDAO implements FoodMaterialDAOInterface {	
 	public foodMaterialDAO(){}
 	
 	//1. 다수의 식자재 항목을 데이터베이스에 일괄 등록
@@ -112,28 +112,6 @@ public class foodMaterialDAO {
 			stmt.close();
 			conn.close();
 		}catch(Exception e){
-			e.printStackTrace();
-		}
-		return list;
-	}
-
-	//5. 마케팅 수신에 동의한 회원 정보 목록 조회
-	public List<userInfoVO> getMarketingMembers() throws ClassNotFoundException {
-		String sql = Query.GET_MARKETING_MEMBERS;
-		List<userInfoVO> list = new ArrayList<>();
-		try (Connection conn = DBCP.getConnection();
-				PreparedStatement stmt = conn.prepareStatement(sql);
-				ResultSet rs = stmt.executeQuery()) {
-			while (rs.next()) {
-				userInfoVO member = new userInfoVO();
-				member.setbId(rs.getString("bid"));
-				member.setName(rs.getString("name"));
-				member.setPhone(rs.getString("phone"));
-				member.setEmail(rs.getString("email"));
-				member.setMarketingDate(rs.getString("marketingDate")); 
-				list.add(member);
-			}
-		} catch (SQLException e) {
 			e.printStackTrace();
 		}
 		return list;
