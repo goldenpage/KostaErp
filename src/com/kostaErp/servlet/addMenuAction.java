@@ -9,8 +9,13 @@ import javax.servlet.http.HttpSession;
 
 import com.kostaErp.model.DAO.foodMaterialDAO;
 import com.kostaErp.model.DAO.menuDAO;
+import com.kostaErp.model.DAO.Mybatis.FoodMaterialDAOMybatis;
+import com.kostaErp.model.DAO.Mybatis.MenuDAOMybatis;
+import com.kostaErp.model.Interface.FoodMaterialDAOInterface;
+import com.kostaErp.model.Interface.MenuDAOInterface;
 import com.kostaErp.model.VO.foodMaterialVO;
 import com.kostaErp.model.VO.menuCategoryVO;
+import com.kostaErp.model.VO.Mybatis.MenuCategoryVOMybatis;
 
 public class addMenuAction implements Action {
 
@@ -25,8 +30,9 @@ public class addMenuAction implements Action {
 			return "/jsp/login.jsp";
 		}
  
-		menuDAO mDao = new menuDAO();
-		foodMaterialDAO fDao = new foodMaterialDAO();
+//		menuDAO mDao = new menuDAO();
+		MenuDAOInterface mDao = new MenuDAOMybatis();
+		FoodMaterialDAOInterface fDao = new FoodMaterialDAOMybatis();
  
 		String[] menuNames = request.getParameterValues("menuName");
 		String[] menuCategoryIds = request.getParameterValues("menuCategoryId");
@@ -39,7 +45,7 @@ public class addMenuAction implements Action {
 			for(int i = 0; i < menuNames.length; i++){
 				if(mDao.hasMenuCheck(menuNames[i])){
 					request.setAttribute("errorMessage", "'" + menuNames[i] + "' 메뉴가 이미 존재합니다. 등록을 취소합니다.");
-					List<menuCategoryVO> categoryList = mDao.getMenuCategoryList(bId);
+					List<MenuCategoryVOMybatis> categoryList = mDao.getMenuCategoryList(bId);
 					List<foodMaterialVO> foodMaterialList = fDao.getFoodMaterialListAll(bId);
 					request.setAttribute("categoryList", categoryList);
 					request.setAttribute("foodMaterialList", foodMaterialList);
@@ -70,7 +76,7 @@ public class addMenuAction implements Action {
 			}
 		}
  
-		List<menuCategoryVO> categoryList = mDao.getMenuCategoryList(bId);
+		List<MenuCategoryVOMybatis> categoryList = mDao.getMenuCategoryList(bId);
 		List<foodMaterialVO> foodMaterialList = fDao.getFoodMaterialListAll(bId);
  
 		request.setAttribute("categoryList", categoryList);

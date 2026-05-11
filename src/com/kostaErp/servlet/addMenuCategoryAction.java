@@ -9,6 +9,8 @@ import javax.servlet.http.HttpSession;
 
 import com.kostaErp.model.DAO.foodMaterialDAO;
 import com.kostaErp.model.DAO.menuDAO;
+import com.kostaErp.model.DAO.Mybatis.MenuDAOMybatis;
+import com.kostaErp.model.Interface.MenuDAOInterface;
 import com.kostaErp.model.VO.foodMaterialVO;
 import com.kostaErp.model.VO.menuCategoryVO;
 
@@ -31,7 +33,9 @@ public class addMenuCategoryAction implements Action {
 		}
 		menuCategory = menuCategory.trim();
 
-		menuDAO dao = new menuDAO();
+//		menuDAO dao = new menuDAO();
+		MenuDAOInterface dao = new MenuDAOMybatis();
+		
 		int result = dao.addMenuCategory(menuCategory, bId);
 		String Id = dao.getCategoryId(menuCategory);
 
