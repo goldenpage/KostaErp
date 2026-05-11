@@ -41,7 +41,8 @@ public class foodMaterialAction implements Action {
 				session.setAttribute("bId", bId);
 			}
 
-			foodMaterialDAO dao = new foodMaterialDAO();
+			//foodMaterialDAO dao = new foodMaterialDAO();
+			FoodMaterialDAOInterface dao = new FoodMaterialDAOMybatis();
 
 			List<foodMaterialVO> foodList =
 					dao.getFoodMaterialList(bId, sortType, page, pageSize);
