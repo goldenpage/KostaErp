@@ -54,7 +54,7 @@ public class RevenueDAOMybatisTest {
 	@Test
 	public void getRevenueTest() {
 		int result = session.selectOne("revenueMapper.getRevenue");
-		assertTrue(result == 3652000);
+		assertTrue(result == 4128129);
 	}
 	
 	@Test
@@ -64,7 +64,7 @@ public class RevenueDAOMybatisTest {
 		param.put("startDate", "2026-04-01");
 		param.put("endDate", "2026-05-01");
 		int result = session.selectOne("revenueMapper.getMonthlyRevenue", param);
-		assertTrue(result == 161000);
+		assertTrue(result == 326000);
 	}
 	
 

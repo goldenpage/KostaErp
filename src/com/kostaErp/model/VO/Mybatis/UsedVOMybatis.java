@@ -1,0 +1,47 @@
+package com.kostaErp.model.VO.Mybatis;
+
+public class UsedVOMybatis {
+
+	private String usedMaterialId;
+    private int usedCount;
+    private String foodMaterialId;
+    private String menuId;
+    
+	public UsedVOMybatis(int usedCount, String foodMaterialId, String menuId) {
+		this.usedCount = usedCount;
+		this.foodMaterialId = foodMaterialId;
+		this.menuId = menuId;
+	}
+
+	public String getUsedMaterialId() {
+		return usedMaterialId;
+	}
+
+	public void setUsedMaterialId(String usedMaterialId) {
+		this.usedMaterialId = usedMaterialId;
+	}
+
+	public int getUsedCount() {
+		return usedCount;
+	}
+
+	public void setUsedCount(int usedCount) {
+		this.usedCount = usedCount;
+	}
+
+	public String getFoodMaterialId() {
+		return foodMaterialId;
+	}
+
+	public void setFoodMaterialId(String foodMaterialId) {
+		this.foodMaterialId = foodMaterialId;
+	}
+
+	public String getMenuId() {
+		return menuId;
+	}
+
+	public void setMenu_Id(String menuId) {
+		this.menuId = menuId;
+	}
+}

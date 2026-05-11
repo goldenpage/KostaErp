@@ -6,6 +6,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.kostaErp.model.DAO.disposalDAO;
+import com.kostaErp.model.DAO.Mybatis.DisposalDAOMyBatis;
+import com.kostaErp.model.Interface.DisposalDAOInterface;
 import com.kostaErp.model.VO.disposalVO;
 
 public class disposalAction implements Action {
@@ -36,7 +38,8 @@ public class disposalAction implements Action {
         int start = (page - 1) * pageSize + 1;
         int end = page * pageSize;
 
-        disposalDAO dao = new disposalDAO();
+        //disposalDAO dao = new disposalDAO();
+        DisposalDAOInterface dao = new DisposalDAOMyBatis();
         
         List<disposalVO> list = dao.getDisposalsFilteredPaging(bId, category, reason, start, end);
         

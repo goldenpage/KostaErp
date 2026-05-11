@@ -1,4 +1,4 @@
-package com.kostaErp.model.VO;
+package com.kostaErp.model.VO.Mybatis;
 
 public class NoticeVOMybatis {
 	private String noticeId;

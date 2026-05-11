@@ -1,4 +1,4 @@
-package com.kostaErp.model.DAO;
+package com.kostaErp.model.DAO.Mybatis;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,8 +7,8 @@ import org.apache.ibatis.session.SqlSession;
 
 import com.kostaErp.model.DBCPMybatis;
 import com.kostaErp.model.Interface.NoticeDAOInterface;
-import com.kostaErp.model.VO.NoticeVOMybatis;
 import com.kostaErp.model.VO.noticeVO;
+import com.kostaErp.model.VO.Mybatis.NoticeVOMybatis;
 
 public class NoticeDAOMybatis implements NoticeDAOInterface {
 

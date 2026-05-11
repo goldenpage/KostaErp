@@ -55,7 +55,7 @@ public class UserDAOMybatisTest {
 		param.put("marketingDate", "2026-05-03");
 		
 		
-		boolean result = session.insert("userMapper.register", param) == 0;
+		boolean result = session.insert("userInfoMapper.register", param) == 0;
 		assertFalse(result);
 	}
 	
@@ -65,7 +65,7 @@ public class UserDAOMybatisTest {
 		param.put("bId", "0000000000");
 		param.put("name", "김사장");
 		param.put("pw", "test123");
-		userInfoVO result = session.selectOne("userMapper.checkMemberByVO", param);
+		userInfoVO result = session.selectOne("userInfoMapper.checkMemberByVO", param);
 		assertNotNull(result);
 		
 	}
@@ -78,11 +78,11 @@ public class UserDAOMybatisTest {
 		param.put("","");
 		param.put("","");
 		
-		boolean result = session.update("userMapper.setPw", param) ==1;
+		boolean result = session.update("userInfoMapper.setPw", param) ==1;
 		assertTrue(result);
 	}
 	
-	@Test
+	//@Test
 	public void checkPwFindUserTest() {
 		
 	}

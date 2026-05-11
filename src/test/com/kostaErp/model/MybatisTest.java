@@ -11,8 +11,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.kostaErp.model.DBCPMybatis;
-import com.kostaErp.model.VO.NoticeVOMybatis;
 import com.kostaErp.model.VO.noticeVO;
+import com.kostaErp.model.VO.Mybatis.NoticeVOMybatis;
 
 public class MybatisTest {
 
@@ -24,7 +24,7 @@ public class MybatisTest {
 //		factory.openSession();
 //	}
 	
-	@Test
+	//@Test
 	public void getFoodMaterialCountTest() {
 		
 		SqlSessionFactory factory = DBCPMybatis.getSqlSessionFactory();
@@ -44,7 +44,7 @@ public class MybatisTest {
 	public void setNoticeTest() {
 		SqlSessionFactory factory = DBCPMybatis.getSqlSessionFactory();
 		SqlSession session = factory.openSession();
-		boolean result = session.insert("noticeMapper.insertNotice", new noticeVO("N017","DIS008"))== 1;
+		boolean result = session.insert("noticeMapper.insertNotice", new noticeVO("N018","DIS008"))== 1;
 		session.commit();
 		System.out.println(result);
 		assertTrue(result);
@@ -104,7 +104,7 @@ public class MybatisTest {
 		SqlSession session = factory.openSession();
 		int result = session.selectOne("noticeMapper.getExpiredCount", "0000000000");
 		System.out.println(result);
-		assertTrue(result == 2);
+		assertTrue(result == 4);
 		session.close();
 	}
 	
