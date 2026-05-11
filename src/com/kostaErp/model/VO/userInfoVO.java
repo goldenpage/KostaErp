@@ -97,5 +97,3 @@ public class userInfoVO {
 			this.agreementDate = agreementDate;
 		}    
 	}
-
-

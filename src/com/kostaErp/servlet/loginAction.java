@@ -9,9 +9,8 @@ import javax.servlet.http.HttpServletResponse; // 추가 가능성 대비
 import javax.servlet.http.HttpSession;
 
 import com.kostaErp.model.DAO.userDAO;
-import com.kostaErp.model.DAO.Mybatis.UserInfoDAOMaybtis;
+import com.kostaErp.model.DAO.Mybatis.UserInfoDAOMybatis;
 import com.kostaErp.model.Interface.UserInfoDAOInterface;
-import com.kostaErp.model.VO.userInfoVO;
 
 public class loginAction implements Action {
 
@@ -21,15 +20,16 @@ public class loginAction implements Action {
         String bId = request.getParameter("bId");
         String pw = request.getParameter("pw");
         
-        //userDAO dao = new userDAO();
-        UserInfoDAOInterface dao = new UserInfoDAOMaybtis();
-        userInfoVO m = dao.login(bId, pw);
+//        userDAO dao = new userDAO();
+        UserInfoDAOInterface dao = new UserInfoDAOMybatis();
+        Map<String, Object> m = dao.login(bId, pw);
         
         System.out.println("--- 로그인 시도 ---");
         System.out.println("입력 bId : " + bId);
         System.out.println("DB 조회 결과(m) : " + m);
+//        System.out.println(m.get("NAME"));
         
-        if(m != null) {
+        if(m != null && m.size() > 0) {
             HttpSession session = request.getSession(true);
             
             session.setAttribute("loginOK", bId);

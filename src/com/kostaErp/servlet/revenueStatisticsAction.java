@@ -13,6 +13,7 @@ import javax.servlet.http.HttpSession;
 
 import com.google.gson.Gson;
 import com.kostaErp.model.DAO.revenueDAO;
+import com.kostaErp.model.DAO.Mybatis.RevenueDAOMybatis;
 import com.kostaErp.model.VO.revenueVO;
 
 public class revenueStatisticsAction implements Action {
@@ -68,7 +69,8 @@ public class revenueStatisticsAction implements Action {
 			return url;
 		}
 
-		revenueDAO dao = new revenueDAO();
+//		revenueDAO dao = new revenueDAO();
+		RevenueDAOMybatis dao = new RevenueDAOMybatis();
 
 		int totalRevenue = dao.getMonthlyRevenue(bId, startDate, endDate);
 		List<revenueVO> rankList = dao.getMonthlyMenuSalesRank(bId, startDate, endDate);

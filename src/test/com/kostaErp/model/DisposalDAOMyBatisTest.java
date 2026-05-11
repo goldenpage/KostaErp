@@ -8,12 +8,28 @@ import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.kostaErp.model.DBCPMybatis;
 import com.kostaErp.model.VO.disposalVO;
 
 public class DisposalDAOMyBatisTest {
+	
+	private SqlSession session;
+	
+	@Before
+	public void setUp() throws Exception {
+		session = DBCPMybatis.getSqlSessionFactory().openSession(false);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		session.rollback();
+		session.close();
+	}
+	
 	//1
 	@Test
 	public void getDisposalsTest(){

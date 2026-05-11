@@ -11,7 +11,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 
-<link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/usedStatistics.css">
+<link rel="stylesheet" href="/KostaErp/view/css/usedStatistics.css">
 
 </head>
 <body>
@@ -27,7 +27,7 @@
 				<h1>지출통계</h1>
 
 				<form method="get"
-					action="${pageContext.request.contextPath}/controller">
+					action="/controller">
 					<input type="hidden" name="cmd" value="usedStatisticsUIAction">
 					<input type="month" name="month" value="${selectedMonth}">
 					<button type="submit">조회</button>

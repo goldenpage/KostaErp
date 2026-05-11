@@ -6,12 +6,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>비밀번호 변경</title>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/view/css/pwUdate.css">
+<link rel="stylesheet" href="/KostaErp/view/css/pwUdate.css">
 </head>
 <body>
 
 	<form method="post"
-		action="${pageContext.request.contextPath}/controller?cmd=pwUpdateAction"
+		action="/KostaErp/controller?cmd=pwUpdateAction"
 		class="change-box" onsubmit="return checkPw()">
 		<h1 class="main-title">비밀번호 변경</h1>
 

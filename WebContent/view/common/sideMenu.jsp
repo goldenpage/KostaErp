@@ -1,9 +1,9 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-	pageEncoding="EUC-KR"%>
+<%@ page language="java" contentType="text/html; charset=utf-8"
+	pageEncoding="utf-8"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title>Insert title here</title>
 <style>
 
@@ -98,26 +98,26 @@
 <body>
 
 	<div class="sideMenu">
-		<img alt="logo" src="${pageContext.request.contextPath}/view/asset/image.png" onclick="location.href='controller?cmd=foodMaterialAction'">
+		<img alt="logo" src="/KostaErp/view/asset/image.png" onclick="location.href='/KostaErp/controller?cmd=foodMaterialAction'"/>
 		<ul>
-			<li>½ÄÀÚÀç°ü¸®</li>
-			<li onclick="location.href='controller?cmd=addFoodMaterialUIAction'">½ÄÀÚÀçÀÔ·Â</li>
-			<li onclick="location.href='controller?cmd=addMenuUIAction'">¸Þ´ºÀÔ·Â</li>
-			<li onclick="location.href='controller?cmd=foodMaterialAction'">½ÄÀÚÀçÁ¶È¸</li>
-			<li onclick="location.href='controller?cmd=menuAction'">¸Þ´º»ó¼¼Á¶È¸</li>
+			<li>ì‹ìžìž¬ê´€ë¦¬</li>
+			<li onclick="location.href='/KostaErp/controller?cmd=addFoodMaterialUIAction'">ì‹ìžìž¬ìž…ë ¥</li>
+			<li onclick="location.href='/KostaErp/controller?cmd=addMenuUIAction'">ë©”ë‰´ìž…ë ¥</li>
+			<li onclick="location.href='/KostaErp/controller?cmd=foodMaterialAction'">ì‹ìžìž¬ì¡°íšŒ</li>
+			<li onclick="location.href='/KostaErp/controller?cmd=menuAction'">ë©”ë‰´ìƒì„¸ì¡°íšŒ</li>
 		</ul>
 		<ul>
-			<li>Æó±â°ü¸®</li>
-			<li onclick="location.href='controller?cmd=disposalUIAction'">Æó±âÇ°¸ñÈ®ÀÎ</li>
+			<li>íê¸°ê´€ë¦¬</li>
+			<li onclick="location.href='/KostaErp/controller?cmd=disposalUIAction'">íê¸°í’ˆëª©í™•ì¸</li>
 		</ul>
 		<ul>
-			<li>Åë°è</li>
+			<li>í†µê³„</li>
 			<li
-				onclick="location.href='controller?cmd=revenueStatisticsUIAction'">¸ÅÃâÅë°è</li>
+				onclick="location.href='/KostaErp/controller?cmd=revenueStatisticsUIAction'">ë§¤ì¶œí†µê³„</li>
 			<li
-				onclick="location.href='controller?cmd=usedStatisticsUIAction'">ÁöÃâÅë°è</li>
+				onclick="location.href='/KostaErp/controller?cmd=usedStatisticsUIAction'">ì§€ì¶œí†µê³„</li>
 			<li
-				onclick="location.href='controller?cmd=disposalStatisticUIAction'">Æó±âÅë°è</li>
+				onclick="location.href='/KostaErp/controller?cmd=disposalStatisticUIAction'">íê¸°í†µê³„</li>
 		</ul>
 	</div>
 
