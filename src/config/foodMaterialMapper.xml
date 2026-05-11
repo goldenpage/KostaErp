@@ -138,7 +138,7 @@
 
 	<select id="getFoodMaterialListAll" parameterType="String"
 		resultType="com.kostaErp.model.VO.foodMaterialVO">
-		SELECT f.foodMaterial_Id, f.foodMaterialName,
+		SELECT f.foodMaterial_Id AS foodMaterialId, f.foodMaterialName,
 		c.foodCategory
 		FROM FOODM f JOIN FOODC c ON f.foodCategory_Id =
 		c.foodCategory_Id
