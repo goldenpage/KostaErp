@@ -1,4 +1,4 @@
-package com.kostaErp.model.DAO;
+package com.kostaErp.model.DAO.Mybatis;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,11 +9,11 @@ import org.apache.ibatis.session.SqlSession;
 
 import com.kostaErp.model.DBCPMybatis;
 import com.kostaErp.model.Interface.MenuDAOInterface;
-import com.kostaErp.model.VO.MenuCategoryVOMybatis;
-import com.kostaErp.model.VO.MenuVOMybatis;
-import com.kostaErp.model.VO.UsedVOMybatis;
 import com.kostaErp.model.VO.menuCategoryVO;
 import com.kostaErp.model.VO.menuVO;
+import com.kostaErp.model.VO.Mybatis.MenuCategoryVOMybatis;
+import com.kostaErp.model.VO.Mybatis.MenuVOMybatis;
+import com.kostaErp.model.VO.Mybatis.UsedVOMybatis;
 
 public class MenuDAOMybatis implements MenuDAOInterface{
 

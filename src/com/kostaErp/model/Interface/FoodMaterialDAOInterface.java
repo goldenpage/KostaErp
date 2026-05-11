@@ -1,4 +1,4 @@
-package com.kostaErp.model.DAO;
+package com.kostaErp.model.Interface;
 
 import java.util.List;
 

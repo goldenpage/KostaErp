@@ -9,10 +9,10 @@ import org.apache.ibatis.session.SqlSessionFactory;
 import org.junit.Test;
 
 import com.kostaErp.model.DBCPMybatis;
-import com.kostaErp.model.DAO.MenuDAOMybatis;
+import com.kostaErp.model.DAO.Mybatis.MenuDAOMybatis;
 import com.kostaErp.model.Interface.MenuDAOInterface;
-import com.kostaErp.model.VO.MenuCategoryVOMybatis;
-import com.kostaErp.model.VO.MenuVOMybatis;
+import com.kostaErp.model.VO.Mybatis.MenuCategoryVOMybatis;
+import com.kostaErp.model.VO.Mybatis.MenuVOMybatis;
 
 public class MenuMyBatisTest {
 
