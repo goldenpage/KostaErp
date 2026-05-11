@@ -148,7 +148,7 @@ public class MenuDAOMybatis implements MenuDAOInterface{
 	public boolean hasMenuByCategory(String menuCategory) {
 		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		
-		boolean result = (session.selectOne("menuMapper.hasMenuByCategory", menuCategory) != null);
+		boolean result = (session.selectOne("menuMapper.hasMenuByCategory", menuCategory) == null);
 		
 		session.close();
 		return result;
@@ -159,7 +159,7 @@ public class MenuDAOMybatis implements MenuDAOInterface{
 	public boolean hasMenuCheck(String menuName) {
 		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		
-		boolean result = (session.selectOne("menuMapper.hasMenuCheck", menuName) != null);
+		boolean result = (session.selectOne("menuMapper.hasMenuCheck", menuName) == null);
 		
 		session.close();
 		
