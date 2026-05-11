@@ -5,8 +5,12 @@ import static org.junit.Assert.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.ibatis.session.SqlSession;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
+import com.kostaErp.model.DBCPMybatis;
 import com.kostaErp.model.DAO.Mybatis.FoodMaterialDAOMybatis;
 import com.kostaErp.model.Interface.FoodMaterialDAOInterface;
 import com.kostaErp.model.VO.foodMaterialVO;
@@ -14,7 +18,20 @@ import com.kostaErp.model.VO.foodMaterialCategoryVO;
 
 public class foodMaterialDAOMybatisTest {
 
-	//@Test
+	private SqlSession session;
+	
+	@Before
+	public void setUp() throws Exception {
+		session = DBCPMybatis.getSqlSessionFactory().openSession(false);
+	}
+
+	@After
+	public void tearDown() throws Exception {
+		session.rollback();
+		session.close();
+	}
+	
+	@Test
 	public void getFoodMaterialCount_테스트(){
 		FoodMaterialDAOInterface dao = new FoodMaterialDAOMybatis();
 
@@ -25,7 +42,7 @@ public class foodMaterialDAOMybatisTest {
 		assertTrue(count >= 0);
 	}
 	
-	//@Test
+	@Test
 	public void addFoodMaterial() {
 		FoodMaterialDAOInterface dao = new FoodMaterialDAOMybatis();
 
@@ -48,7 +65,7 @@ public class foodMaterialDAOMybatisTest {
 		assertTrue(successCount == list.size());
 	}
 	
-	//@Test
+	@Test
 	public void addFoodCategory(){
 		FoodMaterialDAOInterface dao = new FoodMaterialDAOMybatis();
 
@@ -59,7 +76,7 @@ public class foodMaterialDAOMybatisTest {
 		System.out.println(result);
 	}
 	
-	//@Test
+	@Test
 	public void deleteFoodCategory() {
 		FoodMaterialDAOInterface dao = new FoodMaterialDAOMybatis();
 
@@ -70,7 +87,7 @@ public class foodMaterialDAOMybatisTest {
 		System.out.println(result);
 	}
 	 
-	//@Test
+	@Test
 	public void getFoodMaterial(){
 		FoodMaterialDAOInterface dao = new FoodMaterialDAOMybatis();
 
@@ -100,7 +117,7 @@ public class foodMaterialDAOMybatisTest {
 		assertTrue(list.size() <= 5);
 	}
 	
-	//@Test
+	@Test
 	public void getFoodMaterialTotalAmountTest() {
 		FoodMaterialDAOInterface dao = new FoodMaterialDAOMybatis();
 
@@ -111,7 +128,7 @@ public class foodMaterialDAOMybatisTest {
 		assertTrue(result >= 0);
 	}
 	
-	//@Test
+	@Test
 	public void getFoodCategoryListTest() {
 		FoodMaterialDAOInterface dao = new FoodMaterialDAOMybatis();
 
@@ -140,7 +157,7 @@ public class foodMaterialDAOMybatisTest {
 		}
 	}
 	
-	//@Test
+	@Test
 	public void getFoodMaterialPageTest() {
 		FoodMaterialDAOInterface dao = new FoodMaterialDAOMybatis();
 
@@ -156,7 +173,7 @@ public class foodMaterialDAOMybatisTest {
 		assertTrue(page2.size() <= 5);
 	}
 	
-	//@Test
+	@Test
 	public void getFoodMaterialListSortTest() {
 		FoodMaterialDAOInterface dao = new FoodMaterialDAOMybatis();
 
@@ -176,7 +193,7 @@ public class foodMaterialDAOMybatisTest {
 		assertNotNull(expDescList);
 	}
 	
-	//@Test
+	@Test
 	public void getFoodMaterialListAllTest() {
 		FoodMaterialDAOInterface dao = new FoodMaterialDAOMybatis();
 
@@ -195,7 +212,7 @@ public class foodMaterialDAOMybatisTest {
 		assertNotNull(list);
 	}
 	
-	//@Test
+	@Test
 	public void getFoodMaterialSpendingRankTest() {
 		FoodMaterialDAOInterface dao = new FoodMaterialDAOMybatis();
 
@@ -217,7 +234,7 @@ public class foodMaterialDAOMybatisTest {
 		}
 	}
 	
-	//@Test
+	@Test
 	public void hasFoodMaterialByCategoryTest() {
 		FoodMaterialDAOInterface dao = new FoodMaterialDAOMybatis();
 
@@ -226,7 +243,7 @@ public class foodMaterialDAOMybatisTest {
 		System.out.println("카테고리 사용 여부 : " + result);
 	}
 	
-	//@Test
+	@Test
 	public void getCategoryIdTest() {
 		FoodMaterialDAOInterface dao = new FoodMaterialDAOMybatis();
 
@@ -235,7 +252,7 @@ public class foodMaterialDAOMybatisTest {
 		System.out.println("카테고리 ID : " + result);
 	}
 	
-	//@Test
+	@Test
 	public void addAndDeleteFoodCategoryTest() {
 		FoodMaterialDAOInterface dao = new FoodMaterialDAOMybatis();
 
