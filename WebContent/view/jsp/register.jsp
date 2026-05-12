@@ -14,7 +14,7 @@ https://cdn.jsdelivr.net/npm/jquery@4.0.0/dist/jquery.min.js"></script>
 <link rel="stylesheet" href="view/css/register.css">
 <body>
 	<form method="post"
-		action="/KostaErp/controller?cmd=addUserAction"
+		action="/controller?cmd=addUserAction"
 		onsubmit="return checkPassword()" class="signup-box">
 
 		<h1 class="main-title">회원가입</h1>
