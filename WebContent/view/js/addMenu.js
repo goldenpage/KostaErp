@@ -37,7 +37,7 @@ function addCategoryAjax() {
                 delBtn.type = 'button';
                 delBtn.className = 'remove_btn';
                 delBtn.innerHTML = '&#10005;';
-                delBtn.onclick = function() { deleteCategoryAjax(value, this); };
+                delBtn.onclick = function() { deleteCategoryAjax(getId, this); };
                 span.appendChild(selectBtn);
                 span.appendChild(delBtn);
                 document.getElementById('categoryArea').appendChild(span);

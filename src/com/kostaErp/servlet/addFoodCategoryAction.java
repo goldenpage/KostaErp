@@ -6,6 +6,8 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 
 import com.kostaErp.model.DAO.foodMaterialDAO;
+import com.kostaErp.model.DAO.Mybatis.FoodMaterialDAOMybatis;
+import com.kostaErp.model.Interface.FoodMaterialDAOInterface;
 
 public class addFoodCategoryAction implements Action {
 
@@ -20,7 +22,8 @@ public class addFoodCategoryAction implements Action {
         }
 		
 		foodCategory = foodCategory.trim();
-		foodMaterialDAO dao = new foodMaterialDAO();
+		//foodMaterialDAO dao = new foodMaterialDAO();
+		FoodMaterialDAOInterface dao = new FoodMaterialDAOMybatis();
 		int result = dao.addFoodCategory(foodCategory);
 		String Id = dao.getCategoryId(foodCategory);
 		

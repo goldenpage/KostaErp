@@ -39,12 +39,16 @@ public class MenuDAOMybatis implements MenuDAOInterface{
 		MenuCategoryVOMybatis vo = new MenuCategoryVOMybatis(menuCategory, bId);
 		int count = session.selectOne("menuMapper.checkMenuCategoryExists", vo);
 		
-		if (count > 0) return 0;
-		int result = session.insert("menuMapper.addMenuCategory", vo);
-		if (result > 0) session.commit();
-		
-		session.close();
-		return result;
+		try {
+			if (count > 0) return 0;
+			
+			int result = session.insert("menuMapper.addMenuCategory", vo);
+			if (result > 0) session.commit();
+			
+			return result;
+		} finally {
+			session.close();
+		}
 	}
 
 	// 3. 메뉴 카테고리 삭제
@@ -144,7 +148,7 @@ public class MenuDAOMybatis implements MenuDAOInterface{
 	public boolean hasMenuByCategory(String menuCategory) {
 		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		
-		boolean result = (session.selectOne("menuMapper.hasMenuByCategory", menuCategory) != null);
+		boolean result = (session.selectOne("menuMapper.hasMenuByCategory", menuCategory) == null);
 		
 		session.close();
 		return result;
@@ -155,7 +159,7 @@ public class MenuDAOMybatis implements MenuDAOInterface{
 	public boolean hasMenuCheck(String menuName) {
 		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		
-		boolean result = (session.selectOne("menuMapper.hasMenuCheck", menuName) != null);
+		boolean result = (session.selectOne("menuMapper.hasMenuCheck", menuName) == null);
 		
 		session.close();
 		

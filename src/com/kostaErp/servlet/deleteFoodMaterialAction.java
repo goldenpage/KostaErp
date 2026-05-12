@@ -7,6 +7,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.kostaErp.model.DAO.foodMaterialDAO;
+import com.kostaErp.model.DAO.Mybatis.FoodMaterialDAOMybatis;
+import com.kostaErp.model.Interface.FoodMaterialDAOInterface;
 
 public class deleteFoodMaterialAction implements Action {
 
@@ -30,7 +32,8 @@ public class deleteFoodMaterialAction implements Action {
 				return new foodMaterialAction().execute(request);
 			}
 
-			foodMaterialDAO dao = new foodMaterialDAO();
+			//foodMaterialDAO dao = new foodMaterialDAO();
+			FoodMaterialDAOInterface dao = new FoodMaterialDAOMybatis();
 
 			int deleteCount = 0;
 
