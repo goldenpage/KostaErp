@@ -43,10 +43,11 @@ public class foodMaterialAction implements Action {
 
 			//foodMaterialDAO dao = new foodMaterialDAO();
 			FoodMaterialDAOInterface dao = new FoodMaterialDAOMybatis();
-
+			
 			List<foodMaterialVO> foodList =
 					dao.getFoodMaterialList(bId, sortType, page, pageSize);
-
+			System.out.println(foodList);
+			
 			int totalCount = dao.getFoodMaterialCount(bId);
 
 			int totalPage = totalCount / pageSize;

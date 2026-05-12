@@ -99,6 +99,8 @@
 
 	<div class="sideMenu">
 		<img alt="logo" src="/KostaErp/view/asset/image.png" onclick="location.href='/KostaErp/controller?cmd=foodMaterialAction'"/>
+		
+
 		<ul>
 			<li>식자재관리</li>
 			<li onclick="location.href='controller?cmd=addFoodMaterialUIAction'">식자재입력</li>

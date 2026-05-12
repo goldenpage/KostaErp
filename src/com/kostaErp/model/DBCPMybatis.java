@@ -16,7 +16,7 @@ public class DBCPMybatis {
 		if(dbcp==null) dbcp=new DBCPMybatis(); 
 		
 		if(factory==null){ 
-			String resource = "config/mybatis-Config.xml";
+			String resource = "config/local-Config.xml";
 			InputStream in=null;
 			try {
 				in=Resources.getResourceAsStream(resource); 

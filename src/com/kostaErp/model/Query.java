@@ -341,8 +341,10 @@ public interface Query {
 	public static final String LOGIN = "SELECT  bId, name FROM USERINFO" 
 			+ " WHERE bId = ?  AND pw = ? ";
 
-	public static final String GET_PHONE_CHECK ="SELECT bId, name, phone FROM USERINFO" 
-			+ " WHERE phone = ? ";
+	public static final String GET_PHONE_CHECK ="SELECT bId, name, phone FROM USERINFO WHERE phone = ? ";
+	
+	
+	 
 
 	public static final String GET_BID ="SELECT bId FROM USERINFO WHERE bId = ?";
 

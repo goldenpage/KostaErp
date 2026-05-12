@@ -168,6 +168,6 @@
     <script>
         var contextPath = '${pageContext.request.contextPath}';
     </script>
-    <script src="/KostaErp/view/js/addFoodMaterial.js"></script>
+    <script src="view/js/addFoodMaterial.js"></script>
 </body>
 </html>

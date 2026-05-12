@@ -26,7 +26,7 @@ public class phoneSendAction implements Action {
 		
 		
 		try {
-		    if (!check) {
+		    if (check) {
 		        request.setAttribute("ajaxResponse", "이미 가입된 휴대폰 번호입니다.");
 		        return null;
 		    }

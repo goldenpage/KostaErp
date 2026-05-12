@@ -18,8 +18,7 @@ public class UserInfoDAOMybatis implements UserInfoDAOInterface{
 	@Override
 	public int register(String bId, String name, String phone, String email, String storeName, String storeType,
 			String storeCategory, String pw, String signDate, String agreementDate, String marketingDate) {
-		factory = DBCPMybatis.getSqlSessionFactory();
-		factory.openSession();
+		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		Map<String, String> param = new HashMap<>();
 		param.put("bId", bId);
 		param.put("name", name);
@@ -40,6 +39,19 @@ public class UserInfoDAOMybatis implements UserInfoDAOInterface{
 
 		return  session.insert("userInfoMapper.register", param);
 
+	}
+	
+	@Override
+	public int register(userInfoVO user) {
+	    SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
+
+	    try {
+	        int result = session.insert("userInfoMapper.register", user);
+	        session.commit();
+	        return result;
+	    } finally {
+	        session.close();
+	    }
 	}
 
 	@Override
@@ -99,6 +111,7 @@ public class UserInfoDAOMybatis implements UserInfoDAOInterface{
 	public boolean getPhoneCheck(String phone) {
 		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		int result = session.selectOne("userInfoMapper.getPhoneCheck", phone);
+		 session.close();
 		System.out.println(result);
 		return result > 0;
 	}
@@ -107,6 +120,7 @@ public class UserInfoDAOMybatis implements UserInfoDAOInterface{
 	public boolean getBid(String bId) {
 		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		int result = session.selectOne("userInfoMapper.getBidCheck", bId);
+		 session.close();
 		System.out.println(result);
 		return result > 0;
 	}

@@ -6,6 +6,7 @@ import java.util.Map;
 import com.kostaErp.model.VO.userInfoVO;
 
 public interface UserInfoDAOInterface {
+	int register(userInfoVO user);
 	int register(String bId, String name, String phone, 
 			String email, String storeName, String storeType, String storeCategory, 
 			String pw, String signDate, String agreementDate, String marketingDate);
@@ -17,4 +18,5 @@ public interface UserInfoDAOInterface {
 	Map<String,Object> login(String bId, String pw);
 	boolean getPhoneCheck(String phone);
 	boolean getBid(String bId);
+	
 }

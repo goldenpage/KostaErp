@@ -29,6 +29,8 @@ public class userInfoVO {
 		this.signDate = signDate;
 		this.agreementDate = agreementDate;
 		this.marketingDate = marketingDate;
+		this.storeType = storeType;
+		this.storeCategory = storeCategory;
 
 	}
 
@@ -62,40 +64,48 @@ public class userInfoVO {
 	public void setStoreType(String storeType) {
 		this.storeType = storeType;}
 
-		public String getEmail() {
-			return email;
-		}
-		public void setEmail(String email) {
-			this.email = email;
-		}
-		public String getPhone() {
-			return phone;
-		}
-		public void setPhone(String phone) {
-			this.phone = phone;
-		}
-		public String getMarketingDate() {
-			return marketingDate;
-		}
-
-		public String getSignDate() {return signDate;}
-		public String getAgreementDate() {return agreementDate;}
-
-		public void setMarketingDate(String marketingDate) {
-			this.marketingDate = marketingDate;
-		}
-
-		public void setStoreCategory(String storeCategory) {
-			this.storeCategory = storeCategory;
-		}
-
-		public void setSignDate(String signDate) {
-			this.signDate = signDate;
-		}
-
-		public void setAgreementDate(String agreementDate) {
-			this.agreementDate = agreementDate;
-		}    
+	public String getEmail() {
+		return email;
 	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public String getMarketingDate() {
+		return marketingDate;
+	}
+
+	public String getSignDate() {return signDate;}
+	public String getAgreementDate() {return agreementDate;}
+
+	public void setMarketingDate(String marketingDate) {
+		this.marketingDate = marketingDate;
+	}
+
+	public void setStoreCategory(String storeCategory) {
+		this.storeCategory = storeCategory;
+	}
+
+	public void setSignDate(String signDate) {
+		this.signDate = signDate;
+	}
+
+	public void setAgreementDate(String agreementDate) {
+		this.agreementDate = agreementDate;
+	}    
+	
+	public String getStoreType() {
+	    return storeType;
+	}
+
+	public String getStoreCategory() {
+	    return storeCategory;
+	}
+}
 
 

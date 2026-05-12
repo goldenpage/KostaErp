@@ -17,13 +17,12 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   </environments>
   
   <mappers>
-    <!-- <mapper resource="config/memberMapper.xml"/> -->
+     <mapper resource="config/userInfoMapper.xml"/>
+    <mapper resource="config/revenueMapper.xml"/>
     <mapper resource="config/noticeMapper.xml"/>
+    <mapper resource="config/menuMapper.xml"/>
     <mapper resource="config/foodMaterialMapper.xml"/>
-   <!--     ml
-    <mapper resource="config/memberMapper.xml"/>
-    <mapper resource="config/memberMapper.xml"/>  
-    -->
+    <mapper resource="config/DisposalMapper.xml"/>
   </mappers>
   
 </configuration>

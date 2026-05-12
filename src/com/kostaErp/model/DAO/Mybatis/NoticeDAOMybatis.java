@@ -25,7 +25,6 @@ public class NoticeDAOMybatis implements NoticeDAOInterface {
 	public ArrayList<noticeVO> getNoticeList(String bId) {
 		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		List<noticeVO> noticeList = session.selectList("noticeMapper.getNoticeList", bId);
-		session.commit();
 		session.close();
 		return new ArrayList<>(noticeList);
 	}
@@ -52,7 +51,6 @@ public class NoticeDAOMybatis implements NoticeDAOInterface {
 	public ArrayList<noticeVO> getExpiredDisposalIds(String bId) {
 		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		List<noticeVO> noticeList = session.selectList("noticeMapper.getExpiredIdList", bId);
-		session.commit();
 		session.close();
 		return new ArrayList<>(noticeList);
 	}
@@ -61,7 +59,6 @@ public class NoticeDAOMybatis implements NoticeDAOInterface {
 	public int getExpiredCount(String bId) {
 		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		int result = session.selectOne("noticeMapper.getExpiredCount", bId);
-		session.commit();
 		session.close();
 		return result;
 	}
@@ -70,7 +67,6 @@ public class NoticeDAOMybatis implements NoticeDAOInterface {
 	public int getSolidTotal(String bId) {
 		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		int result = session.selectOne("noticeMapper.getSolidTotal", bId);
-		session.commit();
 		session.close();
 		return result;
 	}
@@ -79,7 +75,6 @@ public class NoticeDAOMybatis implements NoticeDAOInterface {
 	public int getLiquidTotal(String bId) {
 		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		int result = session.selectOne("noticeMapper.getLiquidTotal", bId);
-		session.commit();
 		session.close();
 		return result;
 	}
@@ -88,11 +83,10 @@ public class NoticeDAOMybatis implements NoticeDAOInterface {
 	public int getMaxOverDay(String bId) {
 		SqlSession session = DBCPMybatis.getSqlSessionFactory().openSession();
 		int result = session.selectOne("noticeMapper.getMaxOverDay", bId);
-		session.commit();
 		session.close();
 		return result;
 	}
 
-	
-	
+
+
 }

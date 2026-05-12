@@ -7,12 +7,17 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import com.kostaErp.model.DAO.userDAO;
+import com.kostaErp.model.DAO.Mybatis.UserInfoDAOMybatis;
+import com.kostaErp.model.Interface.UserInfoDAOInterface;
+import com.kostaErp.model.VO.userInfoVO;
 
 public class addUserAction implements Action {
 
 	@Override
 	public String execute(HttpServletRequest request) throws ServletException, IOException {
-		userDAO dao = new userDAO();
+//		userDAO dao = new userDAO();
+		UserInfoDAOInterface dao = new UserInfoDAOMybatis();
+		
 		String today = java.time.LocalDate.now().toString();
 		
 		String url = "register.jsp"; 
@@ -29,6 +34,12 @@ public class addUserAction implements Action {
 		String agreementDate = request.getParameter("agreementAgree") != null ? today:null;
 		String marketingDate = request.getParameter("marketingAgree") != null ? today: null;
 
+		
+		userInfoVO user = new userInfoVO(
+			    bId, name, phone, email, storeName,
+			    storeType, storeCategory, pw,
+			    signDate, agreementDate, marketingDate
+			);
 
 		HttpSession session = request.getSession();
 
@@ -53,7 +64,8 @@ public class addUserAction implements Action {
 		}
 		
 		
-		int result = dao.register(bId, name, phone, email, storeName, storeType, storeCategory, pw, signDate, agreementDate, marketingDate);
+//		int result = dao.register(bId, name, phone, email, storeName, storeType, storeCategory, pw, signDate, agreementDate, marketingDate);
+		int result = dao.register(user);
 		
 		
 		
