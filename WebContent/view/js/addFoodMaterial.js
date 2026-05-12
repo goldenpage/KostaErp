@@ -37,10 +37,8 @@ function addCategoryAjax() {
         if (xhr.readyState === 4 && xhr.status === 200) {
             var parts = xhr.responseText.split("|");
             var result = parts[0];
-            var value = parts[1];
-            var getId = parts[2];
-            console.log(value);
-            console.log(getId);
+            var getId = parts[1];
+            var getName = parts[2];
 
             if (result === "success") {
                 msg.style.color = 'green';
@@ -50,22 +48,22 @@ function addCategoryAjax() {
                 span.style.cssText = 'display:inline-flex; align-items:center; gap:2px;';
                 var selectBtn = document.createElement('button');
                 selectBtn.type = 'button';
-                selectBtn.textContent = getId;
-                selectBtn.setAttribute('data-category-id', value);
+                selectBtn.textContent = getName;
+                selectBtn.setAttribute('data-category-id', getId);
                 selectBtn.onclick = function() { selectCategory(this); };
 
                 var delBtn = document.createElement('button');
                 delBtn.type = 'button';
                 delBtn.className = 'remove_btn';
                 delBtn.innerHTML = '&#10005;';
-                delBtn.onclick = function() { deleteCategoryAjax(getId, this); };
+                delBtn.onclick = function() { deleteCategoryAjax(getName, this); };
                 span.appendChild(selectBtn);
                 span.appendChild(delBtn);
                 document.getElementById('categoryArea').appendChild(span);
                 input.value = '';
             } else {
                 msg.style.color = 'red';
-                msg.innerText = value;
+                msg.innerText = getId;
             }
         } else if (xhr.readyState === 4) {
             msg.style.color = 'red';
