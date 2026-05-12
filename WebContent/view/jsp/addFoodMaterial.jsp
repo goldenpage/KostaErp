@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>식자재 입력</title>
-    <link rel="stylesheet" href="KostaErp/view/css/addFoodMaterial.css">
+    <link rel="stylesheet" href="view/css/addFoodMaterial.css">
 </head>
 <body>
     <div class="container">
@@ -15,7 +15,7 @@
         </section>
 
         <div class="main">
-        <form method="post" action="/controller?cmd=addFoodMaterialAction" class="addFood">
+        <form method="post" action="controller?cmd=addFoodMaterialAction" class="addFood">
             <div>
                 <jsp:include page="../common/userName.jsp" />
             </div>

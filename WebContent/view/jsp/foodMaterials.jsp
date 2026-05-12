@@ -20,7 +20,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>식자재 조회</title>
 
-<link rel="stylesheet" href="KostaErp/view/css/foodMaterials.css">
+<link rel="stylesheet" href="view/css/foodMaterials.css">
 </head>
 
 <body>

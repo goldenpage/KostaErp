@@ -6,11 +6,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>로그인</title>
-<link rel="stylesheet" href="/KostaErp/view/css/login.css">
+<link rel="stylesheet" href="view/css/login.css">
 </head>
 <body>
 	
-    <form action="/controller?cmd=loginAction" class="login-box" method="post">
+    <form action="controller?cmd=loginAction" class="login-box" method="post">
         <h1 class="main-title">로그인</h1>
 
         <div class="form-group">

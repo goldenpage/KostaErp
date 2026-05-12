@@ -50,12 +50,7 @@
     	UPDATE USERINFO SET pw = #{pw} WHERE bId = #{bId} AND NAME = #{name} AND PHONE = #{phone}
     </update>
     
-    <select id="login" parameterType="map" resultType="com.kostaErp.model.VO.userInfoVO">
-    SELECT bId, name
-    FROM USERINFO
-    WHERE bId = #{bId}
-    AND pw = #{pw}
-</select>
+    
 
     <select id="login" resultType="hashmap" parameterType="map">
     	SELECT bId, name FROM USERINFO 
